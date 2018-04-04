@@ -4,7 +4,7 @@ from Bio.Alphabet import IUPAC
 import re
 import pdb
 import numpy as np
-from mpathic import SortSeqError
+from . import SortSeqError
 
 rc_dict = {'A':'T','C':'G','G':'C','T':'A'} 
 

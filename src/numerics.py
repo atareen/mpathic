@@ -1,13 +1,17 @@
 #!/usr/bin/env python
 import time
-import mpathic.simulate_library
-import mpathic.fast as fast
-import mpathic.qc as qc
-from mpathic.profile_mut import main as profile_mut
-from mpathic.simulate_library import main as simulate_library
+import simulate_library
+
+from setuptools import Extension
+fast = Extension("fast",["fast.c"])
+#import fast as fast
+
+import qc as qc
+from profile_mut import main as profile_mut
+from simulate_library import main as simulate_library
 import numpy as np
 from scipy.sparse import csr, csr_matrix, lil_matrix
-from mpathic import SortSeqError
+from . import SortSeqError
 import pdb
 import sys
 

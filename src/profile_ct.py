@@ -7,9 +7,9 @@ import argparse
 import numpy as np
 import sys
 import pandas as pd
-import mpathic.qc as qc
-import mpathic.io as io
-from mpathic import SortSeqError
+import qc as qc
+import io as io
+from . import SortSeqError
 
 def main(dataset_df, bin=None, start=0, end=None):
     """

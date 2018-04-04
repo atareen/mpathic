@@ -10,25 +10,28 @@ import sys
 import scipy.sparse
 #Our miscellaneous functions
 import pandas as pd
-import mpathic.utils as utils
+import utils as utils
 from sklearn import linear_model
-import mpathic.EstimateMutualInfoforMImax as EstimateMutualInfoforMImax
+import EstimateMutualInfoforMImax as EstimateMutualInfoforMImax
 import pymc
-import mpathic.stepper as stepper
+import stepper as stepper
 import os
-from mpathic import SortSeqError
-import mpathic.io as io
-import mpathic.gauge as gauge
-import mpathic.qc as qc
+from . import SortSeqError
+import io as io
+import gauge as gauge
+import qc as qc
 import pdb
-from mpathic import shutthefuckup
-import mpathic.numerics as numerics
+from . import shutthefuckup
+import numerics as numerics
 from sklearn.preprocessing import StandardScaler
 import cvxopt
 from cvxopt import solvers, matrix, spdiag, sqrt, div, exp
 import warnings
-import mpathic.profile_mut as profile_mut
-import mpathic.fast
+import profile_mut as profile_mut
+
+from setuptools import Extension
+fast = Extension("fast",["fast.c"])
+#import mpathic.fast
 
 
 def weighted_std(values,weights):

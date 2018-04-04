@@ -9,7 +9,7 @@ import numpy as np
 import sys
 
 import pandas as pd
-import mpathic.utils as utils
+import utils as utils
 import matplotlib.pyplot as plt
 import weblogolib
 import matplotlib as mpl

@@ -13,13 +13,13 @@ import pandas as pd
 #Our miscellaneous functions
 #This module will allow us to easily tally the letter counts at a particular position
 
-import mpathic.utils as utils
-import mpathic.EstimateMutualInfoforMImax as EstimateMutualInfoforMImax
-import mpathic.qc as qc
-import mpathic.numerics as numerics
-from mpathic import SortSeqError
-import mpathic.io as io
-import matplotlib.pyplot as plt
+import utils as utils
+import EstimateMutualInfoforMImax as EstimateMutualInfoforMImax
+import qc as qc
+import numerics as numerics
+from . import SortSeqError
+import io as io
+import  matplotlib.pyplot as plt
 
 
 def main(

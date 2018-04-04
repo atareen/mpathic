@@ -5,7 +5,8 @@ import numpy as np
 import argparse
 import sys
 from subprocess import Popen, PIPE
-from sklearn.grid_search import GridSearchCV
+#from sklearn.grid_search import GridSearchCV
+from sklearn.model_selection import GridSearchCV
 if __name__== '__main__':
     import sortseq.utils
 from collections import Counter
@@ -13,9 +14,9 @@ from cStringIO import StringIO
 import pandas as pd
 import scipy as sp
 import scipy.ndimage
-import mpathic.utils as utils
+import utils as utils
 import pdb
-import mpathic.info as info
+import info as info
 
 
 ''' This script estimates MI by implementing a Density Estimation through 

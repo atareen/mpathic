@@ -6,16 +6,17 @@ from __future__ import division
 import importlib
 import sys
 import numpy as np
-import mpathic.utils as utils	
+import utils as utils
 import scipy as sp
 import pandas as pd
 import pdb
-import mpathic.qc as qc
-import mpathic.io as io
-import mpathic.fast as fast
+import qc as qc
+import io as io
+from setuptools import Extension
+fast = Extension("fast",["fast.c"])
 import time
-from mpathic import SortSeqError
-import mpathic.numerics as numerics
+from . import SortSeqError
+import numerics as numerics
 
 
 class ExpModel:

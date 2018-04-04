@@ -26,49 +26,49 @@ parser.add_argument('-o','--out',default=False,help='Output location/type, by de
 subparsers = parser.add_subparsers()
 
 # preprocess
-import mpathic.preprocess as preprocess
+import preprocess as preprocess
 preprocess.add_subparser(subparsers)
 
 #profile_mutrate
-import mpathic.profile_mut as profile_mut
+import profile_mut as profile_mut
 profile_mut.add_subparser(subparsers)
 
 #profile_mutrate
-import mpathic.profile_ct as profile_ct
+import profile_ct as profile_ct
 profile_ct.add_subparser(subparsers)
 
 #profile_mutrate
-import mpathic.profile_freq as profile_freq
+import profile_freq as profile_freq
 profile_freq.add_subparser(subparsers)
 
 #learn_model
-import mpathic.learn_model as learn_model
+import learn_model as learn_model
 learn_model.add_subparser(subparsers)
 
 #predictiveinfo
-import mpathic.predictiveinfo as predictiveinfo
+import predictiveinfo as predictiveinfo
 predictiveinfo.add_subparser(subparsers)
 
 #profile_info
-import mpathic.profile_info as profile_info
+import profile_info as profile_info
 profile_info.add_subparser(subparsers)
 
 #Scan
-import mpathic.scan_model as scan_model
+import scan_model as scan_model
 scan_model.add_subparser(subparsers)
 
 #simualte_library
-import mpathic.simulate_library as simulate_library
+import simulate_library as simulate_library
 simulate_library.add_subparser(subparsers)
 
 #simulate_sort
-import mpathic.simulate_sort as simulate_sort
+import simulate_sort as simulate_sort
 simulate_sort.add_subparser(subparsers)
 
 #evaluate_model
 
 #simulate_sort
-import mpathic.evaluate_model as evaluate_model
+import evaluate_model as evaluate_model
 evaluate_model.add_subparser(subparsers)
 
 # #simulate_evaluate
@@ -76,7 +76,7 @@ evaluate_model.add_subparser(subparsers)
 # simulate_evaluate.add_subparser(subparsers)
 
 #simulate_sort
-import mpathic.simulate_expression as simulate_expression
+import simulate_expression as simulate_expression
 simulate_expression.add_subparser(subparsers)
 
 # Final incantiation needed for this to work

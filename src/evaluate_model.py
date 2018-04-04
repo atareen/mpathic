@@ -11,12 +11,12 @@ import sys
 import pdb
 import time
 
-import mpathic.Models as Models
-import mpathic.utils as utils
-import mpathic.qc as qc
-import mpathic.io as io
-from mpathic import SortSeqError
-from mpathic import shutthefuckup
+import Models as Models
+import utils as utils
+import qc as qc
+import io as io
+from . import SortSeqError
+from . import shutthefuckup
 
 
 def main(dataset_df,model_df,left=None,right=None):
