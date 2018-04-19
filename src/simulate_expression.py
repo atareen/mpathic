@@ -9,9 +9,10 @@ import pandas as pd
 import sys
 import Models as Models
 import utils as utils
-import io as io
+import io_local as io
 import qc as qc
-from . import SortSeqError
+#from . import SortSeqError
+from __init__ import SortSeqError
 import evaluate_model as evaluate_model
 
 def main(df,model_df,T_LibCounts,T_mRNACounts,start=0,end=None,mult=1):

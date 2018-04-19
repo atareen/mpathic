@@ -9,6 +9,15 @@ simulate_selection
 simulate_mpra
 '''
 
+# run this from ./MPAthic/mpathic
+# 1 python scripts/mpathic evaluate_model -m MPAthic_tests/input/model_crp_mat.txt -i MPAthic_tests/input/dataset_crp_head.txt
+# 2 python scripts/mpathic evaluate_model -m MPAthic_tests/input/model_crp_nbr.txt -i MPAthic_tests/input/dataset_crp_head.txt
+
+
+# why do things end up here?
+#/Library/Python/2.7/site-packages/src-0.1.13-py2.7-macosx-10.12-intel.egg/src
+
+
 from __future__ import division
 import numpy as np
 import scipy as sp
@@ -28,88 +37,61 @@ parser.add_argument('-o','--out',default=False,help='Output location/type, by de
 # Add various subcommands individually viva subparsers
 subparsers = parser.add_subparsers()
 
-import os
-print(os.getcwd())
+#sys.path.insert(0,'/Users/tareen/Desktop/MPAthic/MPAthic_virtual_env_py_2/mpathic/src')
+sys.path.append('./src')
 
-sys.path.append('../')
+#import sortseq_for_doc
+import sortseq_for_doc
 
-import src.sortseq_for_doc as sortseq_for_doc
+#import sortseq_for_doc as sortseq_for_doc
 
-print('made it past first import')
-
-import src.run_tests as run_tests
+import run_tests as run_tests
 run_tests.add_subparser(subparsers)
 
-
-import src.draw as draw
+import draw as draw
 draw.add_subparser(subparsers)
 
-print('made it past third import')
-
-import src.evaluate_model as evaluate_model
+import evaluate_model as evaluate_model
 evaluate_model.add_subparser(subparsers)
 
-print('made it past 4th import')
-
-import src.preprocess as preprocess
+import preprocess as preprocess
 preprocess.add_subparser(subparsers)
 
-print('made it past 5th import')
-
-import src.learn_model as learn_model
+import learn_model as learn_model
 learn_model.add_subparser(subparsers)
 
-print('made it past 6th import')
-
-import src.profile_ct as profile_ct
+import profile_ct as profile_ct
 profile_ct.add_subparser(subparsers)
 
-print('made it past 7th import')
-
-import src.profile_mut as profile_mut
+import profile_mut as profile_mut
 profile_mut.add_subparser(subparsers)
 
-print('made it past 8th import')
-
-import src.profile_info as profile_info
+import profile_info as profile_info
 profile_info.add_subparser(subparsers)
 
-print('made it past 9th import')
-
-import src.profile_freq as profile_freq
+import profile_freq as profile_freq
 profile_freq.add_subparser(subparsers)
 
-print('made it past 10th import')
-
-import src.predictiveinfo as predictiveinfo
+import predictiveinfo as predictiveinfo
 predictiveinfo.add_subparser(subparsers)
 
-print('made it past 11th import')
-
-import src.simulate_library as simulate_library
+import simulate_library as simulate_library
 simulate_library.add_subparser(subparsers)
 
-print('made it past 12th import')
-
-import src.simulate_sort as simulate_sort
+import simulate_sort as simulate_sort
 simulate_sort.add_subparser(subparsers)
 
-print('made it past 13th import')
-
-import src.simulate_expression as simulate_expression
+import simulate_expression as simulate_expression
 simulate_expression.add_subparser(subparsers)
 
-print('made it past 14th import')
 
-import src.validate as validate
+import validate as validate
 validate.add_subparser(subparsers)
 
-print('made it past 15th import')
-
-import src.scan_model as scan_model
+import scan_model as scan_model
 scan_model.add_subparser(subparsers)
 
-print('made it past 16th import')
+print('Loaded imports for MPathic successfully')
 
 # Final incantiation needed for this to work
 args = parser.parse_args()

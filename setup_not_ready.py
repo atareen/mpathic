@@ -24,11 +24,11 @@ input_data_list_commands = glob.glob('mpathic_tests/commands/*.txt')
 input_data_list_inputs = glob.glob('mpathic_tests/input/*')
 
 # DON'T FORGET THIS
-ext_modules = Extension("mpathic.fast",["src/fast.c"])
+ext_modules = Extension("src.fast",["src/fast.c"])
 
 # main setup command
 setup(
-    name = 'mpathic', 
+    name = 'src',
     description = 'Tools for analysis of Sort-Seq experiments.',
     version = '0.01.13',
     author = 'Bill Ireland',
@@ -38,8 +38,8 @@ setup(
         'scipy'
         ],
     platforms = 'Linux (and maybe also Mac OS X).',
-    packages = ['mpathic'] + find_packages(),
-    package_dir = {'mpathic':'src'},
+    packages = ['src'] + find_packages(),
+    package_dir = {'src':'src'},
     download_url = 'https://github.com/jbkinney/sortseq/tarball/0.1',
     scripts = [
             'scripts/mpathic'

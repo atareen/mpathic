@@ -11,11 +11,18 @@ import scipy as sp
 import pandas as pd
 import pdb
 import qc as qc
-import io as io
-from setuptools import Extension
-fast = Extension("fast",["fast.c"])
+import io_local as io
+
+import fast
+
+#from setuptools import Extension
+#Extension("fast",["fast.c"])
+
 import time
-from . import SortSeqError
+#from . import SortSeqError
+#from src.__init__ import SortSeqError
+#from __init__ import SortSeqError
+from mpathic import SortSeqError
 import numerics as numerics
 
 
@@ -68,6 +75,11 @@ class LinearModel(ExpModel):
 
         # Compute seqmats
         t0 = time.time()
+
+        print('before fast')
+        print(fast.sources)
+        sys.exit()
+
         seqarray = fast.seqs2array_for_matmodel(list(seqs_to_use),self.seqtype)
         t1 = time.time()
 

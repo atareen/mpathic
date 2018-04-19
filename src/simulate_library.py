@@ -10,8 +10,8 @@ import pandas as pd
 import sys
 import utils as utils
 import qc as qc
-import io as io
-from . import SortSeqError
+import io_local as io
+from mpathic import SortSeqError
 import pdb
 from numpy.random import choice
 

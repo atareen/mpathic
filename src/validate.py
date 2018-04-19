@@ -1,11 +1,12 @@
 from __future__ import division
 import argparse
 import sys
-import io as io
+import io_local as io
 import qc as qc
 import re
 import pdb
-from . import SortSeqError
+#from . import SortSeqError
+from __init__ import SortSeqError
 
 # Filetypes and corrsponding load functions
 filetype_to_loadfunc_dict = {

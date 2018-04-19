@@ -6,7 +6,8 @@ from __future__ import division
 import os
 import subprocess
 import re
-from . import SortSeqError
+#from . import SortSeqError
+from __init__ import SortSeqError
 import glob
 import sys
 import time
@@ -21,20 +22,28 @@ def wrapper(args):
     # Start clock
     start_time = time.time()
     
-    # Commands must be execulted in cwd to work
+    # Commands must be executed in cwd to work
     #command_file_path = os.path.abspath(resource_filename('mpathic_tests', 'test_fast.py'))
+
     command_file_path = os.path.abspath(resource_filename('MPAthic_tests', 'test_fast.py'))
+    #print(command_file_path)
+
     command_path = os.path.dirname(command_file_path)
-    print command_path
+    print(command_path)
     cwd = os.path.join(command_path,'input')
-    print cwd
+    print(cwd)
+
     # If files passed via commandline, use those.
     #if len(sys.argv)>1:
     #     filenames = sys.argv[1:]
     # Otherwise, run on all files in commands/
     filenames_path = os.path.join(command_path,'commands','*.txt')
-    
+
     filenames = glob.glob(filenames_path)
+
+    # testing with only one file
+    filenames = []
+    filenames.append('/Users/tareen/Desktop/Desktop_Tests/MPathic/mpathic/MPAthic_tests/commands/evaluate_model_test.txt')
 
     print 'Testing SortSeqTools on commands in the following files:'
     print '-----'

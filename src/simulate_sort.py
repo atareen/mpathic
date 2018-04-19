@@ -9,10 +9,11 @@ import pandas as pd
 import sys
 import Models as Models
 import utils as utils
-import io as io
+import io_local as io
 import qc as qc
 import evaluate_model as evaluate_model
-from . import SortSeqError
+#from . import SortSeqError
+from __init__ import SortSeqError
 
 def main(
     df,mp,noisetype,npar,nbins,sequence_library=True,

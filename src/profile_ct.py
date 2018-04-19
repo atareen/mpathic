@@ -8,8 +8,11 @@ import numpy as np
 import sys
 import pandas as pd
 import qc as qc
-import io as io
-from . import SortSeqError
+import io_local as io
+#from . import SortSeqError
+#from src.__init__ import SortSeqError
+#from __init__ import SortSeqError
+from mpathic import SortSeqError
 
 def main(dataset_df, bin=None, start=0, end=None):
     """

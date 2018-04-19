@@ -16,12 +16,14 @@ import EstimateMutualInfoforMImax as EstimateMutualInfoforMImax
 import pymc
 import stepper as stepper
 import os
-from . import SortSeqError
-import io as io
+#from . import SortSeqError
+from __init__ import SortSeqError
+import io_local as io
 import gauge as gauge
 import qc as qc
 import pdb
-from . import shutthefuckup
+#from . import shutthefuckup
+from __init__ import shutthefuckup
 import numerics as numerics
 from sklearn.preprocessing import StandardScaler
 import cvxopt

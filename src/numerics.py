@@ -11,7 +11,10 @@ from profile_mut import main as profile_mut
 from simulate_library import main as simulate_library
 import numpy as np
 from scipy.sparse import csr, csr_matrix, lil_matrix
-from . import SortSeqError
+#from . import SortSeqError
+#from src.__init__ import SortSeqError
+#from __init__ import SortSeqError
+from mpathic import SortSeqError
 import pdb
 import sys
 

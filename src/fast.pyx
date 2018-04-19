@@ -2,9 +2,14 @@ import numpy as np
 cimport numpy as np
 from cpython cimport bool
 
-import mpathic.qc as qc
+import qc as qc
 import re
+import scipy as sp
+#from . import SortSeqError
+#from src.__init__ import SortSeqError
+#from __init__ import SortSeqError
 from mpathic import SortSeqError
+
 
 DTYPE = np.int
 ctypedef np.int_t DTYPE_t

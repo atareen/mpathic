@@ -1,10 +1,11 @@
 import pandas as pd
-from Bio import SeqIO
+#from Bio import SeqIO
 from Bio.Alphabet import IUPAC
 import re
 import pdb
 import numpy as np
-from . import SortSeqError
+import sys
+from mpathic import SortSeqError
 
 rc_dict = {'A':'T','C':'G','G':'C','T':'A'} 
 

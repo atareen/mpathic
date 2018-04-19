@@ -17,8 +17,9 @@ import utils as utils
 import EstimateMutualInfoforMImax as EstimateMutualInfoforMImax
 import qc as qc
 import numerics as numerics
-from . import SortSeqError
-import io as io
+#from . import SortSeqError
+from __init__ import SortSeqError
+import io_local as io
 import  matplotlib.pyplot as plt
 
 

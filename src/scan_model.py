@@ -15,13 +15,17 @@ import pandas as pd
 from Bio import SeqIO
 import utils as utils
 import Models as Models
-import io as io
+import io_local as io
 import qc as qc
-from setuptools import Extension
-fast = Extension("fast",["fast.c"])
+#from setuptools import Extension
+#fast = Extension("fast",["fast.c"])
+
+import fast
+
 import re
 import pdb
-from . import SortSeqError
+#from . import SortSeqError
+from __init__ import SortSeqError
 
 def main(model_df, contig_list, numsites=10, verbose=False):
 

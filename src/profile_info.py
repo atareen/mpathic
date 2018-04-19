@@ -13,11 +13,12 @@ import csv
 import pandas as pd
 import utils as utils
 import qc as qc
-import io as io
+import io_local as io
 import profile_ct as profile_ct
 import info as info
 import pdb
-from . import SortSeqError
+#from . import SortSeqError
+from __init__ import SortSeqError
 
 def main(dataset_df, err=False, method='naive',\
     pseudocount=1.0, start=0, end=None):

@@ -14,22 +14,25 @@ import time
 import Models as Models
 import utils as utils
 import qc as qc
-import io as io
-from . import SortSeqError
-from . import shutthefuckup
+import io_local as io
+#from . import SortSeqError
+#from __init__ import SortSeqError
+from mpathic import SortSeqError
+#from . import shutthefuckup
+#from __init__ import shutthefuckup
+from mpathic import shutthefuckup
+import fast
 
 
 def main(dataset_df,model_df,left=None,right=None):
 
-    # Validate dataframes
     qc.validate_dataset(dataset_df)
+    print('evaluate_mode: true_model.txt validated')
     qc.validate_model(model_df)
 
-    # Detect model type based on columns
     seqtype, modeltype = qc.get_model_type(model_df)
     seqcol = qc.seqtype_to_seqcolname_dict[seqtype]
 
-    # Set start and end  based on left or right
     if not ((left is None) or (right is None)):
         raise SortSeqError('Cannot set both left and right at same time.')
     if not (left is None):

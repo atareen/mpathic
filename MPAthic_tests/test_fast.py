@@ -5,7 +5,6 @@ import mpathic.utils as utils
 import mpathic.fast as fast
 import numpy as np
 
-
 seq = 'ACGT'*25000 + 'A'*19
 seqtype = 'dna'
 
