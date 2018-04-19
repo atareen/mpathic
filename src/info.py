@@ -7,7 +7,7 @@ import pandas as pd
 import _nsb
 import pdb
 #from . import SortSeqError
-from __init__ import SortSeqError
+from mpathic import SortSeqError
 
 #
 # Public probability functionals

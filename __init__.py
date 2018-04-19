@@ -76,7 +76,8 @@ from mpathic.src import simulate_library_class
 
 
 from mpathic.src import profile_mut_class
-
+from mpathic.src import profile_freq_class
+from mpathic.src import profile_info_class
 
 # not working:
 #from mpathic.src import simulate_sort_class
