@@ -67,20 +67,41 @@ def shutthefuckup(func):
 # Add various subcommands individually viva subparsers
 #subparsers = parser.add_subparsers()
 
-#simualte_library
+# simualte_library
 from mpathic.src import simulate_library_class
+
+# simulate sort: not working:
+
+# from mpathic.src import simulate_sort_class
+
 # usage:
-# import mpathic as mpa
-# sl = mpa.simulate_library_class
-# sl.simulate_library_class(wtseq="TAATGTGAGTTAGCTCACTAT")
+
+#from mpathic.src import io_local as io
+#import mpathic as mpa
+#ss = mpa.simulate_sort_class
+#loaded_df = io.load_text('./mpathic/examples/ss_input.txt')
+#model_df = io.load_text('./mpathic/examples/ss_model.txt')
+#ss.simulate_sort_class(df=loaded_df,mp=model_df)
+
 
 
 from mpathic.src import profile_mut_class
 from mpathic.src import profile_freq_class
 from mpathic.src import profile_info_class
 
-# not working:
-#from mpathic.src import simulate_sort_class
+from mpathic.src import learn_model_class
+
+# Usage for learn_model_class
+'''
+import mpathic
+loader = mpathic.io
+loaded_df = loader.load_dataset('./mpathic/examples/data_set_simulated.txt')
+l_m = mpathic.learn_model_class
+l_m.learn_model_class(df=loaded_df)
+'''
+
+from mpathic.src import io_local as io
+
 
 """
 sys.exit()
