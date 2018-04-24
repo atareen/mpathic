@@ -5,7 +5,7 @@
 
 
 ========
-MPathic
+MPAthic
 ========
 
 *Written by Ammar Tareen, William Ireland, and Justin B. Kinney.*
@@ -25,9 +25,10 @@ Welcome to mpathic's documentation!
 .. toctree::
 
    dataset
+   simulate_library
    simulate_sort
    profile
-   model
+   learn_model
 
 
 
@@ -39,4 +40,4 @@ Indices and tables
 * :ref:`search`
 
 Code for this and other examples can be found on the :doc:`dataset` page.
-The :doc:`model` page details the mpathic API.
+The :doc:`learn_model` page details the mpathic API.

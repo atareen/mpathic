@@ -40,7 +40,3 @@ validate the composition of a library. This can be accomplished using the profil
     5     5  T  0.24001
     ...
 
-
-
-
-.. include:: weblinks.txt

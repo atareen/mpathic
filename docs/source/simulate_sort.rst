@@ -4,31 +4,33 @@
 ``simulate_sort``
 ==========================================
 
-**Overview**
+.. contents::
 
+Overview
+-------------
 ``simulate_sort`` is a program within the mpathic package which simulates
 performing a Sort Seq experiment.
 
-**Usage**
 
-    >>> import mpathic as mpa
-    >>> sl = mpa.simulate_library_class
-    >>> sl.simulate_library_class(wtseq="TAATGTGAGTTAGCTCACTCAT")
+Usage
+---------------------
+    >>> need to fill this in
 
 
-**Example Input and Output**
 
+Example Input and Output
+------------------------
 
 The input table to this function must contain sequence, counts, and energy columns
 
-**Example Input Table**::
+Example Input Table::
 
    seq    ct    val
    AGGTA  5     -.4
    AGTTA  1     -.2
    ...
 
-**Example Output Table**::
+Example Output Table::
 
    seq    ct    val    ct_1     ct_2     ct_3 ...
    AGGTA  5     -.4    1        2        1
@@ -36,3 +38,9 @@ The input table to this function must contain sequence, counts, and energy colum
    ...
 
 The output table will contain all the original columns, along with the sorted columns (ct_1, ct_2 ...)
+
+An example command to execute this analysis::
+
+    sortseq simulate_sort -i my_library.txt -nm LogNormal -o my_sorted.txt
+
+
