@@ -1,0 +1,47 @@
+# simulate sort seq
+
+import mpathic
+loader = mpathic.io
+mp_df = loader.load_model('./mpathic/data/sortseq/full-0/crp_model.txt')
+filename = "./mpathic/data/sortseq/full-0/data_small.txt"
+df = loader.load_dataset(filename)
+ss = mpathic.simulate_sort_class
+ss.simulate_sort_class(df=df,mp=mp_df)
+
+        #filename = './mpathic/examples/true_model.txt'
+        #filename = './mpathic/examples/data_set_simulated.txt'
+        #filename = './mpathic/data/formatted/sortseq/crp-wt-formatted.txt'
+        #filename = './mpathic/MPAthic_tests/input/junk.txt'
+
+
+# learn model 
+
+import mpathic as mpa
+loaded_df = mpa.io.load_dataset("./mpathic/data/sortseq/full-0/data.txt")
+mpa.learn_model_class(df=loaded_df,verbose=True,lm='ER')
+
+# evaluate_model
+
+import mpathic as mpa
+model = mpa.io.load_model("./mpathic/data/sortseq/full-0/crp_model.txt")
+dataset = mpa.io.load_dataset("./mpathic/data/sortseq/full-0/data.txt")
+mpa.evaluate_model_class(dataset_df = dataset, model_df = model)
+
+output: 
+
+0        0.348108
+1       -0.248134
+2        0.009507
+3        0.238852
+4       -0.112121
+5       -0.048588
+6        0.387298
+7        0.487145
+8        0.316576
+9        0.273363
+10       0.097518
+11       0.115285
+12       0.268131
+13       0.035808
+14      -0.239748
+15      -0.079976
