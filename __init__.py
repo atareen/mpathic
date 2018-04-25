@@ -93,6 +93,8 @@ from mpathic.src import profile_info_class
 #from mpathic.src import learn_model_class
 from mpathic.src.learn_model_class import learn_model_class
 
+from mpathic.src.evaluate_model_class import evaluate_model_class
+
 # Usage for learn_model_class
 '''
 import mpathic
