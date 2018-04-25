@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-'''A script which produces linear energy matrix models for a given data set.'''
+"""
+Doc-string from learn_model_class:
+A script which produces linear energy matrix models for a given data set.
+"""
 from __future__ import division
 # Our standard Modules
 import argparse
@@ -33,22 +36,56 @@ import profile_mut as profile_mut
 
 import fast
 
-class learn_model_class:
 
+"""
+Miscellaneous methods that help in <<blah blah>>
+Does not require explicit instantiation.
+
+The following actions can be performed:
+===============   ===============
+Action            Method
+===============   ===============
+Get a             :meth:`methoda`
+Get b             :meth:`methodb`
+"""
+
+import os
+import json
+
+def methoda(data):
+    """
+    parameters
+    ----------
+
+    data: (list like)
+        some dummy description of data
+
+    """
+    pass
+
+def methodb(data):
+    """
+
+    :param data: (numpy array)
+        description of data
+
+    :return:
+    """
+    pass
+
+class learn_model_class:
     def weighted_std(self, values, weights):
         '''Takes in a dataframe with seqs and cts and calculates the std'''
         average = np.average(values, weights=weights)
         variance = np.average((values - average) ** 2, weights=weights)
         return (np.sqrt(variance))
 
-
     def add_label(self, s):
         return 'ct_' + str(s)
 
-
     def MaximizeMI_memsaver(self,
-            seq_mat, df, emat_0, wtrow, db=None, burnin=1000, iteration=30000, thin=10,
-            runnum=0, verbose=False):
+                            seq_mat, df, emat_0, wtrow, db=None, burnin=1000, iteration=30000, thin=10,
+                            runnum=0, verbose=False):
         '''Performs MCMC MI maximzation in the case where lm = memsaver'''
         '''
         @pymc.stochastic(observed=True,dtype=sp.sparse.csr_matrix)
@@ -81,7 +118,6 @@ class learn_model_class:
         emat_mean = np.mean(M.trace('emat')[burnin:], axis=0)
         return emat_mean
 
-
     def robls(self, A, b, rho):
         m, n = A.size
 
@@ -96,7 +132,6 @@ class learn_model_class:
             return f, Df, H
 
         return solvers.cp(F)['x']
-
 
     def test_iter(self, A, B):
         m, n1 = A.shape
@@ -123,7 +158,6 @@ class learn_model_class:
         row = np.concatenate(row)
         return scipy.sparse.coo_matrix((data, (row, col)), shape=Cshape)
 
-
     def convex_opt_agorithm(self, s, N0, Nsm, tm, alpha=1):
         bins = tm.shape[1]
         N0_matrix = np.matrix(N0)
@@ -134,9 +168,9 @@ class learn_model_class:
         # create s matrix, the elements of this matrix are delta_s@i * delta s2@j
         # we will need this for hessian.
         s_hessian_mat = sp.sparse.lil_matrix((i, c * c))
-        print 'hi'
-        s_hessian_mat = scipy.sparse.csr_matrix(test_iter(s, s))
-        print 'hi'
+        print('hi')
+        s_hessian_mat = scipy.sparse.csr_matrix(self.test_iter(s, s))
+        print('hi')
 
         def F(x=None, z=None):
             if x is None: return 0, matrix(0.0, (c + bins, 1))
@@ -145,9 +179,9 @@ class learn_model_class:
             w = np.add(gm, y * tm_matrix)
             term2 = np.array(N0) * np.array(np.exp(w))
             term1 = np.multiply(np.array(Nsm), np.array(w))
-            print alpha / 2 * np.sum(cvxopt.mul(x, x))
+            print(alpha / 2 * np.sum(cvxopt.mul(x, x)))
             f = cvxopt.matrix(-np.sum(term1 - term2) + alpha / 2 * np.sum(cvxopt.mul(x, x)))
-            print f
+            print(f)
             Df = np.zeros((1, c + bins))
 
             Nm = np.sum(Nsm, axis=0)
@@ -159,7 +193,7 @@ class learn_model_class:
             Df[0, :c] = Df_theta
 
             Df[0, c:] = Df_gm
-            print Df[0, 90:94]
+            print(Df[0, 90:94])
             Df = Df - np.transpose(alpha * x)
             Df_cvx = cvxopt.matrix(-Df)
             if z is None: return f, Df_cvx
@@ -212,26 +246,23 @@ class learn_model_class:
 
         return solvers.cp(F)['x']
 
-
     def reverse_parameterization(self, output, cols_for_keep, wtrow, seq_dict, bins=1,
                                  modeltype='MAT'):
         output = output[:-bins]
         df_out = np.zeros(len(wtrow))
-        print df_out.shape
+        print(df_out.shape)
         df_out.flat[cols_for_keep] = output
-        print len(seq_dict)
+        print(len(seq_dict))
         df_out2 = df_out.reshape( \
             (len(seq_dict), len(df_out) / len(seq_dict)), order='F')
 
         return df_out2
 
-
     def find_second_NBR_matrix_entry(self, s):
         '''this is a function for use with numpy apply along axis.
             It will take in a sequence matrix and return the second nonzero entry'''
-        print np.nonzero(s)[0]
+        print(np.nonzero(s)[0])
         return np.nonzero(s)[0][1]
-
 
     def convex_opt(self, df, seq_dict, inv_dict, columns, tm=None, modeltype='MAT', dicttype='dna'):
         rowsforwtcalc = 1000
@@ -279,14 +310,14 @@ class learn_model_class:
             tm = np.array(tm)
         else:
             tm = np.matrix([x for x in range(1, len(columns) + 1)])
-        print tm
+        print(tm)
         output = self.convex_opt_agorithm(self, seq_mat2, N0, Nsm, tm)
-        output_parameterized = self.reverse_parameterization(self, output, cols_for_keep, wtrow, seq_dict, bins=tm.shape[1],
-                                                        modeltype=modeltype)
-        print output_parameterized
-        print output_parameterized.shape
-        return output_parameterized
-
+        output_parameterized = self.reverse_parameterization(self, output, cols_for_keep, wtrow, seq_dict,
+                                                             bins=tm.shape[1],
+                                                             modeltype=modeltype)
+        print(output_parameterized)
+        print(output_parameterized.shape)
+        return (output_parameterized)
 
     def Berg_von_Hippel(self, df, dicttype, foreground=1, background=0, pseudocounts=1):
         '''Learn models using berg von hippel model. The foreground sequences are
@@ -328,7 +359,6 @@ class learn_model_class:
         output_df = output_df.rename(columns=rename_dict)
         return output_df
 
-
     def compute_etas_for_markov(self, freqs_neighbor, freqs, seq_dict, inv_dict):
         total_pairs = len(freqs.index)
         # now lets find the eta value for the foreground bin
@@ -340,9 +370,9 @@ class learn_model_class:
                 # compute the value
                 eta[0, q * seq_dict_length + m] = freqs_neighbor.loc[0, 'ct_' + \
                                                                      inv_dict[q] + inv_dict[m]] * (
-                                                  np.sqrt(freqs.loc[0, 'ct_' + \
-                                                                    inv_dict[q]] / freqs.loc[1, 'ct_' + \
-                                                                                             inv_dict[m]]))
+                                                      np.sqrt(freqs.loc[0, 'ct_' + \
+                                                                        inv_dict[q]] / freqs.loc[1, 'ct_' + \
+                                                                                                 inv_dict[m]]))
 
         # now lets do the middle values
         # loop through positions
@@ -352,24 +382,23 @@ class learn_model_class:
                     # compute the value
                     eta[i, q * seq_dict_length + m] = freqs_neighbor.loc[i, 'ct_' + \
                                                                          inv_dict[q] + inv_dict[m]] / (
-                                                      np.sqrt(freqs.loc[i, 'ct_' + \
-                                                                        inv_dict[q]] * freqs.loc[i + 1, 'ct_' + \
-                                                                                                 inv_dict[m]]))
+                                                          np.sqrt(freqs.loc[i, 'ct_' + \
+                                                                            inv_dict[q]] * freqs.loc[i + 1, 'ct_' + \
+                                                                                                     inv_dict[m]]))
 
         for q in range(seq_dict_length):  # loop through each possible pairing
             for m in range(seq_dict_length):  # loop through bases again to get pairs
                 # compute the value
                 eta[total_pairs - 2, q * seq_dict_length + m] = freqs_neighbor.loc[total_pairs - 2, 'ct_' + \
                                                                                    inv_dict[q] + inv_dict[m]] * (
-                                                                np.sqrt(freqs.loc[total_pairs - 1, 'ct_' + \
-                                                                                  inv_dict[m]] / freqs.loc[
-                                                                            total_pairs - 2, 'ct_' + \
-                                                                            inv_dict[q]]))
+                                                                    np.sqrt(freqs.loc[total_pairs - 1, 'ct_' + \
+                                                                                      inv_dict[m]] / freqs.loc[
+                                                                                total_pairs - 2, 'ct_' + \
+                                                                                inv_dict[q]]))
 
         # take the log of each entry
         eta = np.log(eta)
         return eta
-
 
     def Markov(self, df, dicttype, foreground=1, background=0, pseudocounts=1):
         '''Learn models using berg von hippel model. The foreground sequences are
@@ -420,7 +449,7 @@ class learn_model_class:
         background_freqs_neighbor[binheaders_neighbor] = \
             background_freqs_neighbor[binheaders_neighbor].div( \
                 background_freqs_neighbor[binheaders_neighbor].sum(axis=1), axis=0)
-        print foreground_freqs_neighbor
+        print(foreground_freqs_neighbor)
         # normalize to compute frequencies
         foreground_freqs = foreground_counts.copy()
         background_freqs = background_counts.copy()
@@ -429,11 +458,11 @@ class learn_model_class:
         background_freqs[binheaders] = background_freqs[binheaders].div( \
             background_freqs[binheaders].sum(axis=1), axis=0)
 
-        eta_fg = self.compute_etas_for_markov(self,foreground_freqs_neighbor, foreground_freqs, seq_dict, inv_dict)
+        eta_fg = self.compute_etas_for_markov(self, foreground_freqs_neighbor, foreground_freqs, seq_dict, inv_dict)
 
         # now lets find the eta value for the background bin
 
-        eta_bg = self.compute_etas_for_markov(self,background_freqs_neighbor, background_freqs, seq_dict, inv_dict)
+        eta_bg = self.compute_etas_for_markov(self, background_freqs_neighbor, background_freqs, seq_dict, inv_dict)
         # subtract etas to create model
         model = eta_fg - eta_bg
 
@@ -446,7 +475,6 @@ class learn_model_class:
 
         return model_df
 
-
     def Compute_Least_Squares(self, raveledmat, batch, sw, alpha=0):
         '''Ridge regression is the only sklearn regressor that supports sample
             weights, which will make this much faster'''
@@ -455,12 +483,49 @@ class learn_model_class:
         emat = clf.coef_
         return emat
 
-
     def __init__(self, df, lm='IM', modeltype='MAT', LS_means_std=None, \
-             db=None, iteration=30000, burnin=1000, thin=10, \
-             runnum=0, initialize='LS', start=0, end=None, foreground=1, \
-             background=0, alpha=0, pseudocounts=1, test=False, drop_library=False, \
-             verbose=False, tm=None):
+                 db=None, iteration=30000, burnin=1000, thin=10, \
+                 runnum=0, initialize='LS', start=0, end=None, foreground=1, \
+                 background=0, alpha=0, pseudocounts=1, test=False, drop_library=False, \
+                 verbose=False, tm=None):
+        """
+        Constructor for the learn model class. Models can be learnt via the matrix model or
+        the neighbor model. Matrix models assume independent contributions to activity
+        from characters at a particular position whereas neighbor model assume near contributions
+        to activity from all possible adjacent characters.
+
+        parameters
+        ----------
+
+        df: (pandas data frame)
+            Dataframe containing several columns representing bins and sequence column.
+            The integer values in bins represent the occurrence of the sequence that bin.
+
+        lm: (str)
+            Learning model. Possible values include {'ER','LS','IM'}. 'ER': enrichment ratio inference.
+            'LS': least squares optimization. 'IM' : mutual information maximization (similar to maximum
+            likelihood inference in the large data limit).
+
+        :param modeltype:
+        :param LS_means_std:
+        :param db:
+        :param iteration:
+        :param burnin:
+        :param thin:
+        :param runnum:
+        :param initialize:
+        :param start:
+        :param end:
+        :param foreground:
+        :param background:
+        :param alpha:
+        :param pseudocounts:
+        :param test:
+        :param drop_library:
+        :param verbose:
+        :param tm:
+        """
+
         # Determine dictionary
         seq_cols = qc.get_cols_from_df(df, 'seqs')
         if not len(seq_cols) == 1:
@@ -509,7 +574,7 @@ class learn_model_class:
         if lm == 'ER':
             if modeltype == 'NBR':
                 emat = self.Markov(df, dicttype, foreground=foreground, background=background,
-                              pseudocounts=pseudocounts)
+                                   pseudocounts=pseudocounts)
             else:
                 emat = self.Berg_von_Hippel(
                     df, dicttype, foreground=foreground, background=background,
@@ -517,7 +582,7 @@ class learn_model_class:
 
         if lm == 'PR':
             emat = self.convex_opt(df, seq_dict, inv_dict, col_headers, tm=tm, \
-                              dicttype=dicttype, modeltype=modeltype)
+                                   dicttype=dicttype, modeltype=modeltype)
         if lm == 'LS':
             '''First check that is we don't have a penalty for ridge regression,
                 that we at least have all possible base values so that the analysis
@@ -526,7 +591,7 @@ class learn_model_class:
                 means_std_df = io.load_meanstd(LS_means_std)
 
                 # change bin number to 'ct_number' and then use as index
-                labels = list(means_std_df['bin'].apply(add_label))
+                labels = list(means_std_df['bin'].apply(self.add_label))
                 std = means_std_df['std']
                 std.index = labels
                 # Change Weighting of each sequence by dividing counts by bin std
@@ -556,7 +621,7 @@ class learn_model_class:
             # parameterize sequences into 3xL vectors
             print('init learn model: \n')
             print(par_seq_dict)
-            print('dict: ',dicttype)
+            print('dict: ', dicttype)
             raveledmat, batch, sw = utils.genweightandmat(
                 df, par_seq_dict, dicttype, means=means, modeltype=modeltype)
             # Use ridge regression to find matrix.
@@ -572,14 +637,16 @@ class learn_model_class:
                     emat_0 = utils.RandEmat(len(df[seq_col_name][0]) - 1, len(seq_dict))
             elif initialize == 'LS':
                 emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
-                emat_0_df = self.__init__(df.copy(), lm='LS', modeltype=modeltype, alpha=alpha, start=0, end=None, verbose=verbose)
+                emat_0_df = self.__init__(df.copy(), lm='LS', modeltype=modeltype, alpha=alpha, start=0, end=None,
+                                          verbose=verbose)
                 emat_0 = np.transpose(np.array(emat_0_df[emat_cols]))
                 # pymc doesn't take sparse mat
             elif initialize == 'PR':
                 emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
                 emat_0_df = self.__init__(df.copy(), lm='PR', modeltype=modeltype, start=0, end=None)
                 emat_0 = np.transpose(np.array(emat_0_df[emat_cols]))
-            emat = self.MaximizeMI_memsaver(seq_mat, df.copy(), emat_0, wtrow, db=db, iteration=iteration, burnin=burnin,thin=thin, runnum=runnum, verbose=verbose)
+            emat = self.MaximizeMI_memsaver(seq_mat, df.copy(), emat_0, wtrow, db=db, iteration=iteration,
+                                            burnin=burnin, thin=thin, runnum=runnum, verbose=verbose)
 
         # We have infered out matrix.
         # now format the energy matrices to get them ready to output
@@ -644,8 +711,7 @@ class learn_model_class:
         output_df = qc.validate_model(output_df, fix=True)
         print('Printing Output dataframe: ')
         print(output_df)
-        #return output_df
-
+        # return output_df
 
     # Define commandline wrapper
     def wrapper(self, args):
@@ -663,13 +729,16 @@ class learn_model_class:
         # pdb.set_trace()
 
         output_df = self.__init__(input_df, lm=args.learningmethod, \
-                         modeltype=args.modeltype, db=args.db_filename, \
-                         LS_means_std=args.LS_means_std, \
-                         iteration=args.iteration, \
-                         burnin=args.burnin, thin=args.thin, start=args.start, end=args.end, \
-                         runnum=args.runnum, initialize=args.initialize, \
-                         foreground=args.foreground, background=args.background, \
-                         alpha=args.penalty, pseudocounts=args.pseudocounts,
-                         verbose=args.verbose, tm=args.tm)
+                                  modeltype=args.modeltype, db=args.db_filename, \
+                                  LS_means_std=args.LS_means_std, \
+                                  iteration=args.iteration, \
+                                  burnin=args.burnin, thin=args.thin, start=args.start, end=args.end, \
+                                  runnum=args.runnum, initialize=args.initialize, \
+                                  foreground=args.foreground, background=args.background, \
+                                  alpha=args.penalty, pseudocounts=args.pseudocounts,
+                                  verbose=args.verbose, tm=args.tm)
 
         io.write(output_df, outloc)
+
+
+
