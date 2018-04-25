@@ -69,22 +69,10 @@ def shutthefuckup(func):
 
 
 # simualte_library
-
 from mpathic.src import simulate_library_class
 
 # simulate sort: not working:
-
 from mpathic.src import simulate_sort_class
-
-# usage:
-
-#import mpathic as mpa
-#ss = mpa.simulate_sort_class
-#loaded_df = io.load_text('./mpathic/examples/ss_input.txt')
-#model_df = io.load_text('./mpathic/examples/ss_model.txt')
-#ss.simulate_sort_class(df=loaded_df,mp=model_df)
-
-
 
 from mpathic.src import profile_mut_class
 from mpathic.src import profile_freq_class
@@ -95,14 +83,7 @@ from mpathic.src.learn_model_class import learn_model_class
 
 from mpathic.src.evaluate_model_class import evaluate_model_class
 
-# Usage for learn_model_class
-'''
-import mpathic
-loader = mpathic.io
-loaded_df = loader.load_dataset('./mpathic/examples/data_set_simulated.txt')
-l_m = mpathic.learn_model_class
-l_m.learn_model_class(df=loaded_df)
-'''
+from mpathic.src.scan_model_class import scan_model_class
 
 from mpathic.src import io_local as io
 

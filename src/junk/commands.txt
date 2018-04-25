@@ -45,3 +45,11 @@ output:
 13       0.035808
 14      -0.239748
 15      -0.079976
+
+# scan model
+
+import mpathic as mpa
+model = mpa.io.load_model("./mpathic/data/sortseq/full-0/crp_model.txt")
+fastafile = "./mpathic/examples/genome_ecoli_1000lines.fa"
+contig = mpa.io.load_contigs_from_fasta(fastafile,model)
+mpa.scan_model_class(model_df = model, contig_list = contig)
