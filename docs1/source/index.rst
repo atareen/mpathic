@@ -29,7 +29,6 @@ Welcome to mpathic's documentation!
    simulate_sort
    profile
    learn_model
-   evaluate_model
 
 
 

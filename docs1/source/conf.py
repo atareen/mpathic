@@ -16,14 +16,6 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-import sys
-sys.path.insert(0,'../../')
-
-#import mpathic
-#from mpathic.src import learn_model_class
-
-autoclass_content = 'both'
-
 
 # -- Project information -----------------------------------------------------
 

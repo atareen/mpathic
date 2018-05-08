@@ -11,18 +11,19 @@ Overview
 ``learn_model`` is a program within the mpathic package which generates
 linear energy matrix models for sections of a sorted library.
 
-Usage
---------
 
+**Usage**::
 
-	>>> import mpathic as mpa
-	>>> loaded_df = mpa.io.load_dataset("./mpathic/data/sortseq/full-0/data.txt")
-	>>> mpa.learn_model_class(df=loaded_df,verbose=True,lm='ER')
-
+    >>> import mpathic
+    >>> loader = mpathic.io
+    >>> filename = "./mpathic/data/sortseq/full-0/data.txt"
+    >>> df = loader.load_dataset(filename)
+    >>> l_m = mpathic.learn_model_class
+    >>> l_m.learn_model_class(df=df)
 
 
 Example Input and Output
-------------------------
+-------------------------
 
 There are two types of input dataframes learn model can accept as input: Matrix models and neighbour models.
 The input table to this program must contain a sequences column and counts columns
@@ -39,7 +40,7 @@ and selection experiments this must be ct_0 and ct_1.
     AAAAAATATGATTTA   0.000000   0.000000   0.000000   1.000000   0.000000
     ...
 
-**Neighbour Model Input Dataframe**::
+**Neighbour Model**::
 
 
        pos     val_AA     val_AC     val_AG     val_AT     val_CA     val_CC     val_CG     val_CT     val_GA     val_GC     val_GG     val_GT     val_TA     val_TC     val_TG     val_TT
@@ -60,13 +61,5 @@ and selection experiments this must be ct_0 and ct_1.
     ...
 
 
-Class Details
--------------
 
-.. automodule:: mpathic.src.learn_model_class
-    :members: 
-
-
-.. autoclass:: mpathic.src.learn_model_class.learn_model_class
-    :members: 
 

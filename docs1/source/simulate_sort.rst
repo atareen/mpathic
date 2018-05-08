@@ -14,14 +14,7 @@ performing a Sort Seq experiment.
 
 Usage
 ---------------------
-
-    >>> import mpathic
-    >>> loader = mpathic.io
-    >>> mp_df = loader.load_model('./mpathic/data/sortseq/full-0/crp_model.txt')
-    >>> filename = "./mpathic/data/sortseq/full-0/data_small.txt"
-    >>> df = loader.load_dataset(filename)
-    >>> ss = mpathic.simulate_sort_class
-    >>> ss.simulate_sort_class(df=df,mp=mp_df)
+    >>> need to fill this in
 
 
 
@@ -45,3 +38,9 @@ Example Output Table::
    ...
 
 The output table will contain all the original columns, along with the sorted columns (ct_1, ct_2 ...)
+
+An example command to execute this analysis::
+
+    sortseq simulate_sort -i my_library.txt -nm LogNormal -o my_sorted.txt
+
+
