@@ -36,43 +36,6 @@ import profile_mut as profile_mut
 
 import fast
 
-
-"""
-Miscellaneous methods that help in <<blah blah>>
-Does not require explicit instantiation.
-
-The following actions can be performed:
-===============   ===============
-Action            Method
-===============   ===============
-Get a             :meth:`methoda`
-Get b             :meth:`methodb`
-"""
-
-import os
-import json
-
-def methoda(data):
-    """
-    parameters
-    ----------
-
-    data: (list like)
-        some dummy description of data
-
-    """
-    pass
-
-def methodb(data):
-    """
-
-    :param data: (numpy array)
-        description of data
-
-    :return:
-    """
-    pass
-
 class learn_model_class:
     def weighted_std(self, values, weights):
         '''Takes in a dataframe with seqs and cts and calculates the std'''
@@ -311,8 +274,8 @@ class learn_model_class:
         else:
             tm = np.matrix([x for x in range(1, len(columns) + 1)])
         print(tm)
-        output = self.convex_opt_agorithm(self, seq_mat2, N0, Nsm, tm)
-        output_parameterized = self.reverse_parameterization(self, output, cols_for_keep, wtrow, seq_dict,
+        output = self.convex_opt_agorithm(seq_mat2, N0, Nsm, tm)
+        output_parameterized = self.reverse_parameterization(output, cols_for_keep, wtrow, seq_dict,
                                                              bins=tm.shape[1],
                                                              modeltype=modeltype)
         print(output_parameterized)
@@ -483,11 +446,27 @@ class learn_model_class:
         emat = clf.coef_
         return emat
 
-    def __init__(self, df, lm='IM', modeltype='MAT', LS_means_std=None, \
-                 db=None, iteration=30000, burnin=1000, thin=10, \
-                 runnum=0, initialize='LS', start=0, end=None, foreground=1, \
-                 background=0, alpha=0, pseudocounts=1, test=False, drop_library=False, \
-                 verbose=False, tm=None):
+    def __init__(self,
+                 df,
+                 lm='IM',
+                 modeltype='MAT',
+                 LS_means_std = None,
+                 db=None,
+                 iteration=30000,
+                 burnin=1000,
+                 thin=10,
+                 runnum=0,
+                 initialize='LS',
+                 start=0,
+                 end = None,
+                 foreground=1,
+                 background=0,
+                 alpha=0,
+                 pseudocounts=1,
+                 test=False,
+                 drop_library=False,
+                 verbose=False,
+                 tm=None):
         """
         Constructor for the learn model class. Models can be learnt via the matrix model or
         the neighbor model. Matrix models assume independent contributions to activity
@@ -502,24 +481,61 @@ class learn_model_class:
             The integer values in bins represent the occurrence of the sequence that bin.
 
         lm: (str)
-            Learning model. Possible values include {'ER','LS','IM'}. 'ER': enrichment ratio inference.
+            Learning model. Possible values include {'ER','LS','IM', 'PR'}. 'ER': enrichment ratio inference.
             'LS': least squares optimization. 'IM' : mutual information maximization (similar to maximum
-            likelihood inference in the large data limit).
+            likelihood inference in the large data limit). 'PR' stands for Poisson Regression.
 
-        :param modeltype:
-        :param LS_means_std:
-        :param db:
-        :param iteration:
-        :param burnin:
-        :param thin:
-        :param runnum:
-        :param initialize:
-        :param start:
-        :param end:
-        :param foreground:
-        :param background:
-        :param alpha:
-        :param pseudocounts:
+        modeltype: (string)
+            Type of model to be learned. Valid choices include "MAT" and "NBR", which stands for matrix
+            model and neigbhour model, respectively. Matrix model assumes mutations at a location are
+            independent and neighbour model assumes epistatic effects for mutations.
+
+        LS_means_std: (array-like)
+            For the least-squares method, this contains the user supplied mean and standard deviation.
+
+        db: (string)
+            File name for a SQL script; it could be passed in to the function MaximizeMI_memsaver
+
+        iteration: (int)
+            Total number of MCMC iterations to do. Passed in the sample method from MCMC.py
+            which may be part of pymc.
+
+        burnin: (int)
+             Variables will not be tallied until this many iterations are complete (thermalization).
+
+        thin: (int)
+            Similar to parameter burnin, but with smaller default value.
+
+        runnum: (int)
+            Run number, used to determine the correct sql script extension in MaximizeMI_memsaver
+
+        initialize: (string)
+            Variable for initializing the learn model class constructor. Valid values include "rand",
+            "LS", "PR". rand is MCMC, LS is least squares and PR and poisson regression.
+
+        start: (int)
+            Starting position of the sequence.
+
+        end: (int)
+            end position of the sequence.
+
+        foreground: (int)
+            Indicates column number representing foreground (E.g. can be passed to Berg_Von_Hippel method).
+
+        background: (int)
+            Indicates column number representing background.
+
+        alpha : (float)
+            Regularization strength; must be a positive float. Regularization
+            improves the conditioning of the problem and reduces the variance of
+            the estimates. Larger values specify stronger regularization.
+            Alpha corresponds to ``C^-1`` in other linear models such as
+            LogisticRegression or LinearSVC. (this snippet taken from ridge.py
+            written by Mathieu Blondel)
+
+        pseudocounts: (int)
+            A artificial default added to bin counts where counts are really low.
+
         :param test:
         :param drop_library:
         :param verbose:
