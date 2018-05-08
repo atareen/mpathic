@@ -17,13 +17,8 @@ from mpathic import SortSeqError
 
 class simulate_sort_class:
     # def __init__(self,df,mp,noisetype,npar,nbins,sequence_library=True,start=0,end=None,chunksize=50000):
-    def __init__(self, df=None, mp=None, noisetype='Normal', npar=[0.2], nbins=3, sequence_library=True, start=0,
-                 end=None, chunksize=50000):
-
-        filename = './mpathic/examples/true_model.txt'
-        # default value for data frame df
-        #df = pd.io.parsers.read_csv(filename, delim_whitespace=True, dtype={'seqs': str, 'batch': int}, chunksize=chunksize)
-        df = pd.read_csv(filename,delim_whitespace=True,dtype={'seqs':str,'batch':int},chunksize=50000,usecols=range(1,17))
+    def __init__(self, df, mp=None, noisetype='None', npar=[0.2], nbins=3, sequence_library=True, start=0,
+                 end=None, chunksize=3):
 
         # validate noise parameters
 
@@ -59,8 +54,13 @@ class simulate_sort_class:
             NoiseModelSort = Models.CustomModel(noisetype, npar)
         i = 0
         output_df = pd.DataFrame()
+
+        # split the dataframe according to chunksize
+        df = np.array_split(df, chunksize)
         for chunk in df:
-            print i
+            # df -> pandas data frame
+            # chunk is of type str. headings of the columns.
+
             chunk.reset_index(inplace=True, drop=True)
             chunk = evaluate_model.main(chunk, mp, left=start, right=None)
     
@@ -73,7 +73,7 @@ class simulate_sort_class:
                     noisyexp[np.linspace(0, len(noisyexp), nbins, endpoint=False, dtype=int)])
                 val_cutoffs.append(np.inf)
                 val_cutoffs[0] = -np.inf
-            print val_cutoffs
+            #print val_cutoffs
             # Determine Expression Cutoffs for bins
             seqs_arr = np.zeros([len(listnoisyexp), nbins], dtype=int)
             # split sequence into bins based on calculated cutoffs
@@ -86,11 +86,13 @@ class simulate_sort_class:
             col_labels = utils.get_column_headers(temp_output_df)
             # temp_output_df['ct'] = temp_output_df[col_labels].sum(axis=1)
             temp_output_df.drop('val', axis=1, inplace=True)
-            print temp_output_df.shape
-            print output_df.shape
+            #print temp_output_df.shape
+            #print output_df.shape
             output_df = pd.concat([output_df, temp_output_df], axis=0).copy()
             i = i + 1
+
         output_df['ct'] = output_df[col_labels].sum(axis=1)
         output_df.reset_index(inplace=True, drop=True)
-    
-        return output_df
+
+        #return output_df
+        print(output_df.head())
