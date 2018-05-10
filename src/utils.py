@@ -5,6 +5,17 @@ import scipy as sp
 import scipy.ndimage
 import pandas as pd
 from mpathic import SortSeqError
+from functools import wraps
+
+
+# Define error handling
+class ControlledError(Exception):
+
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return self.value
 
 def profile_counts(df,dicttype,wtseq=None,return_wtseq=False,bin_k=None,start=0,end=None):
     '''Takes the input data frame with sequences and counts in each bin
@@ -516,4 +527,90 @@ def RandEmat(L,Ldict):
     emat_0 = fix_matrix_gauge(sp.randn(Ldict,L))
     return emat_0
 
+def check(condition, message):
+    '''
+    Checks a condition; raises a ControlledError with message if condition fails.
+    :param condition:
+    :param message:
+    :return: None
+    '''
+    if not condition:
+        raise ControlledError(message)
     
+
+def handle_errors(func):
+    """
+    Decorator function to handle SUFTware errors
+    """
+
+    @wraps(func)
+    def wrapped_func(*args, **kwargs):
+
+        # Get should_fail debug flag
+        should_fail = kwargs.pop('should_fail', None)
+
+        try:
+
+            # Execute function
+            result = func(*args, **kwargs)
+            error = False
+
+            # If function didn't raise error, process results
+            if should_fail is True:
+                print('MISTAKE: Succeeded but should have failed.')
+                mistake = True
+
+            elif should_fail is False:
+                print('Success, as expected.')
+                mistake = False
+
+            elif should_fail is None:
+                mistake = False
+
+            else:
+                print('FATAL: should_fail = %s is not bool or None' %
+                      should_fail)
+                sys.exit(1)
+
+        except ControlledError as e:
+            error = True
+
+            if should_fail is True:
+                print('Error, as expected: ', e)
+                mistake = False
+
+            elif should_fail is False:
+                print('MISTAKE: Failed but should have succeeded: ', e)
+                mistake = True
+
+            # Otherwise, just print an error and don't return anything
+            else:
+                print('Error: ', e.__str__())
+
+        # If not in debug mode
+        if should_fail is None:
+
+            # If error, exit
+            if error:
+                sys.exit(1)
+
+            # Otherwise, just return normal result
+            else:
+                return result
+
+        # Otherwise, if in debug mode
+        else:
+
+            # If this is a constructor, set 'mistake' attribute of self
+            if func.__name__ == '__init__':
+                assert len(args) > 0
+                args[0].mistake = mistake
+                return None
+
+            # Otherwise, create dummy object with mistake attribute
+            else:
+                obj = Dummy()
+                obj.mistake = mistake
+                return obj
+
+    return wrapped_func

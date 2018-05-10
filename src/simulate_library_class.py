@@ -1,5 +1,5 @@
 """
-A script with generates Simulated Data for a Sort Seq Experiment
+The simulate library class generates simulated data for a Sort Seq Experiment
 with a given mutation rate and wild type sequence.
 """
 
@@ -12,15 +12,69 @@ import utils as utils
 import qc as qc
 import io_local as io
 from mpathic import SortSeqError
+from utils import check, handle_errors
 import pdb
 from numpy.random import choice
 
-#print("imported the module sl")
 class simulate_library_class:
 
+    """
+
+    parameters
+    ----------
+    wtseq: (string)
+        wildtype sequence
+
+    mutrate: (float)
+        mutation rate
+
+    numseq: (int)
+        number of sequences
+
+    dicttype: (string)
+        sequence dictionary: valid choices include 'dna', 'rna', 'pro'
+
+    probarr: (np.ndarray)
+        probability matrix used to generate bases
+
+    tags: (boolean)
+        If simulating tags, each generated seq gets a unique tag
+
+    tag_length: (int)
+        Length of tags. Should be >= 0
+
+
+    attributes
+    ----------
+    output_df: (pandas dataframe)
+        Contains the output of simulate library in a pandas dataframe.
+
+
+    """
+
     # main function for simulating library
-    def __init__(self, wtseq=None, mutrate=0.10, numseq=10000,dicttype='dna',probarr=None,
-            tags=False,tag_length=10):
+    @handle_errors
+    def __init__(
+                 self,
+                 wtseq="ACGTGTACGTAAATGATGAA",
+                 mutrate=0.10,
+                 numseq=10000,
+                 dicttype='dna',
+                 probarr=None,
+                 tags=False,
+                 tag_length=10):
+
+
+        self.wtseq = wtseq
+        self.mutrate = mutrate
+        self.numseq = numseq
+        self.dicttype = dicttype
+        self.probarr = probarr
+        self.tags = tags
+        self.tag_length = tag_length
+
+        # Validate inputs
+        self._input_check()
 
         #generate sequence dictionary
         seq_dict,inv_dict = utils.choose_dict(dicttype)
@@ -108,9 +162,8 @@ class simulate_library_class:
             df.columns = [seq_col,'ct']
 
         # Convert into valid dataset dataframe and return
-        self.qc = qc.validate_dataset(df,fix=True)
-        print(self.qc)
-        #return qc.validate_dataset(df,fix=True)
+        self.output_df = qc.validate_dataset(df,fix=True)
+        print(self.output_df.head())
 
 
     def seq2arr(self,seq,seq_dict):
@@ -121,40 +174,28 @@ class simulate_library_class:
         '''Change numbers back into base pairs.'''
         return ''.join([inv_dict[num] for num in arr])
 
-    # Define commandline wrapper
-    def wrapper(self,args):
-        """ Commandline wrapper for main()
+    def _input_check(self):
         """
+        Check all parameter values for correctness
 
-        #output_df = main(wtseq=args.wtseq, mutrate=args.mutrate,\
-        output_df = self._init__(self,wtseq=args.wtseq, mutrate=args.mutrate,\
-            numseq=args.numseqs,dicttype=args.type,tags=args.tags,\
-            tag_length=args.tag_length)
-        outloc = io.validate_file_for_writing(args.out) if args.out else sys.stdout
-        io.write(output_df,outloc)
+        """
+        # check if wtseq is valid
+        check(isinstance(self.wtseq,str),'type(wtseq) = %s; must be a string ' % type(self.wtseq))
 
-    """
-    # Connects argparse to wrapper
-    def add_subparser(subparsers):
-        p = subparsers.add_parser('simulate_library')
-        p.add_argument(
-            '-w', '--wtseq', type=str,help ='Wild Type Sequence')
-        p.add_argument(
-            '-m', '--mutrate', type=float, default=0.09,
-            help='''Mutation Rate, given fractionally. 
-            For example enter .1, not 10 percent''')
-        p.add_argument('-n', '--numseqs', type=int, default=100,
-            help='Number of Sequences')
-        # p.add_argument(
-        #     '-bp','--baseprob',default=None,help=''' If you would like to
-        #     use custom base probabilities, this is the filename of a
-        #     probability array.''')
-        p.add_argument('-tags','--tags',action='store_true',help='''Simulate Tags''')
-        p.add_argument('-tl','--tag_length', default=10, type=int, help='''Length of Tag''')
-        p.add_argument(
-            '-t', '--type', choices=qc.seqtypes, default='dna',help='''Type of base
-            or amino acid to simulate''')
-        p.add_argument('-o', '--out', default=None)
-        p.set_defaults(func=wrapper)
-        return p
-    """
+        # check if mutrate is valid
+        check(isinstance(self.mutrate, float), 'type(mutrate) = %s; must be a float ' % type(self.mutrate))
+
+        # check if numseq is valid
+        check(isinstance(self.numseq, int), 'type(numseq) = %s; must be a float ' % type(self.numseq))
+
+        # check if dicttype is valid
+        check(isinstance(self.dicttype, str), 'type(dicttype) = %s; must be a string ' % type(self.dicttype))
+
+        # check if probarr is valid
+        check(isinstance(self.probarr, np.ndarray), 'type(probarr) = %s; must be an np.ndarray ' % type(self.probarr))
+
+        # check if tags is valid
+        check(isinstance(self.tags, bool), 'type(tags) = %s; must be an boolean ' % type(self.tags))
+
+        # check if tag_length is valid
+        check(isinstance(self.tag_length, bool), 'type(tag_length) = %s; must be an int ' % type(self.tag_length))
