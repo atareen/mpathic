@@ -16,7 +16,7 @@ pip install mpathic
 
 ## Requriements
 
-MPAthic is written in Python 2.9.7. It has been verified to work on Linux and Mac OS X. Installation currently requires a number of other Python packages:
+MPAthic is currently written in Python 2.7.10. It will be updated to python 3 soon. Installation currently requires a number of other Python packages:
 
 * Babel==2.5.3
 * backports.functools-lru-cache==1.5
