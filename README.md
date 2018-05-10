@@ -1,60 +1,78 @@
-MPAthic 
-========
+MPAthic: Massively Parallel Assays 
+==================================
 *Quantitative modeling of sequence-function relationships for massively parallel assays*
 
-Written by William T. Ireland and [Justin B. Kinney][kinneylab]   
+Written by Ammar Tareen, William T. Ireland, and [Justin B. Kinney][kinneylab]   
 Current version: 0.01.01  
-
-Notice:   
-This software package was formerly known as "**Sort-Seq Tools**"
 
 Citation:  
 Ireland WT, Kinney JB (2016) *MPAthic: quantitative modeling of sequence-function relationships for massively parallel assays.* bioRxiv doi:10.1101/054676
-
-v0.01.01 Snapshot:    
-DOI 10.5281/zenodo.55837    
-https://zenodo.org/badge/latestdoi/22771/jbkinney/mpathic     
 
 Please address questions or problems regarding this software to [Justin B. Kinney][kinneylab] at jkinney@cshl.edu.
 
 ## Overview
 
-MPAthic is a software package for analyzing data from a variety massively parallel assays, including Sort-Seq assays, Massively Parallel Reporter assays, and Deep Mutational Scanning assays. MPAthic provides a set of command line routines, which are listed in the [documentation][documentation]. Details can be found in the [accompanying preprint][preprint].
+MPAthic is a software package for analyzing data from a variety massively parallel assays, including Sort-Seq assays, Massively Parallel Reporter assays, and Deep Mutational Scanning assays. MPAthic is a python API. Usage and details can be found in [documentation][documentation]. The accompanying preprint can be found here: [accompanying preprint][preprint].
 
 ## Requriements
 
 MPAthic is written in Python 2.9.7. It has been verified to work on Linux and Mac OS X. Installation currently requires a number of other Python packages:
-* biopython>=1.6
-* pymc>=2.3.4
-* scikit-learn>=0.15.2, <= 0.16.1
-* statsmodels>=0.5.0
-* mpmath>=0.19
-* pandas>=0.16.0
-* weblogo>=3.4
-* Cython>=0.23.4
-* matplotlib<=1.5.0
+
+* alabaster==0.7.10
+* Babel==2.5.3
+* backports.functools-lru-cache==1.5
+* biopython==1.71
+* certifi==2018.4.16
+* chardet==3.0.4
+* cvxopt==1.1.9
+* cycler==0.10.0
+* Cython==0.28.1
+* docutils==0.14
+* idna==2.6
+* imagesize==1.0.0
+* Jinja2==2.10
+* kiwisolver==1.0.1
+* MarkupSafe==1.0
+* matplotlib==2.2.2
+* mpmath==1.0.0
+* numpy==1.14.2
+* packaging==17.1
+* pandas==0.22.0
+* Pygments==2.2.0
+* pymc==2.3.6
+* pyparsing==2.2.0
+* python-dateutil==2.7.2
+* pytz==2018.4
+* requests==2.18.4
+* scikit-learn==0.19.1
+* scipy==1.0.1
+* six==1.11.0
+* sklearn==0.0
+* snowballstemmer==1.2.1
+* Sphinx==1.7.3
+* sphinxcontrib-websupport==1.0.1
+* subprocess32==3.2.7
+* typing==3.6.4
+* urllib3==1.22
+* weblogo==3.6.0
+
 
 ## Installation
 
-To install MPAthic, clone this repository, navigate to the folder containing this README file, and execute
-
-```
-python setup.py install
-```
-
-Alternatively, MPAthic can be installed from PyPI by executing
+MPAthic can be installed from PyPI by executing
 
 ```
 pip install mpathic
 ```
 
-This approach will (at least attempt to) install all of MPAthic's dependencies, as well as MPAthic itself. After MPAthic is installed, you can test the functionality of all methods by running
+After installation, test the functionality of all methods by running
 
-```
-mpathic run_tests
+```python
+import mpathic 
+mpathic.demo()
 ```
 
-This suite of tests takes ~10 min to execute. 
+<!--
 
 ## Documentation
 
@@ -122,6 +140,8 @@ Compute the predictive information of the inferred matrix model and the true mod
 mpathic predictiveinfo -m matrix_model.txt -ds dataset.txt
 mpathic predictiveinfo -m true_model.txt -ds dataset.txt
 ```
+
+-->
 
 [documentation]: http://jbkinney.github.io/mpathic/
 [preprint]: http://biorxiv.org/content/early/2016/05/21/054676
