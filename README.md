@@ -1,18 +1,18 @@
 MPAthic: Massively Parallel Assays 
 ==================================
-*Quantitative modeling of sequence-function relationships for massively parallel assays*
 
-Written by Ammar Tareen, William T. Ireland, and [Justin B. Kinney][kinneylab]   
-Current version: 0.01.01  
+MPAthic is a software package for analyzing data from a variety massively parallel assays, including Sort-Seq assays, Massively Parallel Reporter assays, and Deep Mutational Scanning assays. MPAthic is a python API. 
 
-Citation:  
-Ireland WT, Kinney JB (2016) *MPAthic: quantitative modeling of sequence-function relationships for massively parallel assays.* bioRxiv doi:10.1101/054676
+## Installation
 
-Please address questions or problems regarding this software to [Justin B. Kinney][kinneylab] at jkinney@cshl.edu.
+MPAthic can be installed from PyPI by executing
 
-## Overview
+```
+pip install mpathic
+```
 
-MPAthic is a software package for analyzing data from a variety massively parallel assays, including Sort-Seq assays, Massively Parallel Reporter assays, and Deep Mutational Scanning assays. MPAthic is a python API. Usage and details can be found in [documentation][documentation]. The accompanying preprint can be found here: [accompanying preprint][preprint].
+* Documentation: http://mpathic.readthedocs.io/en/latest/
+* Github: https://github.com/atareen/mpathic
 
 ## Requriements
 
@@ -53,13 +53,9 @@ MPAthic is written in Python 2.9.7. It has been verified to work on Linux and Ma
 * weblogo==3.6.0
 
 
-## Installation
 
-MPAthic can be installed from PyPI by executing
 
-```
-pip install mpathic
-```
+<!--
 
 After installation, test the functionality of all methods by running
 
@@ -67,8 +63,6 @@ After installation, test the functionality of all methods by running
 import mpathic 
 mpathic.demo()
 ```
-
-<!--
 
 ## Documentation
 
@@ -140,9 +134,6 @@ mpathic predictiveinfo -m true_model.txt -ds dataset.txt
 -->
 
 
-[documentation]: http://mpathic.readthedocs.io/en/latest/
-[github]: https://github.com/atareen/mpathic
-[preprint]: http://biorxiv.org/content/early/2016/05/21/054676
-[kinneylab]: http://kinneylab.labsites.cshl.edu/
+
 
 
