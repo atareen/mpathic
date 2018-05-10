@@ -10,6 +10,10 @@ MPAthic
 
 *Written by Ammar Tareen, William Ireland, and Justin B. Kinney.*
 
+.. raw:: html
+
+    <h1><font color="red">Under Active Development</font></h1>
+
 
 MPAthic fits quantitative models to data. Barring a few exceptions, each method takes
 one or more tabular text files as input and returns a tabular text file as output. All input and
