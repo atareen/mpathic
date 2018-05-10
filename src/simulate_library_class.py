@@ -65,6 +65,8 @@ class simulate_library_class:
                  tag_length=10):
 
 
+
+
         self.wtseq = wtseq
         self.mutrate = mutrate
         self.numseq = numseq
@@ -79,9 +81,9 @@ class simulate_library_class:
         #generate sequence dictionary
         seq_dict,inv_dict = utils.choose_dict(dicttype)
 
-        mutrate = float(mutrate)
-        if (mutrate < 0.0) or (mutrate > 1.0):
-            raise SortSeqError('Invalid mutrate==%f'%mutrate)
+        #mutrate = float(mutrate)
+        #if (mutrate < 0.0) or (mutrate > 1.0):
+        #    raise SortSeqError('Invalid mutrate==%f'%mutrate)
 
         numseq = int(numseq)
         if (numseq <= 0):
@@ -184,6 +186,9 @@ class simulate_library_class:
 
         # check if mutrate is valid
         check(isinstance(self.mutrate, float), 'type(mutrate) = %s; must be a float ' % type(self.mutrate))
+
+        check(self.mutrate>0 and self.mutrate<=1,'mutrate = %d; must be %d <= mutrate <= %d.' %
+              (self.mutrate, 0, 1))
 
         # check if numseq is valid
         check(isinstance(self.numseq, int), 'type(numseq) = %s; must be a float ' % type(self.numseq))
