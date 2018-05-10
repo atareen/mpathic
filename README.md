@@ -70,7 +70,7 @@ pip install mpathic
 
 After installation, test the functionality of all methods by running
 
-```
+```python
 import mpathic 
 mpathic.demo()
 ```
