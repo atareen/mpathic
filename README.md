@@ -18,7 +18,6 @@ MPAthic is a software package for analyzing data from a variety massively parall
 
 MPAthic is written in Python 2.9.7. It has been verified to work on Linux and Mac OS X. Installation currently requires a number of other Python packages:
 
-* alabaster==0.7.10
 * Babel==2.5.3
 * backports.functools-lru-cache==1.5
 * biopython==1.71
@@ -30,7 +29,6 @@ MPAthic is written in Python 2.9.7. It has been verified to work on Linux and Ma
 * docutils==0.14
 * idna==2.6
 * imagesize==1.0.0
-* Jinja2==2.10
 * kiwisolver==1.0.1
 * MarkupSafe==1.0
 * matplotlib==2.2.2
@@ -49,8 +47,6 @@ MPAthic is written in Python 2.9.7. It has been verified to work on Linux and Ma
 * six==1.11.0
 * sklearn==0.0
 * snowballstemmer==1.2.1
-* Sphinx==1.7.3
-* sphinxcontrib-websupport==1.0.1
 * subprocess32==3.2.7
 * typing==3.6.4
 * urllib3==1.22
@@ -143,7 +139,9 @@ mpathic predictiveinfo -m true_model.txt -ds dataset.txt
 
 -->
 
-[documentation]: http://jbkinney.github.io/mpathic/
+
+[documentation]: http://mpathic.readthedocs.io/en/latest/
+[github]: https://github.com/atareen/mpathic
 [preprint]: http://biorxiv.org/content/early/2016/05/21/054676
 [kinneylab]: http://kinneylab.labsites.cshl.edu/
 
