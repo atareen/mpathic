@@ -18,6 +18,7 @@
 
 import sys
 sys.path.insert(0,'../../')
+sys.path.insert(1,'../')
 
 #import mpathic
 #from mpathic.src import learn_model_class
