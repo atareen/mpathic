@@ -3,6 +3,8 @@ MPAthic: Massively Parallel Assays
 
 MPAthic is a software package for analyzing data from a variety massively parallel assays, including Sort-Seq assays, Massively Parallel Reporter assays, and Deep Mutational Scanning assays. MPAthic is a python API. 
 
+## Project Under Active Development
+
 ## Installation
 
 MPAthic can be installed from PyPI by executing
