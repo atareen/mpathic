@@ -1,5 +1,5 @@
-MPAthic 
-========
+MPAthic: Massively Parallel Assays 
+==================================
 *Quantitative modeling of sequence-function relationships for massively parallel assays*
 
 Written by Ammar Tareen, William T. Ireland, and [Justin B. Kinney][kinneylab]   
