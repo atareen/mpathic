@@ -192,10 +192,11 @@ class simulate_library_class:
         check(isinstance(self.dicttype, str), 'type(dicttype) = %s; must be a string ' % type(self.dicttype))
 
         # check if probarr is valid
-        check(isinstance(self.probarr, np.ndarray), 'type(probarr) = %s; must be an np.ndarray ' % type(self.probarr))
+        if self.probarr is not None:
+            check(isinstance(self.probarr, np.ndarray), 'type(probarr) = %s; must be an np.ndarray ' % type(self.probarr))
 
         # check if tags is valid
         check(isinstance(self.tags, bool), 'type(tags) = %s; must be an boolean ' % type(self.tags))
 
         # check if tag_length is valid
-        check(isinstance(self.tag_length, bool), 'type(tag_length) = %s; must be an int ' % type(self.tag_length))
+        check(isinstance(self.tag_length, int), 'type(tag_length) = %s; must be an int ' % type(self.tag_length))
