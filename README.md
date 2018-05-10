@@ -5,9 +5,6 @@ MPAthic
 Written by Ammar Tareen, William T. Ireland, and [Justin B. Kinney][kinneylab]   
 Current version: 0.01.01  
 
-Notice:   
-This software package was formerly known as "**Sort-Seq Tools**"
-
 Citation:  
 Ireland WT, Kinney JB (2016) *MPAthic: quantitative modeling of sequence-function relationships for massively parallel assays.* bioRxiv doi:10.1101/054676
 
@@ -75,7 +72,7 @@ import mpathic
 mpathic.demo()
 ```
 
-This suite of tests takes ~10 min to execute. 
+<!--
 
 ## Documentation
 
@@ -143,6 +140,8 @@ Compute the predictive information of the inferred matrix model and the true mod
 mpathic predictiveinfo -m matrix_model.txt -ds dataset.txt
 mpathic predictiveinfo -m true_model.txt -ds dataset.txt
 ```
+
+-->
 
 [documentation]: http://jbkinney.github.io/mpathic/
 [preprint]: http://biorxiv.org/content/early/2016/05/21/054676
