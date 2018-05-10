@@ -1,24 +1,23 @@
 MPAthic: Massively Parallel Assays 
 ==================================
-*Quantitative modeling of sequence-function relationships for massively parallel assays*
 
-Written by Ammar Tareen, William T. Ireland, and [Justin B. Kinney][kinneylab]   
-Current version: 0.01.01  
+MPAthic is a software package for analyzing data from a variety massively parallel assays, including Sort-Seq assays, Massively Parallel Reporter assays, and Deep Mutational Scanning assays. MPAthic is a python API. 
 
-Citation:  
-Ireland WT, Kinney JB (2016) *MPAthic: quantitative modeling of sequence-function relationships for massively parallel assays.* bioRxiv doi:10.1101/054676
+## Installation
 
-Please address questions or problems regarding this software to [Justin B. Kinney][kinneylab] at jkinney@cshl.edu.
+MPAthic can be installed from PyPI by executing
 
-## Overview
+```
+pip install mpathic
+```
 
-MPAthic is a software package for analyzing data from a variety massively parallel assays, including Sort-Seq assays, Massively Parallel Reporter assays, and Deep Mutational Scanning assays. MPAthic is a python API. Usage and details can be found in [documentation][documentation]. The accompanying preprint can be found here: [accompanying preprint][preprint].
+* Documentation: http://mpathic.readthedocs.io/en/latest/
+* Github: https://github.com/atareen/mpathic
 
 ## Requriements
 
-MPAthic is written in Python 2.9.7. It has been verified to work on Linux and Mac OS X. Installation currently requires a number of other Python packages:
+MPAthic is currently written in Python 2.7.10. It will be updated to python 3 soon. Installation currently requires a number of other Python packages:
 
-* alabaster==0.7.10
 * Babel==2.5.3
 * backports.functools-lru-cache==1.5
 * biopython==1.71
@@ -30,7 +29,6 @@ MPAthic is written in Python 2.9.7. It has been verified to work on Linux and Ma
 * docutils==0.14
 * idna==2.6
 * imagesize==1.0.0
-* Jinja2==2.10
 * kiwisolver==1.0.1
 * MarkupSafe==1.0
 * matplotlib==2.2.2
@@ -49,21 +47,15 @@ MPAthic is written in Python 2.9.7. It has been verified to work on Linux and Ma
 * six==1.11.0
 * sklearn==0.0
 * snowballstemmer==1.2.1
-* Sphinx==1.7.3
-* sphinxcontrib-websupport==1.0.1
 * subprocess32==3.2.7
 * typing==3.6.4
 * urllib3==1.22
 * weblogo==3.6.0
 
 
-## Installation
 
-MPAthic can be installed from PyPI by executing
 
-```
-pip install mpathic
-```
+<!--
 
 After installation, test the functionality of all methods by running
 
@@ -71,8 +63,6 @@ After installation, test the functionality of all methods by running
 import mpathic 
 mpathic.demo()
 ```
-
-<!--
 
 ## Documentation
 
@@ -143,8 +133,7 @@ mpathic predictiveinfo -m true_model.txt -ds dataset.txt
 
 -->
 
-[documentation]: http://jbkinney.github.io/mpathic/
-[preprint]: http://biorxiv.org/content/early/2016/05/21/054676
-[kinneylab]: http://kinneylab.labsites.cshl.edu/
+
+
 
 
