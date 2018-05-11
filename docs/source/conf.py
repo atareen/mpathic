@@ -72,7 +72,7 @@ extensions = [
 
 autodoc_mock_imports = ['cStringIO',
                         'cvxopt',
-                        'Bio'
+                        'Bio',
                         ]
 
 '''
