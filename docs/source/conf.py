@@ -19,25 +19,31 @@
 import sys
 import os
 #sys.path.insert(0,'/../../')
-sys.path.insert(0,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../src')
-sys.path.insert(1,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../')
-sys.path.insert(2,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../')
-sys.path.insert(3,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../../')
-sys.path.insert(4,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../../../')
-sys.path.insert(5,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts')
+#sys.path.insert(0,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../src')
+#sys.path.insert(1,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../')
+#sys.path.insert(2,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../')
+#sys.path.insert(3,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../../')
+#sys.path.insert(4,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../../../')
+#sys.path.insert(5,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts')
 # this one is good
-sys.path.insert(6,'/home/docs/checkouts/readthedocs.org/user_builds/')
-sys.path.insert(7,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/src')
+#sys.path.insert(6,'/home/docs/checkouts/readthedocs.org/user_builds/')
+#sys.path.insert(7,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/src')
 
 
 print("print cwd path: ", os.getcwd())
 print("printing cwd path contents: ",os.listdir(os.getcwd()))
 
-print("print path 1: /home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/src " )
-print("printing path 1 contents: ",os.listdir('/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/src'))
+print("print path 1: /home/docs/checkouts/readthedocs.org/user_builds/ " )
+print("printing path 1 contents: ",os.listdir('/home/docs/checkouts/readthedocs.org/user_builds/'))
 
+print("print path 2: /home/docs/checkouts/readthedocs.org/user_builds/mpathic/ " )
+print("printing path 2 contents: ",os.listdir('/home/docs/checkouts/readthedocs.org/user_builds/mpathic/'))
 
+print("print path 3: /home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/ " )
+print("printing path 3 contents: ",os.listdir('/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/'))
 
+print("print path 4: /home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/ " )
+print("printing path 4 contents: ",os.listdir('/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/'))
 
 #autodoc_mock_imports = ['Bio']
 #autodoc_mock_imports = ['qc']
