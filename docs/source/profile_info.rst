@@ -12,8 +12,7 @@ for each position in the given data set.
 
 **Usage**
     >>> import mpathic as mpa
-    >>> pi = mpa.profile_info_class
-    >>> pi.profile_info_class()
+    >>> mpa.profile_info_class()
    
 **Example Input and Output**
 

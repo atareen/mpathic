@@ -13,10 +13,7 @@ fractional occurrence of each base or amino acid at each position.
 **Usage**
 
     >>> import mpathic as mpa
-    >>> pf = mpa.profile_freq_class
-    >>> pf.profile_freq_class()
-
-   
+    >>> mpa.profile_freq_class()
 
    
 **Example Input and Output**

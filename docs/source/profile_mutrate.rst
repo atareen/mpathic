@@ -13,8 +13,7 @@ validate the composition of a library. This can be accomplished using the profil
 **Usage**
 
     >>> import mpathic as mpa
-    >>> pm = mpa.profile_mut_class
-    >>> pm.profile_mut_class()
+    >>> mpa.profile_mut_class()
 
 **Example Input**::
 

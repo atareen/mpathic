@@ -41,6 +41,7 @@ import mpathic
 #print(dir(mpathic))
 
 
+'''
 print("print cwd path: ", os.getcwd())
 print("printing cwd path contents: ",os.listdir(os.getcwd()))
 
@@ -55,6 +56,7 @@ print("printing path 3 contents: ",os.listdir('/home/docs/checkouts/readthedocs.
 
 print("print path 4: /home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/ " )
 print("printing path 4 contents: ",os.listdir('/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/'))
+'''
 
 #autodoc_mock_imports = ['Bio']
 #autodoc_mock_imports = ['qc']
