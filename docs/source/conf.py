@@ -17,7 +17,10 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 import sys
-#sys.path.append('../../')
+import os
+sys.path.insert(0,'../')
+sys.path.insert(1,'../../')
+sys.path.insert(2, os.path.abspath('.'))
 
 
 #autodoc_mock_imports = ['Bio']
