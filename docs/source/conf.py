@@ -19,6 +19,9 @@
 import sys
 import os
 #sys.path.insert(0,'/../../')
+
+sys.path.insert(0,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/src')
+
 #sys.path.insert(0,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../src')
 #sys.path.insert(1,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../')
 #sys.path.insert(2,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../')
