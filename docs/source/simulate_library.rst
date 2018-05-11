@@ -32,8 +32,3 @@ Class Details
 .. autoclass:: mpathic.src.simulate_library_class.simulate_library_class 
     :members: 
     
-Class Details1
---------------
-
-.. autoclass:: simulate_library_class.simulate_library_class 
-    :members: 
