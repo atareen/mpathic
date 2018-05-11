@@ -1,13 +1,6 @@
-.. _simulate_library:
-
-==========================================
-``simulate_library``
-==========================================
-
 Overview
 --------
-
-``simulate_library`` is a program within the mpathic package which creates a library of
+simulate library is a program within the mpathic package which creates a library of
 random mutants from an initial wildtype sequence and mutation rate.
 
 
