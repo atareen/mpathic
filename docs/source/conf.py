@@ -20,7 +20,11 @@ import sys
 import os
 sys.path.insert(0,'/../../')
 
-print("printing path 1: ",os.listdir(os.getcwd()+"/../../src"))
+print("print path 1: ", os.getcwd()+"/../../src")
+print("printing path 1 contents: ",os.listdir(os.getcwd()+"/../../src"))
+
+print("print path 2: ", os.getcwd()+"/../../")
+print("printing path 2 contents: ",os.listdir(os.getcwd()+"/../../"))
 
 
 #autodoc_mock_imports = ['Bio']
