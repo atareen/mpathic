@@ -3,4 +3,3 @@ scipy
 pandas
 sklearn
 mpmath
-pymc
