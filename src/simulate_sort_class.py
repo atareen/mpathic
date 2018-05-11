@@ -12,13 +12,14 @@ import utils as utils
 import io_local as io
 import qc as qc
 import evaluate_model as evaluate_model
+from evaluate_model_class import evaluate_model_class
 from mpathic import SortSeqError
 
 
 class simulate_sort_class:
     # def __init__(self,df,mp,noisetype,npar,nbins,sequence_library=True,start=0,end=None,chunksize=50000):
     def __init__(self, df, mp=None, noisetype='None', npar=[0.2], nbins=3, sequence_library=True, start=0,
-                 end=None, chunksize=3):
+                 end=None, chunksize=10):
 
         # validate noise parameters
 
@@ -93,6 +94,8 @@ class simulate_sort_class:
 
         output_df['ct'] = output_df[col_labels].sum(axis=1)
         output_df.reset_index(inplace=True, drop=True)
+
+        self.output_df = output_df
 
         #return output_df
         print(output_df.head())

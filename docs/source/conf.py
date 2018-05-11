@@ -17,15 +17,17 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 import sys
-sys.path.append('../')
-sys.path.insert(0,'../../')
-sys.path.insert(1,'../')
+sys.path.insert(0,'/Users/tareen/Desktop/Desktop_Tests/MPathic/mpathic/src')
+sys.path.insert(1,'/Users/tareen/Desktop/Desktop_Tests/MPathic/mpathic/docs')
+sys.path.insert(3,'/Users/tareen/Desktop/Desktop_Tests/MPathic/')
+sys.path.insert(4,'../../../')
 
-#import mpathic
-#from mpathic.src import learn_model_class
+import Bio
 
-autoclass_content = 'both'
-
+#autodoc_mock_imports = ['Bio']
+#autodoc_mock_imports = ['qc']
+#autodoc_mock_imports = ['mpmath']
+#autodoc_mock_imports = ['cStringIO']
 
 # -- Project information -----------------------------------------------------
 
@@ -48,6 +50,16 @@ release = '0.0.11'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+
+extensions = [
+    'sphinx.ext.autodoc'
+ ]
+
+autodoc_mock_imports = ['cStringIO',
+                        'cvxopt'
+                        ]
+
+'''
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
@@ -57,6 +69,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
 ]
+'''
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

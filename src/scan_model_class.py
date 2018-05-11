@@ -85,11 +85,11 @@ class scan_model_class:
                 sitelist_df.drop(sitelist_df.index[numsites:], inplace=True)
 
             if verbose:
-                print '.',
-                sys.stdout.flush()
+                print ('.',
+                sys.stdout.flush())
 
         if verbose:
-            print ''
+            print('')
             sys.stdout.flush()
 
         # If no sites were found, raise error
@@ -99,7 +99,7 @@ class scan_model_class:
 
         sitelist_df = qc.validate_sitelist(sitelist_df, fix=True)
         #return sitelist_df
-        print sitelist_df
+        print(sitelist_df)
 
 
 '''

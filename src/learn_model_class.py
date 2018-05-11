@@ -6,7 +6,6 @@ A script which produces linear energy matrix models for a given data set.
 """
 from __future__ import division
 # Our standard Modules
-import argparse
 import numpy as np
 import scipy as sp
 import sys
@@ -19,13 +18,11 @@ import EstimateMutualInfoforMImax as EstimateMutualInfoforMImax
 import pymc
 import stepper as stepper
 import os
-# from . import SortSeqError
 from mpathic import SortSeqError
 import io_local as io
 import gauge as gauge
 import qc as qc
 import pdb
-# from . import shutthefuckup
 from mpathic import shutthefuckup
 import numerics as numerics
 from sklearn.preprocessing import StandardScaler
@@ -131,9 +128,7 @@ class learn_model_class:
         # create s matrix, the elements of this matrix are delta_s@i * delta s2@j
         # we will need this for hessian.
         s_hessian_mat = sp.sparse.lil_matrix((i, c * c))
-        print('hi')
         s_hessian_mat = scipy.sparse.csr_matrix(self.test_iter(s, s))
-        print('hi')
 
         def F(x=None, z=None):
             if x is None: return 0, matrix(0.0, (c + bins, 1))
@@ -534,12 +529,14 @@ class learn_model_class:
             written by Mathieu Blondel)
 
         pseudocounts: (int)
-            A artificial default added to bin counts where counts are really low.
+            A artificial number added to bin counts where counts are really low. Needs to be
+            Non-negative.
 
-        :param test:
-        :param drop_library:
-        :param verbose:
-        :param tm:
+        verbose: (bool)
+            A value of false for this parameter suppresses the output to screen.
+
+        tm: (int)
+            Number bins. DOUBLE CHECK.
         """
 
         # Determine dictionary

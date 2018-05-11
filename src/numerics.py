@@ -18,6 +18,8 @@ from mpathic import SortSeqError
 import pdb
 import sys
 
+import fast
+
 def nbytes(array):
     if isinstance(array,np.ndarray):
         return array.nbytes
@@ -29,9 +31,9 @@ def nbytes(array):
 def dataset2seqarray(dataset_df, modeltype):
     # Determine the type of model and set seq2array function appropriately
     if modeltype=='MAT':
-        seqs2array = mpathic.fast.seqs2array_for_matmodel
+        seqs2array = fast.seqs2array_for_matmodel
     elif modeltype=='NBR':
-        seqs2array = mpathic.fast.seqs2array_for_nbrmodel
+        seqs2array = fast.seqs2array_for_nbrmodel
     else:
         raise SortSeqError('Unknown model type: %s'%modeltype)
     seqcol = qc.get_cols_from_df(dataset_df,'seqs')[0]  
@@ -45,9 +47,9 @@ def dataset2mutarray(dataset_df, modeltype, chunksize=1000, rowsforwtcalc=100):
 
     # Determine the type of model and set seq2array function appropriately
     if modeltype=='MAT':
-        seqs2array = mpathic.fast.seqs2array_for_matmodel
+        seqs2array = fast.seqs2array_for_matmodel
     elif modeltype=='NBR':
-        seqs2array = mpathic.fast.seqs2array_for_nbrmodel
+        seqs2array = fast.seqs2array_for_nbrmodel
     else:
         raise SortSeqError('Unknown model type: %s'%modeltype)
 
@@ -61,7 +63,7 @@ def dataset2mutarray(dataset_df, modeltype, chunksize=1000, rowsforwtcalc=100):
     dataset_head_df = dataset_df.head(rowsforwtcalc)
     mut_df = profile_mut(dataset_head_df)
     wtseq = ''.join(list(mut_df[wtcol]))
-    print wtseq
+    print(wtseq)
     wtrow = seqs2array([wtseq], seq_type=seqtype).ravel().astype(bool)
     numfeatures = len(wtrow)
 
@@ -107,9 +109,9 @@ def dataset2mutarray_withwtseq(dataset_df, modeltype, wtseq, chunksize=1000):
 
     # Determine the type of model and set seq2array function appropriately
     if modeltype=='MAT':
-        seqs2array = mpathic.fast.seqs2array_for_matmodel
+        seqs2array = fast.seqs2array_for_matmodel
     elif modeltype=='NBR':
-        seqs2array = mpathic.fast.seqs2array_for_nbrmodel
+        seqs2array = fast.seqs2array_for_nbrmodel
     else:
         raise SortSeqError('Unknown model type: %s'%modeltype)
 
@@ -162,13 +164,15 @@ def dataset2mutarray_withwtseq(dataset_df, modeltype, wtseq, chunksize=1000):
 
 def eval_modelmatrix_on_mutarray(modelmatrix, mutarray, wtrow):
 
+
+    print("numerics: sizes: ",modelmatrix.size," ",wtrow.size)
     # Do error checking
     if not isinstance(modelmatrix,np.ndarray):
         raise SortSeqError('modelmatrix is not a np.ndarray')
     if not isinstance(wtrow,np.ndarray):
         raise SortSeqError('wtrow is not an np.ndarray')
     if not isinstance(mutarray,csr.csr_matrix):
-        raise SortSeqErorr('mutarray is not a sparse csr_matrix')
+        raise SortSeqError('mutarray is not a sparse csr_matrix')
         raise SortSeqError('Unrecognized model type %s'%modeltype)
     if len(wtrow.shape)!=1:
         raise SortSeqError('wtrow is not 1-dimensional')
