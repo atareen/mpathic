@@ -32,8 +32,6 @@ print("printing path 2 contents: ",os.listdir(os.getcwd()+"/../../"))
 print("print path 3: ", os.getcwd()+"/../")
 print("printing path 3 contents: ",os.listdir(os.getcwd()+"/../"))
 
-print("print path 4: ", os.getcwd()+"/../")
-print("printing path 4 contents: ",os.listdir(os.getcwd()+"/../"
 
 
 #autodoc_mock_imports = ['Bio']
