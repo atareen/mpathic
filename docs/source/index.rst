@@ -29,6 +29,7 @@ Welcome to mpathic's documentation!
 .. toctree::
 
    simulate_library
+   simulate_sort
 
 
 Indices and tables
