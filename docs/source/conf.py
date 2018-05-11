@@ -17,10 +17,7 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 import sys
-sys.path.insert(0,'/Users/tareen/Desktop/Desktop_Tests/MPathic/mpathic/src')
-sys.path.insert(1,'/Users/tareen/Desktop/Desktop_Tests/MPathic/mpathic/docs')
-sys.path.insert(3,'/Users/tareen/Desktop/Desktop_Tests/MPathic/')
-sys.path.insert(4,'../../../')
+sys.path.append('../')
 
 
 #autodoc_mock_imports = ['Bio']
