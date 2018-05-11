@@ -4,17 +4,18 @@
 ``simulate_library``
 ==========================================
 
-**Overview**
+Overview
+--------
 
 ``simulate_library`` is a program within the mpathic package which creates a library of
 random mutants from an initial wildtype sequence and mutation rate.
 
 
-**Usage**
+Usage
+-----
 
-    >>> import mpathic as mpa
-    >>> sl = mpa.simulate_library_class
-    >>> sl.simulate_library_class(wtseq="TAATGTGAGTTAGCTCACTCAT")
+    >>> import mpathic
+    >>> mpathic.simulate_library_class(wtseq="TAATGTGAGTTAGCTCACTCAT")
 
 
 **Example Output Table**::
@@ -24,3 +25,9 @@ random mutants from an initial wildtype sequence and mutation rate.
     50            ACGGGGTTAC
     ...
 
+
+Class Details
+-------------
+
+.. autoclass:: mpathic.src.simulate_library_class.simulate_library_class 
+    :members: 
