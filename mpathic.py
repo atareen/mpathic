@@ -71,7 +71,7 @@ def shutthefuckup(func):
 # simualte_library
 print(" about to import from init")
 #from mpathic.src.simulate_library_class import simulate_library_class
-from mpathic.checkouts.latest.src.simulate_library_class import simulate_library_class
+from checkouts.latest.src.simulate_library_class import simulate_library_class
 
 '''
 # simulate sort: 
