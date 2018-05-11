@@ -1,3 +1,9 @@
+.. _simulate_library:
+
+==========================================
+``simulate_library``
+==========================================
+
 Overview
 --------
 simulate library is a program within the mpathic package which creates a library of
