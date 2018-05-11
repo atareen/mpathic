@@ -24,9 +24,3 @@ Class Details
 
 .. autoclass:: mpathic.checkout.latest.src.simulate_library_class.simulate_library_class 
     :members: 
-
-Class Details1
---------------
-
-.. automodule:: mpathic.checkout.latest.src.simulate_library_class
-    :members:     
