@@ -31,6 +31,7 @@ Welcome to mpathic's documentation!
    simulate_library
    simulate_sort
    profile
+   learn_model
 
 
 Indices and tables
