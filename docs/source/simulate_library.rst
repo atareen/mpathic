@@ -22,5 +22,5 @@ Usage
 Class Details
 -------------
 
-.. autoclass:: mpathic.src.simulate_library_class.simulate_library_class
+.. autoclass:: src.simulate_library_class.simulate_library_class
     :members: 
