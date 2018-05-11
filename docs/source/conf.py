@@ -22,6 +22,8 @@ sys.path.insert(0,'../')
 sys.path.insert(1,'../../')
 sys.path.insert(2, os.path.abspath('.'))
 
+print(os.getcwd())
+
 
 #autodoc_mock_imports = ['Bio']
 #autodoc_mock_imports = ['qc']
