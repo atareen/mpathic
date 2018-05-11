@@ -69,8 +69,10 @@ def shutthefuckup(func):
 
 
 # simualte_library
+print(" about to import from init")
 from mpathic.src.simulate_library_class import simulate_library_class
 
+'''
 # simulate sort: 
 from mpathic.src.simulate_sort_class import simulate_sort_class
 
@@ -85,7 +87,7 @@ from mpathic.src.scan_model_class import scan_model_class
 from mpathic.src.predictiveinfo_class import predictiveinfo_class
 
 from mpathic.src import io_local as io
-
+'''
 
 """
 sys.exit()
