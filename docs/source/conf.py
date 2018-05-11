@@ -24,9 +24,6 @@ sys.path.insert(9,'/../../')
 
 sys.path.insert(10,'/home/docs/checkouts/readthedocs.org/user_builds/')
 
-print("trying to import mpathic in conf.py")
-import mpathic
-
 sys.path.insert(0,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../src')
 sys.path.insert(1,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../')
 sys.path.insert(2,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/docs/source/../../')
@@ -36,6 +33,10 @@ sys.path.insert(5,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/chec
 # this one is good
 sys.path.insert(6,'/home/docs/checkouts/readthedocs.org/user_builds/')
 sys.path.insert(7,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/src')
+
+
+print("trying to import mpathic in conf.py")
+import mpathic
 
 
 print("print cwd path: ", os.getcwd())
