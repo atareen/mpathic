@@ -27,6 +27,7 @@ sys.path.insert(4,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/chec
 sys.path.insert(5,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts')
 # this one is good
 sys.path.insert(6,'/home/docs/checkouts/readthedocs.org/user_builds/')
+sys.path.insert(7,'/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/src')
 
 
 print("print cwd path: ", os.getcwd())
@@ -76,8 +77,7 @@ extensions = [
 
 autodoc_mock_imports = ['cStringIO',
                         'cvxopt',
-                        'Bio',
-                        'mpathic'
+                        'Bio'
                         ]
 
 '''
