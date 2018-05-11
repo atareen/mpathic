@@ -22,7 +22,6 @@ sys.path.insert(1,'/Users/tareen/Desktop/Desktop_Tests/MPathic/mpathic/docs')
 sys.path.insert(3,'/Users/tareen/Desktop/Desktop_Tests/MPathic/')
 sys.path.insert(4,'../../../')
 
-import Bio
 
 #autodoc_mock_imports = ['Bio']
 #autodoc_mock_imports = ['qc']
@@ -56,7 +55,8 @@ extensions = [
  ]
 
 autodoc_mock_imports = ['cStringIO',
-                        'cvxopt'
+                        'cvxopt',
+                        'Bio'
                         ]
 
 '''
