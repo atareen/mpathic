@@ -1,5 +1,6 @@
 from __future__ import print_function   # so that print behaves like python 3.x not a special lambda statement
 import mpathic as mpa
+import numpy as np
 
 global_success_counter = 0
 global_fail_counter = 0
@@ -116,7 +117,6 @@ def test_simulate_library():
     # test wtseq
     test_parameter_values(func=mpa.simulate_library_class, var_name='wtseq', fail_list=[3, 1.0,"XxX",False,""],
                           success_list=["ATTCCGAGTA", "ATGTGTAGTCGTAG"])
-
     # test mutation rate
     test_parameter_values(func=mpa.simulate_library_class,var_name='mutrate',fail_list=[1.1,2,-1,0],success_list=[0.5,0.1])
 
@@ -128,6 +128,16 @@ def test_simulate_library():
     test_parameter_values(func=mpa.simulate_library_class, var_name='dicttype',
                           fail_list=['x', 1, True], success_list=['dna','rna','protein'])
 
+    # Note *** Need valid example of probarr to test ***
+    # test probarr
+    test_parameter_values(func=mpa.simulate_library_class,var_name='probarr',fail_list=[1,1.0,"x",[1,2,3]],success_list=[None])
+
+    # tags
+    test_parameter_values(func=mpa.simulate_library_class,var_name='tags',fail_list=[None,-1,3.9],success_list=[True,False])
+
+    # tag_length
+    test_parameter_values(func=mpa.simulate_library_class, var_name='tag_length', fail_list=[None, -1, 3.9],
+                          success_list=[3, 200])
 
 
 

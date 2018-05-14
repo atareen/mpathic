@@ -80,16 +80,6 @@ class simulate_library_class:
         # generate sequence dictionary
         seq_dict, inv_dict = utils.choose_dict(dicttype)
 
-        '''
-        numseq = int(numseq)
-        if (numseq <= 0):
-            raise SortSeqError('numseq must be positive. Is %d'%numseq)
-        '''
-
-        tag_length = int(tag_length)
-        if (tag_length <= 0):
-            raise SortSeqError('tag_length must be positive. Is %d'%tag_length)
-
         if isinstance(probarr,np.ndarray):
             L = probarr.shape[1]
             #Generate bases according to provided probability matrix
@@ -102,15 +92,6 @@ class simulate_library_class:
             wtseq = wtseq.upper()
             L = len(wtseq)
             letarr = np.zeros([numseq,L])
-
-            '''
-            lin_seq_dict,lin_inv_dict = utils.choose_dict(dicttype,modeltype='MAT')
-            def check_sequences(s):
-                return set(s).issubset(lin_seq_dict)
-            if not check_sequences(wtseq):
-                raise SortSeqError(
-                    'wtseq can only contain bases in ' + str(lin_seq_dict.keys()))
-            '''
 
             #find wtseq array
             wtarr = self.seq2arr(wtseq,seq_dict)
@@ -139,11 +120,8 @@ class simulate_library_class:
             tag_seq_dict,tag_inv_dict = utils.choose_dict('dna')
             tag_alphabet_list = tag_seq_dict.keys()
 
-            # Make sure tag_length is long enough for the number of tags needed
-            if len(tag_alphabet_list)**tag_length < 2*numseq:
-                raise SortSeqError(\
-                    'tag_length=%d is too short for num_tags_needed=%d'%\
-                    (tag_length,numseq))
+            check(len(tag_alphabet_list) ** tag_length > 2 * numseq,
+                  'tag_length=%d is too short for num_tags_needed=%d' % (tag_length, numseq))
 
             # Generate a unique tag for each unique sequence
             tag_set = set([])
@@ -240,16 +218,29 @@ class simulate_library_class:
         check(len(self.dicttype) > 0,
               " length of dicttype must be greater than 0, length(dicttype): %d" % len(self.dicttype))
 
+        ###########################
+        #  probarr input checks   #
+        ###########################
 
-        # check if probarr is valid
+        # check if probarr is an ndarray
         if self.probarr is not None:
             check(isinstance(self.probarr, np.ndarray), 'type(probarr) = %s; must be an np.ndarray ' % type(self.probarr))
 
-        # check if tags is valid
+        #######################
+        #  tags input checks  #
+        #######################
+
+        # *** NOTE ***: an additional check is made on tags in the constructor if tags = True
+
+        # check if tags is of type bool.
         check(isinstance(self.tags, bool), 'type(tags) = %s; must be an boolean ' % type(self.tags))
 
-        # check if tag_length is valid
+        #############################
+        #  tag_length input checks  #
+        #############################
+
+        # check if tag_length is of type int
         check(isinstance(self.tag_length, int), 'type(tag_length) = %s; must be an int ' % type(self.tag_length))
 
-
-# /usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/
+        # check if tag_length is of positive
+        check(self.tag_length > 0, 'tag_length = %d must be a positive int ' % self.tag_length)
