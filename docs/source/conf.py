@@ -72,7 +72,7 @@ author = 'Ammar Tareen, William Ireland, Justin Kinney'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.0.11'
+release = '0.0.1'
 
 
 # -- General configuration ---------------------------------------------------

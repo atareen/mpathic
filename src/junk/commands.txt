@@ -91,3 +91,21 @@ model = mpa.io.load_model("./mpathic/MPAthic_tests/input/model_good_mat.txt")
 import mpathic as mpa
 mpa.simulate_library_class(wtseq="ACGTGTGCAAGTA")
 
+# profile freq class
+
+>>> import mpathic as mpa
+>>> mpa.profile_freq_class()
+
+
+# profile mut class
+
+>>> import mpathic as mpa
+>>> mpa.profile_mut_class()
+
+# profile info class
+
+>>> import mpathic as mpa
+>>> mpa.profile_info_class()
+
+
+
