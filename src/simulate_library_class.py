@@ -56,7 +56,7 @@ class simulate_library_class:
     @handle_errors
     def __init__(
                  self,
-                 wtseq,
+                 wtseq="ACGTGTACGTAAATGATGAA",
                  mutrate=0.10,
                  numseq=10000,
                  dicttype='dna',
@@ -105,11 +105,13 @@ class simulate_library_class:
             letarr = np.zeros([numseq,L])
             #Check to make sure the wtseq uses the correct bases.
             lin_seq_dict,lin_inv_dict = utils.choose_dict(dicttype,modeltype='MAT')
+            '''
             def check_sequences(s):
                 return set(s).issubset(lin_seq_dict)
             if not check_sequences(wtseq):
                 raise SortSeqError(
                     'wtseq can only contain bases in ' + str(lin_seq_dict.keys()))
+            '''
             #find wtseq array
             wtarr = self.seq2arr(wtseq,seq_dict)
             mrate = mutrate/(len(seq_dict)-1) #prob of non wildtype
@@ -163,7 +165,7 @@ class simulate_library_class:
 
         # Convert into valid dataset dataframe and return
         self.output_df = qc.validate_dataset(df,fix=True)
-        print(self.output_df.head())
+        #print(self.output_df.head())
 
 
     def seq2arr(self,seq,seq_dict):
@@ -182,11 +184,10 @@ class simulate_library_class:
         # check if wtseq is of type string
         check(isinstance(self.wtseq,str),'type(wtseq) = %s; must be a string ' % type(self.wtseq))
 
-        # check if wtseq is empty
+        # check if empty wtseq is passed
+        check(len(self.wtseq) > 0, "wtseq length cannot be 0")
 
-        # check if wtseq has valid bases
-
-        # Check to make sure the wtseq uses the correct bases.
+        # Check to ensure the wtseq uses the correct bases.
         lin_seq_dict, lin_inv_dict = utils.choose_dict(self.dicttype, modeltype='MAT')
         check(set(self.wtseq).issubset(lin_seq_dict),'wtseq can only contain bases in ' + str(lin_seq_dict.keys()))
 
@@ -215,3 +216,5 @@ class simulate_library_class:
         # check if tag_length is valid
         check(isinstance(self.tag_length, int), 'type(tag_length) = %s; must be an int ' % type(self.tag_length))
 
+
+# /usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/

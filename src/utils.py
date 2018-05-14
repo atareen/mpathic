@@ -576,11 +576,11 @@ def handle_errors(func):
             error = True
 
             if should_fail is True:
-                print('Error, as expected: ', e)
+                print('Error, as expected: ', e.__str__())
                 mistake = False
 
             elif should_fail is False:
-                print('MISTAKE: Failed but should have succeeded: ', e)
+                print('MISTAKE: Failed but should have succeeded: ', e.__str__())
                 mistake = True
 
             # Otherwise, just print an error and don't return anything
