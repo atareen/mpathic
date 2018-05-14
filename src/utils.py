@@ -140,6 +140,12 @@ def sample(weights,T_counts):
     
 def choose_dict(dicttype,modeltype='MAT'):
     '''Get numbering dictionary for either dna,rna, or proteins'''
+
+    allowedDicttypes = ['dna','rna','protein']
+    check(dicttype in allowedDicttypes,
+          " 'dicttype' must be either 'dna', 'rna', or 'protein', entered dicttype: %s " % dicttype)
+
+
     if dicttype == 'dna':
         seq_dict = {'A':0,'C':1,'G':2,'T':3}
         inv_dict = {0:'A',1:'C',2:'G',3:'T'}
@@ -151,8 +157,10 @@ def choose_dict(dicttype,modeltype='MAT'):
             '*':0,'A':1,'C':2,'D':3,'E':4,'F':5,'G':6,'H':7,'I':8,'K':9,'L':10,
             'M':11,'N':12,'P':13,'Q':14,'R':15,'S':16,'T':17,'V':18,'W':19,'Y':20}
         inv_dict = {v:k for k,v in seq_dict.items()}
+    '''    
     else:
         raise SortSeqError('Unkonwn dicttype: %s'%dicttype)
+    '''
 
     if modeltype == 'NBR':
         seq_dict = {

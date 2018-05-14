@@ -23,13 +23,14 @@ class simulate_library_class:
     parameters
     ----------
     wtseq: (string)
-        wildtype sequence
+        wildtype sequence. Must contain characteres 'A', 'C', 'G','T' for dicttype = 'DNA',
+        'A', 'C', 'G','U' for dicttype = 'RNA'
 
     mutrate: (float)
         mutation rate
 
     numseq: (int)
-        number of sequences
+        number of sequences. Must be a positive integer.
 
     dicttype: (string)
         sequence dictionary: valid choices include 'dna', 'rna', 'pro'
@@ -56,7 +57,7 @@ class simulate_library_class:
     @handle_errors
     def __init__(
                  self,
-                 wtseq="ACGTGTACGTAAATGATGAA",
+                 wtseq = "ACGACGA",
                  mutrate=0.10,
                  numseq=10000,
                  dicttype='dna',
@@ -73,19 +74,17 @@ class simulate_library_class:
         self.tags = tags
         self.tag_length = tag_length
 
-        # Validate inputs
+        # Validate inputs:
         self._input_check()
 
-        #generate sequence dictionary
-        seq_dict,inv_dict = utils.choose_dict(dicttype)
+        # generate sequence dictionary
+        seq_dict, inv_dict = utils.choose_dict(dicttype)
 
-        #mutrate = float(mutrate)
-        #if (mutrate < 0.0) or (mutrate > 1.0):
-        #    raise SortSeqError('Invalid mutrate==%f'%mutrate)
-
+        '''
         numseq = int(numseq)
         if (numseq <= 0):
             raise SortSeqError('numseq must be positive. Is %d'%numseq)
+        '''
 
         tag_length = int(tag_length)
         if (tag_length <= 0):
@@ -103,31 +102,32 @@ class simulate_library_class:
             wtseq = wtseq.upper()
             L = len(wtseq)
             letarr = np.zeros([numseq,L])
-            #Check to make sure the wtseq uses the correct bases.
-            lin_seq_dict,lin_inv_dict = utils.choose_dict(dicttype,modeltype='MAT')
+
             '''
+            lin_seq_dict,lin_inv_dict = utils.choose_dict(dicttype,modeltype='MAT')
             def check_sequences(s):
                 return set(s).issubset(lin_seq_dict)
             if not check_sequences(wtseq):
                 raise SortSeqError(
                     'wtseq can only contain bases in ' + str(lin_seq_dict.keys()))
             '''
+
             #find wtseq array
             wtarr = self.seq2arr(wtseq,seq_dict)
-            mrate = mutrate/(len(seq_dict)-1) #prob of non wildtype
-            #Generate sequences by mutating away from wildtype
+            mrate = mutrate/(len(seq_dict)-1)  # prob of non wildtype
+            # Generate sequences by mutating away from wildtype
             '''probabilities away from wildtype (0 = stays the same, a 3 for 
                 example means a C becomes an A, a 1 means C-> G)'''
             parr = np.array(
                 [1-(len(seq_dict)-1)*mrate]
                 + [mrate for i in range(len(seq_dict)-1)])
-            #Generate random movements from wtseq
+            # Generate random movements from wtseq
             letarr = np.random.choice(
                 range(len(seq_dict)),[numseq,len(wtseq)],p=parr)
             #Find sequences
             letarr = np.mod(letarr + wtarr,len(seq_dict))
         seqs= []
-        #Convert Back to letters
+        # Convert Back to letters
         for i in range(numseq):
             seqs.append(self.arr2seq(letarr[i,:],inv_dict))
 
@@ -181,15 +181,36 @@ class simulate_library_class:
         Check all parameter values for correctness
 
         """
+
+        ########################
+        #  wtseq input checks  #
+        ########################
+
         # check if wtseq is of type string
         check(isinstance(self.wtseq,str),'type(wtseq) = %s; must be a string ' % type(self.wtseq))
 
         # check if empty wtseq is passed
         check(len(self.wtseq) > 0, "wtseq length cannot be 0")
 
-        # Check to ensure the wtseq uses the correct bases.
+        # Check to ensure the wtseq uses the correct bases according to dicttype
+
+        # unique characters in the wtseq parameter as a list
+        unique_base_list = list(set(self.wtseq))
+
+        # if more than 4 unique bases detected and dicttype is not protein
+        if(len(unique_base_list)>4 and self.dicttype!='protein'):
+            print(' Warning, more than 4 unique bases detected for dicttype %s did you mean to enter protein for dicttype? ' % self.dicttype)
+
+        # if 'U' base detected and dicttype is not 'rna'
+        if('U' in unique_base_list and self.dicttype!='rna'):
+            print(' Warning, U bases detected for dicttype %s did you mean to enter rna for dicttype? ' % self.dicttype)
+
         lin_seq_dict, lin_inv_dict = utils.choose_dict(self.dicttype, modeltype='MAT')
         check(set(self.wtseq).issubset(lin_seq_dict),'wtseq can only contain bases in ' + str(lin_seq_dict.keys()))
+
+        ##########################
+        #  mutrate input checks  #
+        ##########################
 
         # check if mutrate is of type float
         check(isinstance(self.mutrate, float), 'type(mutrate) = %s; must be a float ' % type(self.mutrate))
@@ -198,13 +219,27 @@ class simulate_library_class:
         check(self.mutrate > 0 and self.mutrate <= 1,'mutrate = %d; must be %d <= mutrate <= %d.' %
               (self.mutrate, 0, 1))
 
+        #########################
+        #  numseq input checks  #
+        #########################
+
         # check if numseq is valid
-        check(isinstance(self.numseq, int), 'type(numseq) = %s; must be a float ' % type(self.numseq))
+        check(isinstance(self.numseq, int), 'type(numseq) = %s; must be a int ' % type(self.numseq))
 
         # check if numseq is positive
+        check(self.numseq > 0, 'numseq = %d must be a positive int ' % self.numseq)
 
-        # check if dicttype is valid
+        ###########################
+        #  dicttype input checks  #
+        ###########################
+
+        # check if dicttype is of type string
         check(isinstance(self.dicttype, str), 'type(dicttype) = %s; must be a string ' % type(self.dicttype))
+
+        # check if len(dicttype) > 0
+        check(len(self.dicttype) > 0,
+              " length of dicttype must be greater than 0, length(dicttype): %d" % len(self.dicttype))
+
 
         # check if probarr is valid
         if self.probarr is not None:

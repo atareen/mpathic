@@ -1,3 +1,4 @@
+from __future__ import print_function   # so that print behaves like python 3.x not a special lambda statement
 import mpathic as mpa
 
 global_success_counter = 0
@@ -29,8 +30,8 @@ def test_for_mistake(func, *args, **kw):
 
     # print test number
     test_num = global_fail_counter + global_success_counter
-    #print('Test # %d: ' % test_num, end='')
-    print('Test # %d: ' % test_num, "\n")
+    print('Test # %d: ' % test_num, end='')
+    #print('Test # %d: ' % test_num)
 
     # Run function
     obj = func(*args, **kw)
@@ -109,12 +110,24 @@ def test_parameter_values(func,
 
 def test_simulate_library():
 
-    # defaults
+    # test default parameters
     test_parameter_values(func=mpa.simulate_library_class)
 
-    # test wt-seq
+    # test wtseq
     test_parameter_values(func=mpa.simulate_library_class, var_name='wtseq', fail_list=[3, 1.0,"XxX",False,""],
                           success_list=["ATTCCGAGTA", "ATGTGTAGTCGTAG"])
+
+    # test mutation rate
+    test_parameter_values(func=mpa.simulate_library_class,var_name='mutrate',fail_list=[1.1,2,-1,0],success_list=[0.5,0.1])
+
+    # test numseq
+    test_parameter_values(func=mpa.simulate_library_class,var_name='numseq',fail_list=['x',-1,0,0.5],success_list=[1,2,3,100])
+
+    # test dicttype
+    #test_parameter_values(func=mpa.simulate_library_class(wtseq=wtseq_dna),var_name='dicttype',fail_list=['x',1,True],success_list=['dna','rna','protein'])
+    test_parameter_values(func=mpa.simulate_library_class, var_name='dicttype',
+                          fail_list=['x', 1, True], success_list=['dna','rna','protein'])
+
 
 
 
