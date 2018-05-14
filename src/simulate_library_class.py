@@ -18,8 +18,6 @@ from numpy.random import choice
 
 class simulate_library_class:
 
-# /usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/
-
     """
 
     parameters
@@ -58,7 +56,7 @@ class simulate_library_class:
     @handle_errors
     def __init__(
                  self,
-                 wtseq="ACGTGTACGTAAATGATGAA",
+                 wtseq,
                  mutrate=0.10,
                  numseq=10000,
                  dicttype='dna',
@@ -66,9 +64,7 @@ class simulate_library_class:
                  tags=False,
                  tag_length=10):
 
-
-
-
+        # setting attributes to parameters. This could be modified.
         self.wtseq = wtseq
         self.mutrate = mutrate
         self.numseq = numseq
@@ -183,17 +179,28 @@ class simulate_library_class:
         Check all parameter values for correctness
 
         """
-        # check if wtseq is valid
+        # check if wtseq is of type string
         check(isinstance(self.wtseq,str),'type(wtseq) = %s; must be a string ' % type(self.wtseq))
 
-        # check if mutrate is valid
+        # check if wtseq is empty
+
+        # check if wtseq has valid bases
+
+        # Check to make sure the wtseq uses the correct bases.
+        lin_seq_dict, lin_inv_dict = utils.choose_dict(self.dicttype, modeltype='MAT')
+        check(set(self.wtseq).issubset(lin_seq_dict),'wtseq can only contain bases in ' + str(lin_seq_dict.keys()))
+
+        # check if mutrate is of type float
         check(isinstance(self.mutrate, float), 'type(mutrate) = %s; must be a float ' % type(self.mutrate))
 
-        check(self.mutrate>0 and self.mutrate<=1,'mutrate = %d; must be %d <= mutrate <= %d.' %
+        # ensure mutrate is in the correct range
+        check(self.mutrate > 0 and self.mutrate <= 1,'mutrate = %d; must be %d <= mutrate <= %d.' %
               (self.mutrate, 0, 1))
 
         # check if numseq is valid
         check(isinstance(self.numseq, int), 'type(numseq) = %s; must be a float ' % type(self.numseq))
+
+        # check if numseq is positive
 
         # check if dicttype is valid
         check(isinstance(self.dicttype, str), 'type(dicttype) = %s; must be a string ' % type(self.dicttype))
@@ -207,3 +214,4 @@ class simulate_library_class:
 
         # check if tag_length is valid
         check(isinstance(self.tag_length, int), 'type(tag_length) = %s; must be an int ' % type(self.tag_length))
+
