@@ -34,6 +34,309 @@ import profile_mut as profile_mut
 import fast
 
 class learn_model_class:
+    """
+     Constructor for the learn model class. Models can be learnt via the matrix model or
+     the neighbor model. Matrix models assume independent contributions to activity
+     from characters at a particular position whereas neighbor model assume near contributions
+     to activity from all possible adjacent characters.
+
+     Parameters
+     ----------
+
+     df: (pandas data frame)
+         Dataframe containing several columns representing \n
+         bins and sequence column. The integer values in bins \n
+         represent the occurrence of the sequence that bin.
+
+     lm: (str)
+         Learning model. Possible values include {'ER','LS','IM', 'PR'}. \n
+         'ER': enrichment ratio inference. 'LS': least squares \n
+         optimization. 'IM' : mutual information maximization \n
+         (similar to maximum likelihood inference in the large data limit). \n
+         'PR' stands for Poisson Regression.
+
+     modeltype: (string)
+         Type of model to be learned. Valid choices include "MAT" \n
+         and "NBR", which stands for matrix model and neigbhour model, \n
+         respectively. Matrix model assumes mutations at a location are \n
+         independent and neighbour model assumes epistatic effects for \n
+         mutations.
+
+     LS_means_std: (array-like)
+         For the least-squares method, this contains \n
+         the user supplied mean and standard deviation.
+
+     db: (string)
+         File name for a SQL script; it could be passed \n
+         in to the function MaximizeMI_memsaver
+
+     iteration: (int)
+         Total number of MCMC iterations to do. Passed \n
+         in the sample method from MCMC.py which may be \n
+         part of pymc.
+
+     burnin: (int)
+          Variables will not be tallied until this many \n
+          iterations are complete (thermalization).
+
+     thin: (int)
+         Similar to parameter burnin, but with smaller \n
+         default value.
+
+     runnum: (int)
+         Run number, used to determine the correct sql \n
+         script extension in MaximizeMI_memsaver
+
+     initialize: (string)
+         Variable for initializing the learn model class \n
+         constructor. Valid values include "rand", \n
+         "LS", "PR". rand is MCMC, LS is least squares \n
+          and PR and poisson regression.
+
+     start: (int)
+         Starting position of the sequence.
+
+     end: (int)
+         end position of the sequence.
+
+     foreground: (int)
+         Indicates column number representing foreground \n
+         (E.g. can be passed to Berg_Von_Hippel method).
+
+     background: (int)
+         Indicates column number representing background.
+
+     alpha : (float)
+         Regularization strength; must be a positive float. Regularization \n
+         improves the conditioning of the problem and reduces the variance of \n
+         the estimates. Larger values specify stronger regularization. \n
+         Alpha corresponds to ``C^-1`` in other linear models such as \n
+         LogisticRegression or LinearSVC. (this snippet taken from ridge.py \n
+         written by Mathieu Blondel)
+
+     pseudocounts: (int)
+         A artificial number added to bin counts where counts are \n
+         really low. Needs to be Non-negative.
+
+     verbose: (bool)
+         A value of false for this parameter suppresses the \n
+         output to screen.
+
+     tm: (int)
+         Number bins. DOUBLE CHECK.
+     """
+
+    def __init__(self,
+                 df,
+                 lm='IM',
+                 modeltype='MAT',
+                 LS_means_std = None,
+                 db=None,
+                 iteration=30000,
+                 burnin=1000,
+                 thin=10,
+                 runnum=0,
+                 initialize='LS',
+                 start=0,
+                 end = None,
+                 foreground=1,
+                 background=0,
+                 alpha=0,
+                 pseudocounts=1,
+                 test=False,
+                 drop_library=False,
+                 verbose=False,
+                 tm=None):
+
+
+        # Determine dictionary
+        seq_cols = qc.get_cols_from_df(df, 'seqs')
+        if not len(seq_cols) == 1:
+            raise SortSeqError('Dataframe has multiple seq cols: %s' % str(seq_cols))
+        dicttype = qc.colname_to_seqtype_dict[seq_cols[0]]
+
+        seq_dict, inv_dict = utils.choose_dict(dicttype, modeltype=modeltype)
+
+        '''Check to make sure the chosen dictionary type correctly describes
+             the sequences. An issue with this test is that if you have DNA sequence
+             but choose a protein dictionary, you will still pass this test bc A,C,
+             G,T are also valid amino acids'''
+        # set name of sequences column based on type of sequence
+        type_name_dict = {'dna': 'seq', 'rna': 'seq_rna', 'protein': 'seq_pro'}
+        seq_col_name = type_name_dict[dicttype]
+        lin_seq_dict, lin_inv_dict = utils.choose_dict(dicttype, modeltype='MAT')
+        # wtseq = utils.profile_counts(df.copy(),dicttype,return_wtseq=True,start=start,end=end)
+        # wt_seq_dict_list = [{inv_dict[np.mod(i+1+seq_dict[w],len(seq_dict))]:i for i in range(len(seq_dict)-1)} for w in wtseq]
+        par_seq_dict = {v: k for v, k in seq_dict.items() if k != (len(seq_dict) - 1)}
+        # drop any rows with ct = 0
+        df = df[df.loc[:, 'ct'] != 0]
+        df.reset_index(drop=True, inplace=True)
+
+        # If there are sequences of different lengths, then print error but continue
+        if len(set(df[seq_col_name].apply(len))) > 1:
+            sys.stderr.write('Lengths of all sequences are not the same!')
+        # select target sequence region
+        df.loc[:, seq_col_name] = df.loc[:, seq_col_name].str.slice(start, end)
+        df = utils.collapse_further(df)
+        col_headers = utils.get_column_headers(df)
+        # make sure all counts are ints
+        df[col_headers] = df[col_headers].astype(int)
+        # create vector of column names
+        val_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
+        df.reset_index(inplace=True, drop=True)
+        # Drop any sequences with incorrect length
+        if not end:
+            '''is no value for end of sequence was supplied, assume first seq is
+                correct length'''
+            seqL = len(df[seq_col_name][0]) - start
+        else:
+            seqL = end - start
+        df = df[df[seq_col_name].apply(len) == (seqL)]
+        df.reset_index(inplace=True, drop=True)
+        # Do something different for each type of learning method (lm)
+        if lm == 'ER':
+            if modeltype == 'NBR':
+                emat = self.Markov(df, dicttype, foreground=foreground, background=background,
+                                   pseudocounts=pseudocounts)
+            else:
+                emat = self.Berg_von_Hippel(
+                    df, dicttype, foreground=foreground, background=background,
+                    pseudocounts=pseudocounts)
+
+        if lm == 'PR':
+            emat = self.convex_opt(df, seq_dict, inv_dict, col_headers, tm=tm, \
+                                   dicttype=dicttype, modeltype=modeltype)
+        if lm == 'LS':
+            '''First check that is we don't have a penalty for ridge regression,
+                that we at least have all possible base values so that the analysis
+                will not fail'''
+            if LS_means_std:  # If user supplied preset means and std for each bin
+                means_std_df = io.load_meanstd(LS_means_std)
+
+                # change bin number to 'ct_number' and then use as index
+                labels = list(means_std_df['bin'].apply(self.add_label))
+                std = means_std_df['std']
+                std.index = labels
+                # Change Weighting of each sequence by dividing counts by bin std
+                df[labels] = df[labels].div(std)
+                means = means_std_df['mean']
+                means.index = labels
+            else:
+                means = None
+            # drop all rows without counts
+            df['ct'] = df[col_headers].sum(axis=1)
+            df = df[df.ct != 0]
+            df.reset_index(inplace=True, drop=True)
+            ''' For sort-seq experiments, bin_0 is library only and isn't the lowest
+                expression even though it is will be calculated as such if we proceed.
+                Therefore is drop_library is passed, drop this column from analysis.'''
+            if drop_library:
+                try:
+                    df.drop('ct_0', inplace=True)
+                    col_headers = utils.get_column_headers(df)
+                    if len(col_headers) < 2:
+                        raise SortSeqError(
+                            '''After dropping library there are no longer enough 
+                            columns to run the analysis''')
+                except:
+                    raise SortSeqError('''drop_library option was passed, but no ct_0
+                        column exists''')
+            # parameterize sequences into 3xL vectors
+            print('init learn model: \n')
+            print(par_seq_dict)
+            print('dict: ', dicttype)
+            raveledmat, batch, sw = utils.genweightandmat(
+                df, par_seq_dict, dicttype, means=means, modeltype=modeltype)
+            # Use ridge regression to find matrix.
+            emat = self.Compute_Least_Squares(raveledmat, batch, sw, alpha=alpha)
+
+        if lm == 'IM':
+            seq_mat, wtrow = numerics.dataset2mutarray(df.copy(), modeltype)
+            # this is also an MCMC routine, do the same as above.
+            if initialize == 'rand':
+                if modeltype == 'MAT':
+                    emat_0 = utils.RandEmat(len(df[seq_col_name][0]), len(seq_dict))
+                elif modeltype == 'NBR':
+                    emat_0 = utils.RandEmat(len(df[seq_col_name][0]) - 1, len(seq_dict))
+            elif initialize == 'LS':
+                emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
+                emat_0_df = self.__init__(df.copy(), lm='LS', modeltype=modeltype, alpha=alpha, start=0, end=None,
+                                          verbose=verbose)
+                emat_0 = np.transpose(np.array(emat_0_df[emat_cols]))
+                # pymc doesn't take sparse mat
+            elif initialize == 'PR':
+                emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
+                emat_0_df = self.__init__(df.copy(), lm='PR', modeltype=modeltype, start=0, end=None)
+                emat_0 = np.transpose(np.array(emat_0_df[emat_cols]))
+            emat = self.MaximizeMI_memsaver(seq_mat, df.copy(), emat_0, wtrow, db=db, iteration=iteration,
+                                            burnin=burnin, thin=thin, runnum=runnum, verbose=verbose)
+
+        # We have infered out matrix.
+        # now format the energy matrices to get them ready to output
+        if (lm == 'IM' or lm == 'memsaver'):
+            if modeltype == 'NBR':
+                try:
+                    emat_typical = gauge.fix_neighbor(np.transpose(emat))
+                except:
+                    sys.stderr.write('Gauge Fixing Failed')
+                    emat_typical = np.transpose(emat)
+            elif modeltype == 'MAT':
+                try:
+                    emat_typical = gauge.fix_matrix(np.transpose(emat))
+                except:
+                    sys.stderr.write('Gauge Fixing Failed')
+                    emat_typical = np.transpose(emat)
+
+        elif lm == 'ER':
+            '''the emat for this format is currently transposed compared to other formats
+            it is also already a data frame with columns [pos,val_...]'''
+            if modeltype == 'NBR':
+                emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
+                emat_typical = emat[emat_cols]
+            else:
+                emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
+                emat_typical = emat[emat_cols]
+                try:
+                    emat_typical = (gauge.fix_matrix((np.array(emat_typical))))
+                except:
+                    sys.stderr.write('Gauge Fixing Failed')
+                    emat_typical = emat_typical
+
+        elif (lm == 'MK'):
+            '''The model is a first order markov model and its gauge does not need
+                to be changed.'''
+
+        elif lm == 'PR':
+            emat_typical = np.transpose(emat)
+        else:  # must be Least squares
+            emat_typical = utils.emat_typical_parameterization(emat, len(seq_dict))
+            if modeltype == 'NBR':
+                try:
+                    emat_typical = gauge.fix_neighbor(np.transpose(emat_typical))
+                except:
+                    sys.stderr.write('Gauge Fixing Failed')
+                    emat_typical = np.transpose(emat_typical)
+            elif modeltype == 'MAT':
+                try:
+                    emat_typical = gauge.fix_matrix(np.transpose(emat_typical))
+                except:
+                    sys.stderr.write('Gauge Fixing Failed')
+                    emat_typical = np.transpose(emat_typical)
+        em = pd.DataFrame(emat_typical)
+        em.columns = val_cols
+        # add position column
+        if modeltype == 'NBR':
+            pos = pd.Series(range(start, start - 1 + len(df[seq_col_name][0])), name='pos')
+        else:
+            pos = pd.Series(range(start, start + len(df[seq_col_name][0])), name='pos')
+        output_df = pd.concat([pos, em], axis=1)
+        # Validate model and return
+        output_df = qc.validate_model(output_df, fix=True)
+        print('Printing Output dataframe: ')
+        print(output_df)
+        # return output_df
+
+
     def weighted_std(self, values, weights):
         '''Takes in a dataframe with seqs and cts and calculates the std'''
         average = np.average(values, weights=weights)
@@ -441,317 +744,8 @@ class learn_model_class:
         emat = clf.coef_
         return emat
 
-    def __init__(self,
-                 df,
-                 lm='IM',
-                 modeltype='MAT',
-                 LS_means_std = None,
-                 db=None,
-                 iteration=30000,
-                 burnin=1000,
-                 thin=10,
-                 runnum=0,
-                 initialize='LS',
-                 start=0,
-                 end = None,
-                 foreground=1,
-                 background=0,
-                 alpha=0,
-                 pseudocounts=1,
-                 test=False,
-                 drop_library=False,
-                 verbose=False,
-                 tm=None):
-        """
-        Constructor for the learn model class. Models can be learnt via the matrix model or
-        the neighbor model. Matrix models assume independent contributions to activity
-        from characters at a particular position whereas neighbor model assume near contributions
-        to activity from all possible adjacent characters.
 
-        parameters
-        ----------
 
-        df: (pandas data frame)
-            Dataframe containing several columns representing bins and sequence column.
-            The integer values in bins represent the occurrence of the sequence that bin.
-
-        lm: (str)
-            Learning model. Possible values include {'ER','LS','IM', 'PR'}. 'ER': enrichment ratio inference.
-            'LS': least squares optimization. 'IM' : mutual information maximization (similar to maximum
-            likelihood inference in the large data limit). 'PR' stands for Poisson Regression.
-
-        modeltype: (string)
-            Type of model to be learned. Valid choices include "MAT" and "NBR", which stands for matrix
-            model and neigbhour model, respectively. Matrix model assumes mutations at a location are
-            independent and neighbour model assumes epistatic effects for mutations.
-
-        LS_means_std: (array-like)
-            For the least-squares method, this contains the user supplied mean and standard deviation.
-
-        db: (string)
-            File name for a SQL script; it could be passed in to the function MaximizeMI_memsaver
-
-        iteration: (int)
-            Total number of MCMC iterations to do. Passed in the sample method from MCMC.py
-            which may be part of pymc.
-
-        burnin: (int)
-             Variables will not be tallied until this many iterations are complete (thermalization).
-
-        thin: (int)
-            Similar to parameter burnin, but with smaller default value.
-
-        runnum: (int)
-            Run number, used to determine the correct sql script extension in MaximizeMI_memsaver
-
-        initialize: (string)
-            Variable for initializing the learn model class constructor. Valid values include "rand",
-            "LS", "PR". rand is MCMC, LS is least squares and PR and poisson regression.
-
-        start: (int)
-            Starting position of the sequence.
-
-        end: (int)
-            end position of the sequence.
-
-        foreground: (int)
-            Indicates column number representing foreground (E.g. can be passed to Berg_Von_Hippel method).
-
-        background: (int)
-            Indicates column number representing background.
-
-        alpha : (float)
-            Regularization strength; must be a positive float. Regularization
-            improves the conditioning of the problem and reduces the variance of
-            the estimates. Larger values specify stronger regularization.
-            Alpha corresponds to ``C^-1`` in other linear models such as
-            LogisticRegression or LinearSVC. (this snippet taken from ridge.py
-            written by Mathieu Blondel)
-
-        pseudocounts: (int)
-            A artificial number added to bin counts where counts are really low. Needs to be
-            Non-negative.
-
-        verbose: (bool)
-            A value of false for this parameter suppresses the output to screen.
-
-        tm: (int)
-            Number bins. DOUBLE CHECK.
-        """
-
-        # Determine dictionary
-        seq_cols = qc.get_cols_from_df(df, 'seqs')
-        if not len(seq_cols) == 1:
-            raise SortSeqError('Dataframe has multiple seq cols: %s' % str(seq_cols))
-        dicttype = qc.colname_to_seqtype_dict[seq_cols[0]]
-
-        seq_dict, inv_dict = utils.choose_dict(dicttype, modeltype=modeltype)
-
-        '''Check to make sure the chosen dictionary type correctly describes
-             the sequences. An issue with this test is that if you have DNA sequence
-             but choose a protein dictionary, you will still pass this test bc A,C,
-             G,T are also valid amino acids'''
-        # set name of sequences column based on type of sequence
-        type_name_dict = {'dna': 'seq', 'rna': 'seq_rna', 'protein': 'seq_pro'}
-        seq_col_name = type_name_dict[dicttype]
-        lin_seq_dict, lin_inv_dict = utils.choose_dict(dicttype, modeltype='MAT')
-        # wtseq = utils.profile_counts(df.copy(),dicttype,return_wtseq=True,start=start,end=end)
-        # wt_seq_dict_list = [{inv_dict[np.mod(i+1+seq_dict[w],len(seq_dict))]:i for i in range(len(seq_dict)-1)} for w in wtseq]
-        par_seq_dict = {v: k for v, k in seq_dict.items() if k != (len(seq_dict) - 1)}
-        # drop any rows with ct = 0
-        df = df[df.loc[:, 'ct'] != 0]
-        df.reset_index(drop=True, inplace=True)
-
-        # If there are sequences of different lengths, then print error but continue
-        if len(set(df[seq_col_name].apply(len))) > 1:
-            sys.stderr.write('Lengths of all sequences are not the same!')
-        # select target sequence region
-        df.loc[:, seq_col_name] = df.loc[:, seq_col_name].str.slice(start, end)
-        df = utils.collapse_further(df)
-        col_headers = utils.get_column_headers(df)
-        # make sure all counts are ints
-        df[col_headers] = df[col_headers].astype(int)
-        # create vector of column names
-        val_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
-        df.reset_index(inplace=True, drop=True)
-        # Drop any sequences with incorrect length
-        if not end:
-            '''is no value for end of sequence was supplied, assume first seq is
-                correct length'''
-            seqL = len(df[seq_col_name][0]) - start
-        else:
-            seqL = end - start
-        df = df[df[seq_col_name].apply(len) == (seqL)]
-        df.reset_index(inplace=True, drop=True)
-        # Do something different for each type of learning method (lm)
-        if lm == 'ER':
-            if modeltype == 'NBR':
-                emat = self.Markov(df, dicttype, foreground=foreground, background=background,
-                                   pseudocounts=pseudocounts)
-            else:
-                emat = self.Berg_von_Hippel(
-                    df, dicttype, foreground=foreground, background=background,
-                    pseudocounts=pseudocounts)
-
-        if lm == 'PR':
-            emat = self.convex_opt(df, seq_dict, inv_dict, col_headers, tm=tm, \
-                                   dicttype=dicttype, modeltype=modeltype)
-        if lm == 'LS':
-            '''First check that is we don't have a penalty for ridge regression,
-                that we at least have all possible base values so that the analysis
-                will not fail'''
-            if LS_means_std:  # If user supplied preset means and std for each bin
-                means_std_df = io.load_meanstd(LS_means_std)
-
-                # change bin number to 'ct_number' and then use as index
-                labels = list(means_std_df['bin'].apply(self.add_label))
-                std = means_std_df['std']
-                std.index = labels
-                # Change Weighting of each sequence by dividing counts by bin std
-                df[labels] = df[labels].div(std)
-                means = means_std_df['mean']
-                means.index = labels
-            else:
-                means = None
-            # drop all rows without counts
-            df['ct'] = df[col_headers].sum(axis=1)
-            df = df[df.ct != 0]
-            df.reset_index(inplace=True, drop=True)
-            ''' For sort-seq experiments, bin_0 is library only and isn't the lowest
-                expression even though it is will be calculated as such if we proceed.
-                Therefore is drop_library is passed, drop this column from analysis.'''
-            if drop_library:
-                try:
-                    df.drop('ct_0', inplace=True)
-                    col_headers = utils.get_column_headers(df)
-                    if len(col_headers) < 2:
-                        raise SortSeqError(
-                            '''After dropping library there are no longer enough 
-                            columns to run the analysis''')
-                except:
-                    raise SortSeqError('''drop_library option was passed, but no ct_0
-                        column exists''')
-            # parameterize sequences into 3xL vectors
-            print('init learn model: \n')
-            print(par_seq_dict)
-            print('dict: ', dicttype)
-            raveledmat, batch, sw = utils.genweightandmat(
-                df, par_seq_dict, dicttype, means=means, modeltype=modeltype)
-            # Use ridge regression to find matrix.
-            emat = self.Compute_Least_Squares(raveledmat, batch, sw, alpha=alpha)
-
-        if lm == 'IM':
-            seq_mat, wtrow = numerics.dataset2mutarray(df.copy(), modeltype)
-            # this is also an MCMC routine, do the same as above.
-            if initialize == 'rand':
-                if modeltype == 'MAT':
-                    emat_0 = utils.RandEmat(len(df[seq_col_name][0]), len(seq_dict))
-                elif modeltype == 'NBR':
-                    emat_0 = utils.RandEmat(len(df[seq_col_name][0]) - 1, len(seq_dict))
-            elif initialize == 'LS':
-                emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
-                emat_0_df = self.__init__(df.copy(), lm='LS', modeltype=modeltype, alpha=alpha, start=0, end=None,
-                                          verbose=verbose)
-                emat_0 = np.transpose(np.array(emat_0_df[emat_cols]))
-                # pymc doesn't take sparse mat
-            elif initialize == 'PR':
-                emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
-                emat_0_df = self.__init__(df.copy(), lm='PR', modeltype=modeltype, start=0, end=None)
-                emat_0 = np.transpose(np.array(emat_0_df[emat_cols]))
-            emat = self.MaximizeMI_memsaver(seq_mat, df.copy(), emat_0, wtrow, db=db, iteration=iteration,
-                                            burnin=burnin, thin=thin, runnum=runnum, verbose=verbose)
-
-        # We have infered out matrix.
-        # now format the energy matrices to get them ready to output
-        if (lm == 'IM' or lm == 'memsaver'):
-            if modeltype == 'NBR':
-                try:
-                    emat_typical = gauge.fix_neighbor(np.transpose(emat))
-                except:
-                    sys.stderr.write('Gauge Fixing Failed')
-                    emat_typical = np.transpose(emat)
-            elif modeltype == 'MAT':
-                try:
-                    emat_typical = gauge.fix_matrix(np.transpose(emat))
-                except:
-                    sys.stderr.write('Gauge Fixing Failed')
-                    emat_typical = np.transpose(emat)
-
-        elif lm == 'ER':
-            '''the emat for this format is currently transposed compared to other formats
-            it is also already a data frame with columns [pos,val_...]'''
-            if modeltype == 'NBR':
-                emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
-                emat_typical = emat[emat_cols]
-            else:
-                emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
-                emat_typical = emat[emat_cols]
-                try:
-                    emat_typical = (gauge.fix_matrix((np.array(emat_typical))))
-                except:
-                    sys.stderr.write('Gauge Fixing Failed')
-                    emat_typical = emat_typical
-
-        elif (lm == 'MK'):
-            '''The model is a first order markov model and its gauge does not need
-                to be changed.'''
-
-        elif lm == 'PR':
-            emat_typical = np.transpose(emat)
-        else:  # must be Least squares
-            emat_typical = utils.emat_typical_parameterization(emat, len(seq_dict))
-            if modeltype == 'NBR':
-                try:
-                    emat_typical = gauge.fix_neighbor(np.transpose(emat_typical))
-                except:
-                    sys.stderr.write('Gauge Fixing Failed')
-                    emat_typical = np.transpose(emat_typical)
-            elif modeltype == 'MAT':
-                try:
-                    emat_typical = gauge.fix_matrix(np.transpose(emat_typical))
-                except:
-                    sys.stderr.write('Gauge Fixing Failed')
-                    emat_typical = np.transpose(emat_typical)
-        em = pd.DataFrame(emat_typical)
-        em.columns = val_cols
-        # add position column
-        if modeltype == 'NBR':
-            pos = pd.Series(range(start, start - 1 + len(df[seq_col_name][0])), name='pos')
-        else:
-            pos = pd.Series(range(start, start + len(df[seq_col_name][0])), name='pos')
-        output_df = pd.concat([pos, em], axis=1)
-        # Validate model and return
-        output_df = qc.validate_model(output_df, fix=True)
-        print('Printing Output dataframe: ')
-        print(output_df)
-        # return output_df
-
-    # Define commandline wrapper
-    def wrapper(self, args):
-        # validate some of the input arguments
-        qc.validate_input_arguments_for_learn_model(
-            foreground=args.foreground, background=args.background, alpha=args.penalty,
-            modeltype=args.modeltype, learningmethod=args.learningmethod,
-            start=args.start, end=args.end, iteration=args.iteration,
-            burnin=args.burnin, thin=args.thin, pseudocounts=args.pseudocounts, )
-
-        inloc = io.validate_file_for_reading(args.i) if args.i else sys.stdin
-        input_df = io.load_dataset(inloc)
-
-        outloc = io.validate_file_for_writing(args.out) if args.out else sys.stdout
-        # pdb.set_trace()
-
-        output_df = self.__init__(input_df, lm=args.learningmethod, \
-                                  modeltype=args.modeltype, db=args.db_filename, \
-                                  LS_means_std=args.LS_means_std, \
-                                  iteration=args.iteration, \
-                                  burnin=args.burnin, thin=args.thin, start=args.start, end=args.end, \
-                                  runnum=args.runnum, initialize=args.initialize, \
-                                  foreground=args.foreground, background=args.background, \
-                                  alpha=args.penalty, pseudocounts=args.pseudocounts,
-                                  verbose=args.verbose, tm=args.tm)
-
-        io.write(output_df, outloc)
 
 
 

@@ -68,8 +68,3 @@ Class Details
 
 .. automodule:: learn_model_class
     :members:
-
-
-.. autoclass:: learn_model_class.learn_model_class
-    :members:
-    :undoc-members:
