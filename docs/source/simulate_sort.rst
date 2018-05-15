@@ -8,7 +8,7 @@
 
 Overview
 -------------
-simulate_sort is a program within the mpathic package which simulates
+``simulate_sort`` is a program within the mpathic package which simulates
 performing a Sort Seq experiment.
 
 
@@ -20,9 +20,7 @@ Usage
     >>> mp_df = loader.load_model('./mpathic/data/sortseq/full-0/crp_model.txt')
     >>> filename = "./mpathic/data/sortseq/full-0/data_small.txt"
     >>> df = loader.load_dataset(filename)
-    >>> ss = mpathic.simulate_sort_class
-    >>> ss.simulate_sort_class(df=df,mp=mp_df)
-
+    >>> mpathic.simulate_sort_class(df=df,mp=mp_df)
 
 
 Example Input and Output
@@ -45,3 +43,10 @@ Example Output Table::
    ...
 
 The output table will contain all the original columns, along with the sorted columns (ct_1, ct_2 ...)
+
+Class Details
+-------------
+
+.. autoclass:: simulate_sort_class.simulate_sort_class
+    :members:
+

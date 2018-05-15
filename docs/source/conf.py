@@ -85,8 +85,13 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 
+# to hide methods/ remove warnings
+numpydoc_show_class_members = False
+
 extensions = [
-    'sphinx.ext.autodoc'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.coverage',
+    'numpydoc'
  ]
 
 autodoc_mock_imports = ['cStringIO',

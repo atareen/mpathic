@@ -17,9 +17,54 @@ from mpathic import SortSeqError
 
 
 class simulate_sort_class:
+
+    """
+
+    Parameters
+    ----------
+
+    df: (array like)
+        Input data frame.
+
+    mp: (array-like)
+        Model data frame.
+
+    noisetype: (string, None)
+        Noise parameter string indicating what type of \n
+        noise to include. Valid choices include None, 'Normal', 'LogNormal', 'Plasmid'
+
+    npar: (list)
+        parameters to go with noisetype. E.g. for \n
+        noisetype 'Normal', npar must contain the width of the normal distribution
+
+    nbins: (int)
+        Number of bins that the different variants will get sorted into.
+
+    sequence_library: (bool)
+        A value of True corresponds to simulating sequencing the library in bin zero
+
+    start: (int)
+        Position to start analyzed region
+
+    end: (int)
+        Position to end analyzed region
+
+    chunksize: (int)
+        This represents the size of chunk the data frame df will be traversed over.
+
+
+    Attributes
+    ----------
+
+    output_df: (pandas data frame)
+        contains the output of the simulate_sort constructor
+    """
+
     # def __init__(self,df,mp,noisetype,npar,nbins,sequence_library=True,start=0,end=None,chunksize=50000):
     def __init__(self, df, mp=None, noisetype='None', npar=[0.2], nbins=3, sequence_library=True, start=0,
                  end=None, chunksize=10):
+
+
 
         # validate noise parameters
 
@@ -87,7 +132,6 @@ class simulate_sort_class:
             col_labels = utils.get_column_headers(temp_output_df)
             # temp_output_df['ct'] = temp_output_df[col_labels].sum(axis=1)
             temp_output_df.drop('val', axis=1, inplace=True)
-            #print temp_output_df.shape
             #print output_df.shape
             output_df = pd.concat([output_df, temp_output_df], axis=0).copy()
             i = i + 1
@@ -98,4 +142,4 @@ class simulate_sort_class:
         self.output_df = output_df
 
         #return output_df
-        print(output_df.head())
+        #print(output_df.head())
