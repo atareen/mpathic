@@ -55,6 +55,7 @@ MPAthic Classes
    simulate_sort
    profile
    learn_model
+   scan_model
    dataset
 
 
