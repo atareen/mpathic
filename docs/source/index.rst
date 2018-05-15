@@ -10,33 +10,56 @@ MPAthic
 
 *Written by Ammar Tareen, William Ireland, and Justin B. Kinney.*
 
-.. raw:: html
-
-    <h1><font color="red">Under Active Development</font></h1>
-
-
-MPAthic fits quantitative models to data. Barring a few exceptions, each method takes
-one or more tabular text files as input and returns a tabular text file as output. All input and
-output files are designed to be human readable. The first line of each tabular text file contains
+MPAthic is a python API and it fits quantitative models to data.
+Most MPAthic classes take in one or more tabular text files as input and return a tabular text file as output.
+All input and output files are designed to be human readable. The first line of each tabular text file contains
 headers describing the contents of each column. All input files are required to have the proper set of
 columns, which of course depend on the command being executed. By default, input is taken from the standard
 input and output is written to the standard output.
 
+Installation
+------------
 
-Welcome to mpathic's documentation!
-===================================
+MPAthic can be installed from
+`PyPI <https://pypi.python.org/pypi/mpathic>`_ using the pip package
+manager (version 9.0.0 or higher). At the command line::
+
+    pip install mpathic
+
+The code for MPAthic is open source and available on
+`GitHub <https://github.com/atareen/mpathic>`_.
+
+
+Quick Start
+-----------
+
+To run an MPAthic example, do this from within Python::
+
+   import mpathic as mpa
+   mpa.simulate_library(wtseq="TAATGTGAGTTAGCTCACTCAT")
+
+
+
+Resources
+---------
 
 .. toctree::
+
 
    simulate_library
    simulate_sort
    profile
    learn_model
+   dataset
+
 
 
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+Code for this and other examples can be found on the :doc:`dataset` page.
+The :doc:`learn_model` page details the mpathic API.
