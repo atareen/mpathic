@@ -44,11 +44,12 @@ To run an MPAthic example, do this from within Python::
 
 
 
-Resources
----------
+MPAthic Classes
+---------------
 
 .. toctree::
-
+   :maxdepth: 1
+   :titlesonly:
 
    simulate_library
    simulate_sort
