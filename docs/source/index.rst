@@ -56,6 +56,7 @@ MPAthic Classes
    profile
    learn_model
    scan_model
+   evaluate_model
    dataset
 
 

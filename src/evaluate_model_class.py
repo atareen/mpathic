@@ -11,7 +11,28 @@ import fast
 
 class evaluate_model_class:
 
+    """
+
+    Parameters
+    ----------
+
+    dataset_df: (pandas dataframe)
+        Input dataset data frame
+    model_df: (pandas dataframe)
+        Model dataframe
+    left: (int)
+        Seq position at which to align the left-side of the model. \n
+        Defaults to position determined by model dataframe.
+
+    right: (int)
+        Seq position at which to align the right-side of the model. \n
+        Defaults to position determined by model dataframe.
+
+    """
+
     def __init__(self,dataset_df, model_df, left=None, right=None):
+
+
 
         self.dataset_with_values = None
         self.out_df = None
