@@ -10,6 +10,10 @@ MPAthic
 
 *Written by Ammar Tareen, William Ireland, and Justin B. Kinney.*
 
+.. raw:: html
+
+    <h1><font color="red">Under Active Development</font></h1>
+
 MPAthic is a python API and it fits quantitative models to data.
 Most MPAthic classes take in one or more tabular text files as input and return a tabular text file as output.
 All input and output files are designed to be human readable. The first line of each tabular text file contains
