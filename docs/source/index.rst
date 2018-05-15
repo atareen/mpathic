@@ -8,7 +8,7 @@
 MPAthic
 ========
 
-*Written by Ammar Tareen, William Ireland, and Justin B. Kinney.*
+*Written by William Ireland, Ammar Tareen, and Justin B. Kinney.*
 
 .. raw:: html
 
