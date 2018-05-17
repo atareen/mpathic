@@ -17,6 +17,30 @@ class ControlledError(Exception):
     def __str__(self):
         return self.value
 
+
+def clean_SortSeqError(mpathic_function):
+
+    """
+    This decorator will put out a clean SortSeqError message.
+    Where ever SortSeqError previously occured, that method
+    should be decorated by the clean_SortSeqError message to the
+    User gets a cleaner message.
+
+    parameter: (mpathic_function)
+        this is the MPAthic function that will be decorated
+
+    :return:
+    """
+    def wrapper(*args,**kwargs):
+
+        try:
+            mpathic_function(*args,**kwargs)
+        except SortSeqError as e:
+            print(e)
+            sys.exit(1)
+
+    return wrapper
+
 def profile_counts(df,dicttype,wtseq=None,return_wtseq=False,bin_k=None,start=0,end=None):
     '''Takes the input data frame with sequences and counts in each bin
         and returns a data frame with counts of each base at each position.'''

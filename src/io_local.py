@@ -6,6 +6,7 @@ from utils import ControlledError
 from mpathic import SortSeqError
 import sys
 from Bio import SeqIO
+from utils import clean_SortSeqError
 
 def format_fasta(s):
     '''Function which takes in the raw fastq format and returns only the sequence'''
@@ -29,29 +30,20 @@ def load_text(file_arg):
             'Could not interpret text file %s as dataframe.'%repr(file_handle))
     return df.dropna(axis=0, how='all')   # Drop rows with all NaNs
 
-
+@clean_SortSeqError
 def validate_file_for_reading(file_arg):
-    """ Checks that a specified file exists and is readable. Returns a valid file handle given a file name or handle 
+    """ Checks that a specified file exists and is readable. Returns a valid file handle given a file name or handle
     """
-
     # If user passed file name
-    if type(file_arg) == str:
+    if type(file_arg)==str:
 
         # Verify that file exists
-        try:
-            if not os.path.isfile(file_arg):
-                raise ControlledError('Cannot find file: %s, please ensure file exists.'%file_arg)
-        except ControlledError as e:
-            print(e.__str__())
-            sys.exit(1)
+        if not os.path.isfile(file_arg):
+            raise SortSeqError('Cannot find file: %s'%file_arg)
 
         # Verify that file can be read
-        try:
-            if not os.access(file_arg,os.R_OK):
-                raise ControlledError('Can find but cannot read from file: %s'%file_arg)
-        except ControlledError as e:
-            print(e.__str__())
-            sys.exit(1)
+        if not os.access(file_arg,os.R_OK):
+            raise SortSeqError('Can find but cannot read from file: %s'%file_arg)
 
         # Get handle to file
         file_handle = open(file_arg,'r')
@@ -60,25 +52,16 @@ def validate_file_for_reading(file_arg):
     elif type(file_arg)==file:
 
         # Verify that file isn't closed
-        try:
-            if file_arg.closed:
-                raise ControlledError('File object is already closed.')
-            file_handle = file_arg
-        except ControlledError as e:
-            print(e.__str__())
-            sys.exit(1)
+        if file_arg.closed:
+            raise SortSeqError('File object is already closed.')
+        file_handle = file_arg
 
     # Otherwise, throw error
     else:
-        try:
-            raise ControlledError('file_arg is neither a name or handle.')
-        except ControlledError as e:
-            print(e.__str__())
-            sys.exit(1)
+        raise SortSeqError('file_arg is neigher a name or handle.')
 
     # Return validated file handle
     return file_handle
-
 
 def validate_file_for_writing(file_arg):
     """ Checks that a specified file can be written
