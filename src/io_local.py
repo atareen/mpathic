@@ -1,14 +1,11 @@
 import pandas as pd
-from Bio import SeqIO
-from Bio.Alphabet import IUPAC
-import re
-import pdb
-import numpy as np
 import os
 import qc
 import utils
+from utils import ControlledError
 from mpathic import SortSeqError
-import time
+import sys
+from Bio import SeqIO
 
 def format_fasta(s):
     '''Function which takes in the raw fastq format and returns only the sequence'''
@@ -36,16 +33,25 @@ def load_text(file_arg):
 def validate_file_for_reading(file_arg):
     """ Checks that a specified file exists and is readable. Returns a valid file handle given a file name or handle 
     """
+
     # If user passed file name
-    if type(file_arg)==str:
+    if type(file_arg) == str:
 
         # Verify that file exists
-        if not os.path.isfile(file_arg):
-            raise SortSeqError('Cannot find file: %s'%file_arg)
+        try:
+            if not os.path.isfile(file_arg):
+                raise ControlledError('Cannot find file: %s, please ensure file exists.'%file_arg)
+        except ControlledError as e:
+            print(e.__str__())
+            sys.exit(1)
 
         # Verify that file can be read
-        if not os.access(file_arg,os.R_OK):
-            raise SortSeqError('Can find but cannot read from file: %s'%file_arg)
+        try:
+            if not os.access(file_arg,os.R_OK):
+                raise ControlledError('Can find but cannot read from file: %s'%file_arg)
+        except ControlledError as e:
+            print(e.__str__())
+            sys.exit(1)
 
         # Get handle to file
         file_handle = open(file_arg,'r')
@@ -54,13 +60,21 @@ def validate_file_for_reading(file_arg):
     elif type(file_arg)==file:
 
         # Verify that file isn't closed
-        if file_arg.closed:
-            raise SortSeqError('File object is already closed.')
-        file_handle = file_arg
+        try:
+            if file_arg.closed:
+                raise ControlledError('File object is already closed.')
+            file_handle = file_arg
+        except ControlledError as e:
+            print(e.__str__())
+            sys.exit(1)
 
     # Otherwise, throw error
     else:
-        raise SortSeqError('file_arg is neigher a name or handle.')
+        try:
+            raise ControlledError('file_arg is neither a name or handle.')
+        except ControlledError as e:
+            print(e.__str__())
+            sys.exit(1)
 
     # Return validated file handle
     return file_handle
@@ -178,6 +192,35 @@ def load_dataset(file_arg, file_type='text',seq_type=None):
 
     # Return validated/fixed dataframe
     return qc.validate_dataset(df, fix=True)
+
+
+def load_contigs_from_fasta(file_arg,model_df,chunksize=10000,circular=False):
+    L = model_df.shape[0]
+    contig_list = []
+
+    inloc = validate_file_for_reading(file_arg)
+    for i, record in enumerate(SeqIO.parse(inloc, 'fasta')):
+        name = record.name if record.name else 'contig_%d' % i
+        # Split contig up into chunk)size bits
+        full_contig_str = str(record.seq)
+
+
+        # Add a bit on end if circular
+        if circular:
+            full_contig_str += full_contig_str[:L - 1]
+
+            # Define chunks containing chunksize sites
+        start = 0
+        end = start + chunksize + L - 1
+        while end < len(full_contig_str):
+            contig_str = full_contig_str[start:end]
+            contig_list.append((contig_str, name, start))
+            start += chunksize
+            end = start + chunksize + L - 1
+        contig_str = full_contig_str[start:]
+        contig_list.append((contig_str, name, start))
+
+    return contig_list
 
 # JBK: I want to get rid of these
 def load_model(file_arg):
