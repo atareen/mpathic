@@ -144,12 +144,27 @@ def test_mpathic_io():
 
     bad_file_arg_example_1 = "../../mpathic/MPAthic_tests/input/dataset_bad_badseqs.txt"
     bad_file_arg_example_2 = "../../mpathic/MPAthic_tests/input/dataset_bad_badcounts.txt"
+    bad_file_arg_example_3 = "../../mpathic/MPAthic_tests/input/dataset_bad_badseqtype.txt"
+    bad_file_arg_example_4 = "../../mpathic/MPAthic_tests/input/dataset_bad_floatcounts.txt"
 
     good_file_arg_example_1 =  "../../mpathic/MPAthic_tests/input/dataset_crp.txt"
+    good_file_arg_example_2 = "../../mpathic/MPAthic_tests/input/dataset_good_noctcol.txt"
+    good_file_arg_example_3 = "../../mpathic/MPAthic_tests/input/dataset_good_nonconsecutivebins.txt"
+    good_file_arg_example_4 = "../../mpathic/MPAthic_tests/input/dataset_good_pro.txt"
+    good_file_arg_example_5 = "../../mpathic/MPAthic_tests/input/dataset_good_rna.txt"
+    good_file_arg_example_6 = "../../mpathic/MPAthic_tests/input/dataset_good.txt"
+    good_file_arg_example_7 = "../../mpathic/MPAthic_tests/input/dataset_pro.txt"
+    good_file_arg_example_8 = "../../mpathic/MPAthic_tests/input/dataset.txt"
+
 
 
     # test parameter file args
-    test_parameter_values(func=mpa.io.load_dataset,var_name='file_arg',fail_list=[bad_file_arg_example_1,bad_file_arg_example_2],success_list=[good_file_arg_example_1])
+    test_parameter_values(func=mpa.io.load_dataset, var_name='file_arg',
+                          fail_list=[bad_file_arg_example_1, bad_file_arg_example_2, bad_file_arg_example_3,
+                                     bad_file_arg_example_4],
+                          success_list=[good_file_arg_example_1, good_file_arg_example_2, good_file_arg_example_3,
+                                        good_file_arg_example_4, good_file_arg_example_5, good_file_arg_example_6,
+                                        good_file_arg_example_7, good_file_arg_example_8])
 
 
 #test_simulate_library()
