@@ -33,14 +33,13 @@ def clean_SortSeqError(mpathic_function):
     """
     def wrapper(*args,**kwargs):
 
-        print(' in clean sort seq error')
         try:
-           return mpathic_function(*args,**kwargs)
+            return mpathic_function(*args,**kwargs)
+
         except SortSeqError as e:
             print(e)
             # should this be exit in production?
             return
-
 
     return wrapper
 
@@ -634,7 +633,8 @@ def handle_errors(func):
 
             # If error, exit
             if error:
-                sys.exit(1)
+                #sys.exit(1)
+                return
 
             # Otherwise, just return normal result
             else:

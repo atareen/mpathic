@@ -17,6 +17,7 @@ def format_fasta(s):
     s = s.replace('\n','')
     return s
 
+
 def load_text(file_arg):
     """
     General function used to load data from a text file
@@ -92,7 +93,7 @@ def validate_file_for_writing(file_arg):
 
 
 # JBK: This function is currently too complex to be refactored into load()
-@clean_SortSeqError
+#@clean_SortSeqError
 @handle_errors
 def load_dataset(file_arg, file_type='text',seq_type=None):
 
@@ -235,7 +236,7 @@ def load_contigs_from_fasta(file_arg,model_df,chunksize=10000,circular=False):
     return contig_list
 
 # JBK: I want to get rid of these
-#@clean_SortSeqError
+@handle_errors
 def load_model(file_arg):
     return load(file_arg, file_type='model')
 
@@ -264,7 +265,6 @@ def load_sitelist(file_arg):
     return load(file_arg, file_type='sitelist')
 
 # JBK: I want to switch to using only this function
-@clean_SortSeqError
 def load(file_arg, file_type, **kwargs):
     """ Loads file of any specified type
     """
