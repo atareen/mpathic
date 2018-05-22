@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import qc
 import utils
-from utils import ControlledError
+from utils import ControlledError, handle_errors
 from mpathic import SortSeqError
 import sys
 from Bio import SeqIO
@@ -30,7 +30,7 @@ def load_text(file_arg):
             'Could not interpret text file %s as dataframe.'%repr(file_handle))
     return df.dropna(axis=0, how='all')   # Drop rows with all NaNs
 
-@clean_SortSeqError
+
 def validate_file_for_reading(file_arg):
     """ Checks that a specified file exists and is readable. Returns a valid file handle given a file name or handle
     """
@@ -63,6 +63,8 @@ def validate_file_for_reading(file_arg):
     # Return validated file handle
     return file_handle
 
+
+
 def validate_file_for_writing(file_arg):
     """ Checks that a specified file can be written
     """
@@ -88,10 +90,36 @@ def validate_file_for_writing(file_arg):
     # Return validated file handle
     return file_handle
 
+
 # JBK: This function is currently too complex to be refactored into load()
+@clean_SortSeqError
+@handle_errors
 def load_dataset(file_arg, file_type='text',seq_type=None):
-    """ Loads a dataset file, returns a data frame. 
-        Can load text, fasta, or fastq files
+
+    """
+    Method that loads a dataset via a file and
+    returns a pandas dataframe.
+
+    parameters
+    ----------
+
+    file_arg: (string)
+        String specifying the location of the input file containing
+        the dataset file.
+
+    file_type: (string)
+        String specifying type of file. Valid choices include
+        'fasta','fastq', and 'text'.
+
+    seq_type: (string)
+        String that specifies type of sequence. Valid choices
+        include 'dna', 'rna', 'protein' and (possibly None).
+
+    return
+    -------
+
+    (dataframe)
+        Pandas dataframe is returned.
     """
 
     # Check that the file can be read
@@ -99,8 +127,8 @@ def load_dataset(file_arg, file_type='text',seq_type=None):
 
     # Check that file type is vaild
     if not file_type in ['text','fasta','fastq']:
-        raise SortSeqError('Argument file_type, = %s, is not valid.'%\
-            str(file_type))
+        raise SortSeqError('Argument file_type, = %s, is not valid, valid arguments include text, fasta, fastq.' % \
+                           str(file_type))
 
     # Make sure seq_type, if any, is valid
     if seq_type and not (seq_type in qc.seqtypes):
@@ -115,10 +143,11 @@ def load_dataset(file_arg, file_type='text',seq_type=None):
         colname = qc.seqtype_to_seqcolname_dict[seq_type]
 
         # Fill in dataframe with fasta or fastq data
-        #First read in the sequence and sequence identifier into each line
+        # First read in the sequence and sequence identifier into each line
         df = pd.io.parsers.read_csv(file_arg,lineterminator='>',engine='c',names='s')
         df.rename(columns={'s':colname},inplace=True)
-        #now remove sequence identifiers
+
+        # now remove sequence identifiers
         df.loc[:,colname] = df.loc[:,colname].apply(format_fasta)
         
 
@@ -142,12 +171,12 @@ def load_dataset(file_arg, file_type='text',seq_type=None):
 
     # For text file, just load as whitespace-delimited data frame
     elif file_type=='text':
-
         df = load_text(file_arg)
 
         # If seq_type is specified, get corresponding column name
         if seq_type:
             colname = qc.seqtype_to_seqcolname_dict[seq_type]
+
 
         # If seq_type is specified, make sure it matches colname in df
         if seq_type and (not colname in df.columns):
@@ -206,6 +235,7 @@ def load_contigs_from_fasta(file_arg,model_df,chunksize=10000,circular=False):
     return contig_list
 
 # JBK: I want to get rid of these
+#@clean_SortSeqError
 def load_model(file_arg):
     return load(file_arg, file_type='model')
 
@@ -234,6 +264,7 @@ def load_sitelist(file_arg):
     return load(file_arg, file_type='sitelist')
 
 # JBK: I want to switch to using only this function
+@clean_SortSeqError
 def load(file_arg, file_type, **kwargs):
     """ Loads file of any specified type
     """

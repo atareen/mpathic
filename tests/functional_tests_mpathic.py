@@ -26,6 +26,7 @@ def test_for_mistake(func, *args, **kw):
 
     None.
     """
+
     global global_fail_counter
     global global_success_counter
 
@@ -36,7 +37,6 @@ def test_for_mistake(func, *args, **kw):
 
     # Run function
     obj = func(*args, **kw)
-
     # Increment appropriate counter
     if obj.mistake:
         global_fail_counter += 1
@@ -140,6 +140,17 @@ def test_simulate_library():
                           success_list=[3, 200])
 
 
+def test_mpathic_io():
+
+    bad_file_arg_example_1 = "../../mpathic/MPAthic_tests/input/dataset_bad_badseqs.txt"
+    bad_file_arg_example_2 = "../../mpathic/MPAthic_tests/input/dataset_bad_badcounts.txt"
+
+    good_file_arg_example_1 =  "../../mpathic/MPAthic_tests/input/dataset_crp.txt"
 
 
-test_simulate_library()
+    # test parameter file args
+    test_parameter_values(func=mpa.io.load_dataset,var_name='file_arg',fail_list=[bad_file_arg_example_1,bad_file_arg_example_2],success_list=[good_file_arg_example_1])
+
+
+#test_simulate_library()
+test_mpathic_io()

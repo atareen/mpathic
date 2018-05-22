@@ -29,15 +29,18 @@ def clean_SortSeqError(mpathic_function):
     parameter: (mpathic_function)
         this is the MPAthic function that will be decorated
 
-    :return:
+    return: wrapper function
     """
     def wrapper(*args,**kwargs):
 
+        print(' in clean sort seq error')
         try:
-            mpathic_function(*args,**kwargs)
+           return mpathic_function(*args,**kwargs)
         except SortSeqError as e:
             print(e)
-            sys.exit(1)
+            # should this be exit in production?
+            return
+
 
     return wrapper
 
@@ -568,7 +571,13 @@ def check(condition, message):
     '''
     if not condition:
         raise ControlledError(message)
-    
+
+
+# Dummy class
+class Dummy():
+    def __init__(self):
+        pass
+
 
 def handle_errors(func):
     """
@@ -582,7 +591,6 @@ def handle_errors(func):
         should_fail = kwargs.pop('should_fail', None)
 
         try:
-
             # Execute function
             result = func(*args, **kwargs)
             error = False
@@ -604,7 +612,9 @@ def handle_errors(func):
                       should_fail)
                 sys.exit(1)
 
-        except ControlledError as e:
+        #except ControlledError as e:
+        except (SortSeqError, ControlledError) as e:
+
             error = True
 
             if should_fail is True:
