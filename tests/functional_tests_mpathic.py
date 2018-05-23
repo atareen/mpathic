@@ -142,9 +142,17 @@ def test_simulate_library():
 
 def test_profile_freq():
 
-    good_dataset_df_file = "../../mpathic/MPAthic_tests/input/dataset_crp.txt"
-    df = mpa.io.load_dataset(good_dataset_df_file)
-    test_parameter_values(func=mpa.profile_freq_class,var_name='dataset_df',fail_list=[3,'x',None],success_list=[df])
+    # dataset_df tests
+
+    # note that the bad_df_1 never gets loaded because qc,
+    # so none gets passed into profile_freq, which fails as expected
+    bad_df_1  = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_bad_badseqs.txt")
+
+    good_df_1 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_crp.txt")
+    good_df_2 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_good_pro.txt")
+
+    test_parameter_values(func=mpa.profile_freq_class, var_name='dataset_df', fail_list=[3, 'x', None, bad_df_1],
+                          success_list=[good_df_1, good_df_2])
 
 
 def test_mpathic_io():
