@@ -40,5 +40,5 @@ each base or amino acid (labeled ct_A, ct_C...).
 Class Details
 -------------
 
-.. autoclass:: mpathic.src.profile_freq_class.profile_freq_class
+.. autoclass:: profile_freq_class.profile_freq_class
     :members:
