@@ -140,6 +140,13 @@ def test_simulate_library():
                           success_list=[3, 200])
 
 
+def test_profile_freq():
+
+    good_dataset_df_file = "../../mpathic/MPAthic_tests/input/dataset_crp.txt"
+    df = mpa.io.load_dataset(good_dataset_df_file)
+    test_parameter_values(func=mpa.profile_freq_class,var_name='dataset_df',fail_list=[3,'x',None],success_list=[df])
+
+
 def test_mpathic_io():
 
     ###########################
@@ -219,32 +226,22 @@ def test_mpathic_io():
     bad_file_arg_load_model_2 = "../../mpathic/MPAthic_tests/input/model_bad_mat_floatpos.txt"
     good_file_arg_load_model_1 = "../../mpathic/data/sortseq/full-0/crp_model.txt"
 
-    print('testing load_model')
+
     # test file_arg for io.load_model
     test_parameter_values(func=mpa.io.load_model, var_name='file_arg',
                           fail_list=[bad_file_arg_load_model_1, bad_file_arg_load_model_2],
                           success_list=[good_file_arg_load_model_1])
 
+    #############################
+    ## io.load_model tests end ##
+    #############################
 
+
+# temporary method used only for debugging. Will be deleted in production.
 def run_single_test():
-
-
-    '''
-    bad_file_arg_load_model_1 = "../../mpathic/MPAthic_tests/input/model_bad_mat_badcol.txt"
-    bad_file_arg_load_model_2 = "../../mpathic/MPAthic_tests/input/model_bad_mat_floatpos.txt"
-    good_file_arg_load_model_1 = "../../mpathic/data/sortseq/full-0/crp_model.txt"
-
-    print('testing load_model')
-    # test file_arg for io.load_model
-    test_parameter_values(func=mpa.io.load_model, var_name='file_arg',
-                          fail_list=[bad_file_arg_load_model_1, bad_file_arg_load_model_2],
-                          success_list=[good_file_arg_load_model_1])
-    '''
-
-    #mpa.io.load_model("../../mpathic/MPAthic_tests/input/model_bad_mat_badcol.txt")
-    bad_file_arg_load_dataset_fasta_1 = "../../mpathic/MPAthic_tests/input/genome_ecoli_100lines_bad_char.fa"
-    mpa.io.load_dataset(bad_file_arg_load_dataset_fasta_1)
+    pass
 
 #run_single_test()
 test_simulate_library()
 test_mpathic_io()
+test_profile_freq()
