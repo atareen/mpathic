@@ -109,6 +109,7 @@ def test_parameter_values(func,
         test_for_mistake(func=func, should_fail=False, **kwargs)
 
 
+# functional tests for simulate library
 def test_simulate_library():
 
     # test default parameters
@@ -140,6 +141,7 @@ def test_simulate_library():
                           success_list=[3, 200])
 
 
+# functional tests for profile frequencies.
 def test_profile_freq():
 
     # dataset_df tests
@@ -153,6 +155,10 @@ def test_profile_freq():
 
     test_parameter_values(func=mpa.profile_freq_class, var_name='dataset_df', fail_list=[3, 'x', None, bad_df_1],
                           success_list=[good_df_1, good_df_2])
+
+    # bin tests
+    test_parameter_values(func=mpa.profile_freq_class, var_name='bin', fail_list=[-1, 'x', 1.2],
+                          success_list=[2, 3],dataset_df = good_df_1)
 
 
 def test_mpathic_io():

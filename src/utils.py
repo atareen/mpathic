@@ -7,7 +7,6 @@ import pandas as pd
 from mpathic import SortSeqError
 from functools import wraps
 
-
 # Define error handling
 class ControlledError(Exception):
 
@@ -580,7 +579,7 @@ class Dummy():
 
 def handle_errors(func):
     """
-    Decorator function to handle SUFTware errors
+    Decorator function to handle MPAthic errors
     """
 
     @wraps(func)
@@ -611,7 +610,6 @@ def handle_errors(func):
                       should_fail)
                 sys.exit(1)
 
-        #except ControlledError as e:
         except (SortSeqError, ControlledError) as e:
 
             error = True
