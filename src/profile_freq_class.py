@@ -11,28 +11,60 @@ import qc as qc
 import io_local as io
 import profile_ct as profile_ct
 import pdb
-#from . import SortSeqError
 from mpathic import SortSeqError
+from utils import handle_errors, check, ControlledError
 
 class profile_freq_class:
 
-    def __init__(self,dataset_df=None, bin=None, start=0, end=None):
-        """
-        Computes character frequencies (0.0 to 1.0) at each position
+    """
 
-        Arguments:
-            dataset_df (pd.DataFrame): A dataframe containing a valid dataset.
-            bin (int): A bin number specifying which counts to use
-            start (int): An integer specifying the sequence start position
-            end (int): An integer specifying the sequence end position
+    Profile Frequencies computes character frequencies (0.0 to 1.0) at each position
 
-        Returns:
-            freq_df (pd.DataFrame): A dataframe containing counts for each nucleotide/amino acid character at each position.
-        """
-        
-        filename = './mpathic/examples/data_set_simulated.txt'
+    Parameters
+    ----------
+    dataset_df: (pandas dataframe)
+        A dataframe containing a valid dataset.
 
-        dataset_df = pd.read_csv(filename, delim_whitespace=True, dtype={'seqs': str, 'batch': int})
+    bin: (int)
+        A bin number specifying which counts to use
+
+    start: (int)
+        An integer specifying the sequence start position
+
+    end: (int)
+        An integer specifying the sequence end position
+
+    Returns
+    -------
+    freq_df (pd.DataFrame):
+        A dataframe containing counts for each nucleotide/amino \n
+        acid character at each position.
+
+    """
+
+    @handle_errors
+    def __init__(self,dataset_df, bin=None, start=0, end=None):
+
+        # binding parameters to the instance of the class
+        self.dataset_df = dataset_df
+        self.bin = bin
+        self.start = start
+        self.end = end
+
+        # this is resulting dataframe
+        self.freq_df = None
+
+
+        # do some input checking validation
+        self._input_check()
+
+
+        if dataset_df is not None:
+            # check is dataframe is qc'ed
+            qc.validate_dataset(dataset_df)
+
+        else:
+            raise SortSeqError("Input data set is None, please enter a valid dataset.")
 
         # Validate dataset_df
         qc.validate_dataset(dataset_df)
@@ -51,34 +83,37 @@ class profile_freq_class:
 
         # Validate as counts dataframe
         freq_df = qc.validate_profile_freq(freq_df, fix=True)
-        #return freq_df
-        print(freq_df)
 
+        self.freq_df = freq_df
 
-    # Define commandline wrapper
-    def wrapper(self,args):
-        """ Commandline wrapper for main()
+    def _input_check(self):
+
         """
-        inloc = io.validate_file_for_reading(args.i) if args.i else sys.stdin
-        outloc = io.validate_file_for_writing(args.out) if args.out else sys.stdout
-        input_df = io.load_dataset(inloc)
-        output_df = self.__init__(input_df, bin=args.bin, start=args.start, end=args.end)
-        io.write(output_df, outloc)
+        check input parameters for correctness
+        """
 
-    """
-    # Connects argparse to wrapper
-    def add_subparser(subparsers):
-        p = subparsers.add_parser('profile_freq')
-        p.add_argument(
-            '-b', '--bin', type=int, default=None,
-            help='''Dataset bin to use for counts. If blank, total counts will be used''')
-        p.add_argument(
-            '-i', '--i', type=str, default=None, help='''Input file, otherwise input through the standard input.''')
-        p.add_argument(
-            '-s', '--start', type=int, default=0, help='''Position to start your analyzed region''')
-        p.add_argument(
-            '-e', '--end', type=int, default=None, help='''Position to end your analyzed region''')
-        p.add_argument( \
-            '-o', '--out', type=str, default=None, help='''Output file, otherwise use standard output.''')
-        p.set_defaults(func=wrapper)
-    """
+        check(isinstance(self.dataset_df, pd.DataFrame),
+              'type(dataset_df) = %s; must be a pandas dataframe ' % type(self.dataset_df))
+
+        if self.bin is not None:
+            check(isinstance(self.bin, int),
+                  'type(bin) = %s; must be of type int ' % type(self.bin))
+
+            check(self.bin > 0, 'bin = %d must be a positive int ' % self.bin)
+
+        if self.start is not None:
+            check(isinstance(self.start, int),
+                  'type(start) = %s; must be of type int ' % type(self.start))
+
+        if self.end is not None:
+            check(isinstance(self.end, int),
+                  'type(end) = %s; must be of type int ' % type(self.end))
+
+
+
+
+
+
+
+
+
