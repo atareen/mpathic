@@ -140,6 +140,20 @@ def test_simulate_library():
     test_parameter_values(func=mpa.simulate_library_class, var_name='tag_length', fail_list=[None, -1, 3.9],
                           success_list=[3, 200])
 
+# functional tests for simulate sort
+def test_simulate_sort():
+
+    # mpathic good model
+    model_good_df   = mpa.io.load_model('../../mpathic/data/sortseq/full-0/crp_model.txt')
+
+    dataset_bad_df  = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_bad_badseqs.txt")
+
+    dataset_good_df_1 = mpa.io.load_dataset("../../mpathic/data/sortseq/full-0/data_small.txt")
+
+    test_parameter_values(mpa.simulate_sort_class,var_name='df',fail_list=[dataset_bad_df],success_list=[dataset_good_df_1],mp=model_good_df)
+
+
+    pass
 
 # functional tests for profile frequencies.
 def test_profile_freq():
@@ -259,3 +273,4 @@ def run_single_test():
 test_simulate_library()
 test_mpathic_io()
 test_profile_freq()
+test_simulate_sort()

@@ -43,7 +43,7 @@ class profile_freq_class:
     """
 
     @handle_errors
-    def __init__(self,dataset_df, bin=None, start=0, end=None):
+    def __init__(self,dataset_df=None, bin=None, start=0, end=None):
 
         # binding parameters to the instance of the class
         self.dataset_df = dataset_df
@@ -54,20 +54,11 @@ class profile_freq_class:
         # this is resulting dataframe
         self.freq_df = None
 
-
         # do some input checking validation
         self._input_check()
 
-
-        if dataset_df is not None:
-            # check is dataframe is qc'ed
-            qc.validate_dataset(dataset_df)
-
-        else:
-            raise SortSeqError("Input data set is None, please enter a valid dataset.")
-
-        # Validate dataset_df
-        qc.validate_dataset(dataset_df)
+        #filename = './mpathic/examples/data_set_simulated.txt'
+        #dataset_df = pd.read_csv(filename, delim_whitespace=True, dtype={'seqs': str, 'batch': int})
 
         # Compute counts
         counts_df = profile_ct.main(dataset_df, bin=bin, start=start, end=end)
@@ -92,8 +83,17 @@ class profile_freq_class:
         check input parameters for correctness
         """
 
-        check(isinstance(self.dataset_df, pd.DataFrame),
-              'type(dataset_df) = %s; must be a pandas dataframe ' % type(self.dataset_df))
+        if self.dataset_df is None:
+            raise ControlledError(" Profile freq requires pandas dataframe as input dataframe. Entered df was 'None'.")
+
+        elif self.dataset_df is not None:
+            check(isinstance(self.dataset_df, pd.DataFrame),
+                  'type(df) = %s; must be a pandas dataframe ' % type(self.dataset_df))
+
+            # validate dataset
+            check(pd.DataFrame.equals(self.dataset_df, qc.validate_dataset(self.dataset_df)),
+                  " Input dataframe failed quality control, \
+                  please ensure input dataset has the correct format of an mpathic dataframe ")
 
         if self.bin is not None:
             check(isinstance(self.bin, int),
