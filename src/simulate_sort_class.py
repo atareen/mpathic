@@ -14,6 +14,7 @@ import qc as qc
 import evaluate_model as evaluate_model
 from evaluate_model_class import evaluate_model_class
 from mpathic import SortSeqError
+from utils import check, handle_errors, ControlledError
 
 
 class simulate_sort_class:
@@ -23,10 +24,10 @@ class simulate_sort_class:
     Parameters
     ----------
 
-    df: (array like)
+    df: (pandas dataframe)
         Input data frame.
 
-    mp: (array-like)
+    mp: (pandas dataframe)
         Model data frame.
 
     noisetype: (string, None)
@@ -61,33 +62,28 @@ class simulate_sort_class:
     """
 
     # def __init__(self,df,mp,noisetype,npar,nbins,sequence_library=True,start=0,end=None,chunksize=50000):
-    def __init__(self, df, mp=None, noisetype='None', npar=[0.2], nbins=3, sequence_library=True, start=0,
+    @handle_errors
+    def __init__(self, df=None, mp=None, noisetype='None', npar=[0.2], nbins=3, sequence_library=True, start=0,
                  end=None, chunksize=10):
 
+        # set attributes of class
+        self.df = df
+        self.mp = mp
+        self.noisetype = noisetype
+        self.npar = npar
+        self.nbins = nbins
+        self.sequence_library = sequence_library
+        self.start = start
+        self.end = end
+        self.chunksize = chunksize
 
-
-        # validate noise parameters
-
-        if not isinstance(npar, list):
-            raise SortSeqError('Noise parameters must be given as a list')
-        if noisetype == 'Normal':
-            if len(npar) != 1:
-                raise SortSeqError('''For a normal noise model, there must be one 
-                         input parameter (width of normal distribution)''')
-        if noisetype == 'LogNormal':
-            if len(npar) != 2:
-                raise SortSeqError('''For a LogNormal noise model there must 
-                         be 2 input parameters''')
-        if nbins <= 1:
-            raise SortSeqError('number of bins must be greater than 1')
-            # generate predicted energy of each sequence.
-
+        # validate inputs
+        self._input_check()
 
         # determine cutoffs for bins now
         # do progressive sum to try to find cutoffs so their will be equal numbers in each bin
 
-
-            # Determine model type to use for noise
+        # Determine model type to use for noise
         if noisetype == 'LogNormal':
             NoiseModelSort = Models.LogNormalNoise(npar)
         elif noisetype == 'Normal':
@@ -104,8 +100,6 @@ class simulate_sort_class:
         # split the dataframe according to chunksize
         df = np.array_split(df, chunksize)
         for chunk in df:
-            # df -> pandas data frame
-            # chunk is of type str. headings of the columns.
 
             chunk.reset_index(inplace=True, drop=True)
             chunk = evaluate_model.main(chunk, mp, left=start, right=None)
@@ -141,5 +135,67 @@ class simulate_sort_class:
 
         self.output_df = output_df
 
-        #return output_df
-        #print(output_df.head())
+    def _input_check(self):
+        """
+        private method that validates all parameters
+        """
+
+        # check that input df is of type pandas dataframe
+        if self.df is None:
+            raise ControlledError(" Simulate Sort Requires pandas dataframe as input dataframe. Entered df was 'None'.")
+        elif self.df is not None:
+            check(isinstance(self.df, pd.DataFrame),
+                'type(df) = %s; must be a pandas dataframe ' % type(self.df))
+
+        # check model dataframe
+        if self.mp is None:
+            raise ControlledError(
+                " Simulate Sort Requires pandas dataframe as model input. Entered model df was 'None'.")
+        elif self.mp is not None:
+            check(isinstance(self.mp, pd.DataFrame), 'type(mp) = %s; must be a pandas dataframe ' % type(self.mp))
+
+        # check noisetype is string
+        check(isinstance(self.noisetype,str),'type(noisetype) = %s; must be a string ' % type(self.noisetype))
+
+        # check noisetype is valid
+        valid_noisetype_values = ['LogNormal','Normal','None','Plasmid']
+        check(self.noisetype in valid_noisetype_values,
+              'noisetype = %s; must be in %s' % (self.noisetype, valid_noisetype_values))
+
+        # ensure that npar is type list
+        check(isinstance(self.npar,list),'type(npar) = %s; must be a list ' % type(self.npar))
+
+        # for valid choice of noisetype, pick appropriate noise parameters
+        if self.noisetype == 'Normal':
+            if len(self.npar) != 1:
+                raise SortSeqError(
+                    'For a normal noise model, there must be one input parameter (width of normal distribution)')
+
+        if self.noisetype == 'LogNormal':
+            if len(self.npar) != 2:
+                raise SortSeqError('''For a LogNormal noise model there must 
+                         be 2 input parameters''')
+
+        # ensure nbins is valid
+        check(isinstance(self.nbins,int),'type(nbins) = %s; must be of type int ' % type(self.nbins))
+        check(self.nbins > 1,'number of bins must be greater than 1, entered bins = %d' % self.nbins)
+
+        # sequence library should be boolean
+        check(isinstance(self.sequence_library, bool),
+              'type(sequence_library) = %s; must be of type bool ' % type(self.sequence_library))
+
+        # make sure start is of type int
+        check(isinstance(self.start, int),
+                  'type(start) = %s; must be of type int ' % type(self.start))
+
+        # make sure end is of type int
+        if self.end is not None:
+            check(isinstance(self.end, int),
+                  'type(end) = %s; must be of type int ' % type(self.end))
+
+        # make sure end is of type int
+        if self.chunksize is not None:
+            check(isinstance(self.chunksize, int), 'type(chunksize) = %s; must be of type int ' % type(self.chunksize))
+
+
+
