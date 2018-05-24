@@ -147,6 +147,11 @@ class simulate_sort_class:
             check(isinstance(self.df, pd.DataFrame),
                 'type(df) = %s; must be a pandas dataframe ' % type(self.df))
 
+            # validate dataset
+            check(pd.DataFrame.equals(self.df, qc.validate_dataset(self.df)),
+                  " Input dataframe failed quality control, \
+                  please ensure input dataset has the correct format of an mpathic dataframe ")
+
         # check model dataframe
         if self.mp is None:
             raise ControlledError(
