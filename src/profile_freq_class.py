@@ -36,7 +36,7 @@ class profile_freq_class:
 
     Returns
     -------
-    freq_df (pd.DataFrame):
+    freq_df: (pd.DataFrame)
         A dataframe containing counts for each nucleotide/amino \n
         acid character at each position.
 
@@ -101,9 +101,10 @@ class profile_freq_class:
 
             check(self.bin > 0, 'bin = %d must be a positive int ' % self.bin)
 
-        if self.start is not None:
-            check(isinstance(self.start, int),
-                  'type(start) = %s; must be of type int ' % type(self.start))
+        check(isinstance(self.start, int),
+              'type(start) = %s; must be of type int ' % type(self.start))
+
+        check(self.start >= 0,"start = %d must be a positive integer " % self.start)
 
         if self.end is not None:
             check(isinstance(self.end, int),

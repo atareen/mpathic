@@ -2,6 +2,7 @@
 
 '''A script which calculates the mutual information between base identity
     and batch.'''
+
 from __future__ import division
 #Our standard Modules
 import argparse
@@ -22,20 +23,40 @@ from mpathic import SortSeqError
 
 class profile_info_class:
 
-    def __init__(self,dataset_df=None, err=False, method='naive',\
-        pseudocount=1.0, start=0, end=None):
-        """
-        Computes the mutual information (in bits), at each position, between the character and the bin number.
+    """
+    Profile Info computes the mutual information (in bits), at each position, between the character and the bin number.
 
-        Arguments:
-            dataset_df (pd.DataFrame): A dataframe containing a valid dataset.
-            start (int): An integer specifying the sequence start position
-            end (int): An integer specifying the sequence end position
-            method (str): Which method to use to estimate mutual information
+    Parameters
+    ----------
 
-        Returns:
-            info_df (pd.DataFrame): A dataframe containing results.
-        """
+    dataset_df: (pandas dataframe)
+        Input data frame
+
+    err: (boolean)
+        If true, include error estimates in computed mutual information
+
+    method: (string)
+        method used in computation. Valid choices inlcude: 'naive','tpm','nsb'.
+
+    pseudocount: (float)
+        pseudocount used to compute information values
+
+    start: (int)
+        An integer specifying the sequence start position
+
+    end: (int)
+        An integer specifying the sequence end position
+
+    Returns
+    -------
+    info_df: (pandas dataframe)
+        dataframe containing results.
+
+    """
+
+
+    def __init__(self, dataset_df=None, err=False, method='naive',
+                 pseudocount=1.0, start=0, end=None):
 
         filename = './mpathic/data/formatted/dms/dms_1_formatted.txt'
 
@@ -111,37 +132,6 @@ class profile_info_class:
         # Validate info dataframe
         info_df = qc.validate_profile_info(info_df,fix=True)
         #return info_df
-        print(info_df)
+        self.info_df = info_df
 
 
-    # Define commandline wrapper
-    def wrapper(self,args):
-        """ Commandline wrapper for main()
-        """
-        inloc = io.validate_file_for_reading(args.i) if args.i else sys.stdin
-        outloc = io.validate_file_for_writing(args.out) if args.out else sys.stdout
-        input_df = io.load_dataset(inloc)
-        output_df = self.__init__(input_df, start=args.start,end=args.end,\
-            err=args.err, method=args.method, pseudocount=args.pseudocount)
-        io.write(output_df,outloc)
-
-
-    # Connects argparse to wrapper
-    def add_subparser(subparsers):
-        p = subparsers.add_parser('profile_info')
-        p.add_argument(
-            '-i', '--i', type=str, default=None, help='''Input file, otherwise input through the standard input.''')
-        p.add_argument(
-            '-s','--start',type=int, default=0,help ='''Position to start your analyzed region''')
-        p.add_argument(
-            '-e','--end',type=int, default = None, help='''Position to end your analyzed region''')
-        p.add_argument(\
-            '-o', '--out', type=str, default=None,help='''Output file, otherwise use standard output.''')
-        p.add_argument(
-            '-d','--err',default = False,action='store_true', help='''Whether or not to include error estimates.''')
-        p.add_argument(
-            '-m','--method', type=str, default='naive', choices=['naive','tpm','nsb'],\
-            help='''Whether or not to include error estimates.''')
-        p.add_argument(
-            '-p','--pseudocount', type=float, default=1.0, help='''Pseudocount used to compute information values.''')
-        p.set_defaults(func=wrapper)

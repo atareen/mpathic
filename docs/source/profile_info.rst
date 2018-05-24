@@ -38,5 +38,6 @@ label the mRNA counts.
 
 The mutual information is given in bits.
 
-
+.. autoclass:: profile_info_class.profile_info_class
+    :members:
 
