@@ -23,8 +23,8 @@ class simulate_library_class:
     parameters
     ----------
     wtseq: (string)
-        wildtype sequence. Must contain characteres 'A', 'C', 'G','T' for dicttype = 'DNA',
-        'A', 'C', 'G','U' for dicttype = 'RNA'
+        wildtype sequence. Must contain characteres 'A', 'C', 'G','T' for \n
+        dicttype = 'DNA', 'A', 'C', 'G','U' for dicttype = 'RNA'
 
     mutrate: (float)
         mutation rate
