@@ -157,6 +157,7 @@ def test_simulate_sort():
     test_parameter_values(mpa.simulate_sort_class, var_name='df',
                           fail_list=
                           [
+                              0,
                               dataset_bad_df_1,
                               dataset_bad_df_2
                           ],
@@ -168,6 +169,20 @@ def test_simulate_sort():
                           ],
                           mp=model_good_df)
 
+    # test model dataframe
+    ss_rnap_model = mpa.io.load_model('../../mpathic/data/sortseq/rnap-wt/rnap_model.txt')
+    test_parameter_values(func=mpa.simulate_sort_class, var_name='mp', fail_list=[None, 'x'],
+                          success_list=[ss_rnap_model, model_good_df], df=dataset_good_df_1)
+
+    # test noise type
+    test_parameter_values(func=mpa.simulate_sort_class, var_name='noisetype', fail_list=[1, 2.1, 'x','LogNormal'],
+                          success_list=['Normal', 'None'], df=dataset_good_df_1,
+                          mp=model_good_df)
+
+    # test nbins
+    test_parameter_values(func=mpa.simulate_sort_class, var_name='nbins', fail_list=['x', -1, 1.3, 1],
+                          success_list=[2, 3, 10], df=dataset_good_df_1,
+                          mp=model_good_df)
 
 # functional tests for profile frequencies.
 def test_profile_freq():
