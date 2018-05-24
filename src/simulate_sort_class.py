@@ -145,7 +145,7 @@ class simulate_sort_class:
             raise ControlledError(" Simulate Sort Requires pandas dataframe as input dataframe. Entered df was 'None'.")
         elif self.df is not None:
             check(isinstance(self.df, pd.DataFrame),
-                'type(df) = %s; must be a pandas dataframe ' % type(self.df))
+                  'type(df) = %s; must be a pandas dataframe ' % type(self.df))
 
             # validate dataset
             check(pd.DataFrame.equals(self.df, qc.validate_dataset(self.df)),
@@ -158,6 +158,11 @@ class simulate_sort_class:
                 " Simulate Sort Requires pandas dataframe as model input. Entered model df was 'None'.")
         elif self.mp is not None:
             check(isinstance(self.mp, pd.DataFrame), 'type(mp) = %s; must be a pandas dataframe ' % type(self.mp))
+
+            # validate dataset
+            check(pd.DataFrame.equals(self.mp, qc.validate_model(self.mp)),
+                  " Model dataframe failed quality control, \
+                  please ensure model has the correct format of an mpathic model dataframe ")
 
         # check noisetype is string
         check(isinstance(self.noisetype,str),'type(noisetype) = %s; must be a string ' % type(self.noisetype))
