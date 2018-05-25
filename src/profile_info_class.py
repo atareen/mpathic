@@ -18,7 +18,7 @@ import io_local as io
 import profile_ct as profile_ct
 import info as info
 import pdb
-#from . import SortSeqError
+from utils import check, ControlledError, handle_errors
 from mpathic import SortSeqError
 
 class profile_info_class:
@@ -54,16 +54,27 @@ class profile_info_class:
 
     """
 
-
-    def __init__(self, dataset_df=None, err=False, method='naive',
+    @handle_errors
+    def __init__(self, dataset_df = None, err=False, method='naive',
                  pseudocount=1.0, start=0, end=None):
 
-        filename = './mpathic/data/formatted/dms/dms_1_formatted.txt'
+        # set attributes to parameters
 
-        dataset_df = pd.read_csv(filename, delim_whitespace=True, dtype={'seqs': str, 'batch': int})
+        self.dataset_df = dataset_df
+        self.err = err
+        self.method = method
+        self.pseudocount = pseudocount
+        self.start = start
+        self.end = end
 
-        # Validate dataset_df
-        qc.validate_dataset(dataset_df)
+        # df containing result, declared now, set below.
+        self.info_df = None
+
+        # validate/check inputs
+        self._input_check()
+
+        #filename = './mpathic/data/formatted/dms/dms_1_formatted.txt'
+        #dataset_df = pd.read_csv(filename, delim_whitespace=True, dtype={'seqs': str, 'batch': int})
 
         # Get number of bins
         bin_cols = [c for c in dataset_df.columns if qc.is_col_type(c,'ct_')]
@@ -133,5 +144,45 @@ class profile_info_class:
         info_df = qc.validate_profile_info(info_df,fix=True)
         #return info_df
         self.info_df = info_df
+
+    def _input_check(self):
+
+        # check that dataset_df is valid
+        if self.dataset_df is None:
+            raise ControlledError(" Profile info requires pandas dataframe as input dataframe. Entered df was 'None'.")
+
+        elif self.dataset_df is not None:
+            check(isinstance(self.dataset_df, pd.DataFrame),
+                  'type(df) = %s; must be a pandas dataframe ' % type(self.dataset_df))
+
+            # validate dataset
+            check(pd.DataFrame.equals(self.dataset_df, qc.validate_dataset(self.dataset_df)),
+                  " Input dataframe failed quality control, \
+                  please ensure input dataset has the correct format of an mpathic dataframe ")
+
+        # check that attribute err is of type boolean
+        check(isinstance(self.err,bool), 'type(err) = %s; must be a boolean ' % type(self.err))
+
+        # method method is string ...
+        check(isinstance(self.method,str), 'type(method) = %s; must be a string ' % type(self.method))
+
+        # ... and string value is valid
+        valid_method_choices = ['naive', 'tpm', 'nsb']
+        check(self.method in valid_method_choices, 'method = %s; must be in %s' % (self.method, valid_method_choices))
+
+        # check pseudocount is float
+        check(isinstance(self.pseudocount,float),'type(pseudocount) = %s; must be a float ' % type(self.pseudocount))
+
+        check(isinstance(self.start, int),
+              'type(start) = %s; must be of type int ' % type(self.start))
+
+        check(self.start >= 0, "start = %d must be a positive integer " % self.start)
+
+        if self.end is not None:
+            check(isinstance(self.end, int),
+                  'type(end) = %s; must be of type int ' % type(self.end))
+
+
+
 
 
