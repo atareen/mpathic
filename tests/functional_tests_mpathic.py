@@ -184,6 +184,7 @@ def test_simulate_sort():
                           success_list=[2, 3, 10], df=dataset_good_df_1,
                           mp=model_good_df)
 
+
 # functional tests for profile frequencies.
 def test_profile_freq():
 
@@ -191,7 +192,7 @@ def test_profile_freq():
 
     # note that the bad_df_1 never gets loaded because qc,
     # so none gets passed into profile_freq, which fails as expected
-    bad_df_1  = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_bad_badseqs.txt")
+    bad_df_1 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_bad_badseqs.txt")
 
     good_df_1 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_crp.txt")
     good_df_2 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_good_pro.txt")
@@ -210,6 +211,33 @@ def test_profile_freq():
     # end tests
     test_parameter_values(func=mpa.profile_freq_class, var_name='start', fail_list=[0.1, 'x', 1.2],
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
+
+
+# function tests for profile mutrate
+def test_profile_mut():
+
+    bad_df_1 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_bad_badseqs.txt")
+    good_df_1 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_crp.txt")
+    good_df_2 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_good_pro.txt")
+
+    test_parameter_values(func=mpa.profile_mut_class, var_name='dataset_df', fail_list=[3, 'x', None, bad_df_1],
+                          success_list=[good_df_1, good_df_2])
+
+    # bin tests
+    test_parameter_values(func=mpa.profile_mut_class, var_name='bin', fail_list=[-1, 'x', 1.2],
+                          success_list=[2, 3],dataset_df=good_df_1)
+
+    # start tests
+    test_parameter_values(func=mpa.profile_mut_class, var_name='start', fail_list=[0.1, 'x', 1.2, None],
+                          success_list=[2, 3, 4, 10], dataset_df=good_df_1)
+
+    # end tests
+    test_parameter_values(func=mpa.profile_mut_class, var_name='start', fail_list=[0.1, 'x', 1.2],
+                          success_list=[2, 3, 4, 10], dataset_df=good_df_1)
+
+    # err tests
+    test_parameter_values(func=mpa.profile_mut_class, var_name='err', fail_list=[0.1, 'x', 1, 'True',None],
+                          success_list=[True, False], dataset_df=good_df_1)
 
 
 def test_mpathic_io():
@@ -311,3 +339,4 @@ test_simulate_library()
 test_mpathic_io()
 test_profile_freq()
 test_simulate_sort()
+test_profile_mut()
