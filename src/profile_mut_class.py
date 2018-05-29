@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 '''
-Calculates the fractional number of character occurances at each position within the set of sequences passed.
+This class calculates the fractional number of character occurances at each position within the set of sequences
+passed. Specificially, it computes the mutation rate (0.0 to 1.0) at each position. Mutation rate is defined as
+1.0 minus the maximum character frequency at a position. Errors are estimated using bionomial uncertainty
+
 '''
 from __future__ import division
-import argparse
 import numpy as np
 import sys
 import pandas as pd
@@ -11,34 +13,56 @@ import qc as qc
 import io_local as io
 import profile_ct as profile_ct
 import pdb
-#from . import SortSeqError
-#from src.__init__ import SortSeqError
-#from __init__ import SortSeqError
 from mpathic import SortSeqError
+from utils import ControlledError, handle_errors, check
 
 
 
 class profile_mut_class:
+    """
+
+    Parameters
+    ----------
+
+    dataset_df: (pandas dataframe)
+        Input data frame containing a valid dataset.
+
+    bin: (int)
+        A bin number specifying which counts to use
+
+    start: (int)
+        An integer specifying the sequence start position
+
+    end: (int)
+        An integer specifying the sequence end position
+
+    err: (boolean)
+        If true, include error estimates in computed mutual information
+
+    Returns
+    -------
+    mut_df: (pandas data frame)
+            A pandas dataframe containing results.
+    """
+
+    @handle_errors
     def __init__(self, dataset_df=None, bin=None, start=0, end=None, err=False):
-        """
-        Computes the mutation rate (0.0 to 1.0) at each position. Mutation rate is defined as 1.0 minus the maximum character frequency at a position. Errors are estimated using bionomial uncertainty
 
-        Arguments:
-            dataset_df (pd.DataFrame): A dataframe containing a valid dataset.
-            bin (int): A bin number specifying which counts to use
-            start (int): An integer specifying the sequence start position
-            end (int): An integer specifying the sequence end position
 
-        Returns:
-            freq_df (pd.DataFrame): A dataframe containing results.
-        """
+        # set attributes
 
-        filename = './mpathic/examples/data_set_simulated.txt'
+        self.dataset_df = dataset_df
+        self.bin = bin
+        self.start = start
+        self.end = end
+        self.err = err
+        self.mut_df = None
 
-        dataset_df = pd.read_csv(filename, delim_whitespace=True, dtype={'seqs': str, 'batch': int})
-    
-        # Validate dataset_df
-        qc.validate_dataset(dataset_df)
+        # do input checks
+        self._input_checks()
+
+        #filename = './mpathic/examples/data_set_simulated.txt'
+        #dataset_df = pd.read_csv(filename, delim_whitespace=True, dtype={'seqs': str, 'batch': int})
     
         # Compute counts
         counts_df = profile_ct.main(dataset_df, bin=bin, start=start, end=end)
@@ -73,38 +97,37 @@ class profile_mut_class:
     
         # Validate as counts dataframe
         mut_df = qc.validate_profile_mut(mut_df, fix=True)
-        print(mut_df)
-		#        return mut_df
+        self.mut_df = mut_df
 
+    def _input_checks(self):
 
-    # Define commandline wrapper
-    def wrapper(self, args):
-        """ Commandline wrapper for main()
-        """
-        inloc = io.validate_file_for_reading(args.i) if args.i else sys.stdin
-        outloc = io.validate_file_for_writing(args.out) if args.out else sys.stdout
-        input_df = io.load_dataset(inloc)
-        output_df = self.__init__(input_df, bin=args.bin, start=args.start, end=args.end, \
-                                  err=args.err)
-        io.write(output_df, outloc)
+        # check that dataset_df is valid
+        if self.dataset_df is None:
+            raise ControlledError(
+                " Profile info requires pandas dataframe as input dataframe. Entered df was 'None'.")
 
+        elif self.dataset_df is not None:
+            check(isinstance(self.dataset_df, pd.DataFrame),
+                  'type(df) = %s; must be a pandas dataframe ' % type(self.dataset_df))
 
-    """
-    # Connects argparse to wrapper
-    def add_subparser(subparsers):
-        p = subparsers.add_parser('profile_mut')
-        p.add_argument(
-            '-b', '--bin', type=int, default=None,
-            help='''Dataset bin to use for counts. If blank, total counts will be used''')
-        p.add_argument(
-            '-i', '--i', type=str, default=None, help='''Input file, otherwise input through the standard input.''')
-        p.add_argument(
-            '-s', '--start', type=int, default=0, help='''Position to start your analyzed region''')
-        p.add_argument(
-            '-e', '--end', type=int, default=None, help='''Position to end your analyzed region''')
-        p.add_argument( \
-            '-o', '--out', type=str, default=None, help='''Output file, otherwise use standard output.''')
-        p.add_argument(
-            '-d', '--err', default=False, action='store_true', help='''Whether or not to include error estimates.''')
-        p.set_defaults(func=wrapper)
-    """
+            # validate dataset
+            check(pd.DataFrame.equals(self.dataset_df, qc.validate_dataset(self.dataset_df)),
+                  " Input dataframe failed quality control, \
+                  please ensure input dataset has the correct format of an mpathic dataframe ")
+
+        if self.bin is not None:
+            # check bin is int
+            check(isinstance(self.bin, int),
+                  'type(bin) = %s; must be a int ' % type(self.bin))
+
+        check(isinstance(self.start, int),
+              'type(start) = %s; must be of type int ' % type(self.start))
+
+        check(self.start >= 0, "start = %d must be a positive integer " % self.start)
+
+        if self.end is not None:
+            check(isinstance(self.end, int),
+                  'type(end) = %s; must be of type int ' % type(self.end))
+
+        # check that attribute err is of type boolean
+        check(isinstance(self.err, bool), 'type(err) = %s; must be a boolean ' % type(self.err))
