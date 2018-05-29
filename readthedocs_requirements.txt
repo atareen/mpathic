@@ -4,3 +4,4 @@ pandas
 sklearn
 mpmath
 numpydoc
+sphinx_rtd_theme
