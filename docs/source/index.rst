@@ -37,15 +37,48 @@ The code for MPAthic is open source and available on
 Quick Start
 -----------
 
-To run an MPAthic example, do this from within Python::
+The following snippets show how to use MPAthic from within python. For detailed descriptions of classes, see
+`MPAthic Class Details`_
+
+Import MPAthic
+~~~~~~~~~~~~~~
+::
 
    import mpathic as mpa
+
+
+Load Dataset and Model Dataframes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
+
+   dataset_df = mpa.io.load_dataset('sort_seq_data.txt')
+   model_df = mpa.io.load_model('crp_model.txt')
+   contigs_list = mpa.io.load_contigs_from_fasta('genome_ecoli.fa', model_df)
+
+
+Run MPAthic Classes
+~~~~~~~~~~~~~~~~~~~
+**Sort-Seq Simulations**::
+
    mpa.simulate_library(wtseq="TAATGTGAGTTAGCTCACTCAT")
+   mpa.simulate_sort(df=dataset_df,mp=model_df)
+
+**Profiles**::
+
+   mpa.profile_info(dataset_df = dataset_df)
+   mpa.profile_mut(dataset_df = dataset_df)
+   mpa.profile_freq(dataset_df = dataset_df)
 
 
+**Models**::
 
-MPAthic Classes
----------------
+   mpa.learn_model(df=dataset_df)
+   mpa.evaluate_model(dataset_df = dataset_df, model_df = model_df)
+   mpa.scan_model(model_df = model_df, contigs_list = contigs_list)
+   mpa.predictiveinfo(data_df = dataset_df, model_df = model_df,start=52)
+
+MPAthic Class Details
+---------------------
 
 .. toctree::
    :maxdepth: 1
