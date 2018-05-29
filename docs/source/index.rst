@@ -13,6 +13,13 @@ MPAthic
 .. raw:: html
 
     <h1><font color="red">Under Active Development</font></h1>
+    
+.. image:: S1.png
+   :height: 300 px
+   :width: 300 px
+   :alt: Figure S1
+   :align: right
+    
 
 MPAthic is a python API and it fits quantitative models to data.
 Most MPAthic classes take in one or more tabular text files as input and return a tabular text file as output.
