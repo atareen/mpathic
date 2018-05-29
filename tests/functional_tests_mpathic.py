@@ -209,7 +209,7 @@ def test_profile_freq():
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
     # end tests
-    test_parameter_values(func=mpa.profile_freq_class, var_name='start', fail_list=[0.1, 'x', 1.2],
+    test_parameter_values(func=mpa.profile_freq_class, var_name='end', fail_list=[0.1, 'x', 1.2],
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
 
@@ -232,12 +232,46 @@ def test_profile_mut():
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
     # end tests
-    test_parameter_values(func=mpa.profile_mut_class, var_name='start', fail_list=[0.1, 'x', 1.2],
+    test_parameter_values(func=mpa.profile_mut_class, var_name='end', fail_list=[0.1, 'x', 1.2],
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
     # err tests
     test_parameter_values(func=mpa.profile_mut_class, var_name='err', fail_list=[0.1, 'x', 1, 'True',None],
                           success_list=[True, False], dataset_df=good_df_1)
+
+
+# function tests for profile mutrate
+def test_profile_info():
+
+    bad_df_1 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_bad_badseqs.txt")
+    good_df_1 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_crp.txt")
+    good_df_2 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_good_pro.txt")
+
+    test_parameter_values(func=mpa.profile_info_class, var_name='dataset_df', fail_list=[3, 'x', None, bad_df_1],
+                          success_list=[good_df_1, good_df_2])
+    
+    # err tests
+    test_parameter_values(func=mpa.profile_info_class, var_name='err', fail_list=[0.1, 'x', 1, 'True', None],
+                          success_list=[True, False], dataset_df=good_df_1)
+
+    # method tests
+    test_parameter_values(func=mpa.profile_info_class, var_name='method', fail_list=[0.1, 'x', 1, 'True', None],
+                          success_list=['naive','tpm','nsb'], dataset_df=good_df_1)
+
+    # pseudocount tests
+    test_parameter_values(func=mpa.profile_info_class, var_name='pseudocount', fail_list=['x', 1, 'True', None,-1.4],
+                          success_list=[0.1,1.5,9.3], dataset_df=good_df_1)
+
+    # start tests
+    test_parameter_values(func=mpa.profile_info_class, var_name='start', fail_list=[0.1, 'x', 1.2, None],
+                          success_list=[2, 3, 4, 10], dataset_df=good_df_1)
+
+    # end tests
+    test_parameter_values(func=mpa.profile_info_class, var_name='end', fail_list=[0.1, 'x', 1.2],
+                          success_list=[2, 3, 4, 10], dataset_df=good_df_1)
+
+
+
 
 
 def test_mpathic_io():
@@ -337,6 +371,7 @@ def run_single_test():
 #run_single_test()
 test_simulate_library()
 test_mpathic_io()
-test_profile_freq()
 test_simulate_sort()
+test_profile_freq()
 test_profile_mut()
+test_profile_info()
