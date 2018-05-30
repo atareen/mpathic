@@ -22,6 +22,8 @@ headers describing the contents of each column. All input files are required to 
 columns, which of course depend on the command being executed. By default, input is taken from the standard
 input and output is written to the standard output.
 
+.. image:: _static/S2.png
+
 Installation
 ------------
 
