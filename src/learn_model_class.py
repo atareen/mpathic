@@ -30,6 +30,7 @@ import cvxopt
 from cvxopt import solvers, matrix, spdiag, sqrt, div, exp
 import warnings
 import profile_mut as profile_mut
+from utils import handle_errors,check,ControlledError
 
 import fast
 
@@ -62,9 +63,11 @@ class learn_model_class:
          independent and neighbour model assumes epistatic effects for \n
          mutations.
 
-     LS_means_std: (array-like)
+     LS_means_std: (pandas dataframe)
          For the least-squares method, this contains \n
-         the user supplied mean and standard deviation.
+         the user supplied mean and standard deviation. \n
+         The order of the columns is ['bin', 'mean', 'std'].
+
 
      db: (string)
          File name for a SQL script; it could be passed \n
@@ -126,6 +129,7 @@ class learn_model_class:
          Number bins. DOUBLE CHECK.
      """
 
+    @handle_errors
     def __init__(self,
                  df,
                  lm='IM',
@@ -143,11 +147,36 @@ class learn_model_class:
                  background=0,
                  alpha=0,
                  pseudocounts=1,
-                 test=False,
                  drop_library=False,
                  verbose=False,
                  tm=None):
 
+        # set attributes
+        self.df = df
+        self.lm = lm
+        self.modeltype = modeltype
+        self.LS_means_std = LS_means_std
+        self.db = db
+        self.iteration = iteration
+        self.burnin = burnin
+        self.thin = thin
+        self.runnum = runnum
+        self.initialize = initialize
+        self.start = start
+        self.end = end
+        self.foreground = foreground
+        self.background = background
+        self.alpha = alpha
+        self.pseudocounts = pseudocounts
+        self.drop_library = drop_library
+        self.verbose = verbose
+        self.tm = tm
+
+        # output df
+        self.output_df = None
+
+        # validate parameters
+        self._input_checks()
 
         # Determine dictionary
         seq_cols = qc.get_cols_from_df(df, 'seqs')
@@ -332,9 +361,111 @@ class learn_model_class:
         output_df = pd.concat([pos, em], axis=1)
         # Validate model and return
         output_df = qc.validate_model(output_df, fix=True)
-        print('Printing Output dataframe: ')
-        print(output_df)
-        # return output_df
+        self.output_df = output_df
+
+    def _input_checks(self):
+
+        """
+        check input parameters for correctness
+        """
+
+        # dataset
+        if self.df is None:
+            raise ControlledError(
+                " The Learn Model class requires pandas dataframe as input dataframe. Entered df was 'None'.")
+
+        elif self.df is not None:
+            check(isinstance(self.df, pd.DataFrame),
+                  'type(df) = %s; must be a pandas dataframe ' % type(self.df))
+
+            # validate dataset
+            check(pd.DataFrame.equals(self.df, qc.validate_dataset(self.df)),
+                  " Input dataframe failed quality control, \
+                  please ensure input dataset has the correct format of an mpathic dataframe ")
+
+        # check lm is of type string
+        check(isinstance(self.lm,str), "type(lm) = %s must be a string " % type(self.lm))
+
+        # check lm value is valid
+        valid_lm_values = ['ER', 'LS', 'IM', 'PR']
+        check(self.lm in valid_lm_values, 'lm = %s; must be in %s' % (self.lm, valid_lm_values))
+
+        # check that model type is of type string
+        check(isinstance(self.modeltype, str), "type(modeltype) = %s must be a string " % type(self.modeltype))
+
+        # check that modeltype value is valid
+        valid_modeltype_values = ['MAT', 'NBR']
+        check(self.modeltype in valid_modeltype_values,
+              'modeltype = %s; must be in %s' % (self.modeltype, valid_modeltype_values))
+
+        # validate LS_mean_std
+        LS_mean_std_valid_col_order = ['bin','mean','std']
+
+        if self.LS_mean_std is not None:
+            check(pd.DataFrame.equals(self.LS_mean_std, qc.validate_meanstd(self.LS_mean_std)),
+                  " LS_mean_std failed quality control, \
+                  please ensure input dataset has the correct format for LS_mean_std: %s" % LS_mean_std_valid_col_order)
+
+        # check that db is a string
+        check(isinstance(self.db,str),"type(db) = %s must be a string " % type(self.db))
+
+        # check that iteration is an integer
+        check(isinstance(self.iteration, int),
+              'type(iteration) = %s; must be of type int ' % type(self.iteration))
+
+        # check that burnin is an integer
+        check(isinstance(self.burnin, int),
+              'type(burnin) = %s; must be of type int ' % type(self.burnin))
+
+        # check that thin is an integer
+        check(isinstance(self.thin, int),
+              'type(thin) = %s; must be of type int ' % type(self.thin))
+
+        # check that runnum is an integer
+        check(isinstance(self.runnum, int),
+              'type(runnum) = %s; must be of type int ' % type(self.runnum))
+
+        # check that initialize is a string and it's value is valid
+        check(isinstance(self.initialize,str),"type(initialize) = %s must be a string " % type(self.initialize))
+
+        valid_initialize_values = ['rand', 'LS', 'PR']
+        check(self.initialize in valid_initialize_values,
+              'initialize = %s; must be in %s' % (self.initialize, valid_initialize_values))
+
+        # check that start is an integer
+        check(isinstance(self.start, int),
+              'type(start) = %s; must be of type int ' % type(self.start))
+
+        check(self.start >= 0, "start = %d must be a positive integer " % self.start)
+
+        if self.end is not None:
+            check(isinstance(self.end, int),
+                  'type(end) = %s; must be of type int ' % type(self.end))
+
+        # check that foreground is an integer
+        check(isinstance(self.foreground, int),
+              'type(foreground) = %s; must be of type int ' % type(self.foreground))
+
+        # check that background is an integer
+        check(isinstance(self.background, int),
+              'type(background) = %s; must be of type int ' % type(self.background))
+
+        # check that alpha is a float
+        check(isinstance(self.alpha, float),
+              'type(alpha) = %s; must be of type float ' % type(self.background))
+
+        # check that pseudocounts is an integer
+        check(isinstance(self.pseudocounts, int),
+              'type(pseudocounts) = %s; must be of type int ' % type(self.pseudocounts))
+
+        # check that verbose is a boolean
+        check(isinstance(self.verbose, bool),
+              'type(verbose) = %s; must be of type bool ' % type(self.verbose))
+
+        # check that tm is an integer
+        check(isinstance(self.tm, int),
+              'type(tm) = %s; must be of type int ' % type(self.tm))
+
 
 
     def weighted_std(self, values, weights):
