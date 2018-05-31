@@ -145,7 +145,7 @@ class learn_model_class:
                  end = None,
                  foreground=1,
                  background=0,
-                 alpha=0,
+                 alpha=0.0,
                  pseudocounts=1,
                  drop_library=False,
                  verbose=False,
@@ -399,15 +399,16 @@ class learn_model_class:
               'modeltype = %s; must be in %s' % (self.modeltype, valid_modeltype_values))
 
         # validate LS_mean_std
-        LS_mean_std_valid_col_order = ['bin','mean','std']
+        LS_means_std_valid_col_order = ['bin','mean','std']
 
-        if self.LS_mean_std is not None:
-            check(pd.DataFrame.equals(self.LS_mean_std, qc.validate_meanstd(self.LS_mean_std)),
-                  " LS_mean_std failed quality control, \
-                  please ensure input dataset has the correct format for LS_mean_std: %s" % LS_mean_std_valid_col_order)
+        if self.LS_means_std is not None:
+            check(pd.DataFrame.equals(self.LS_means_std, qc.validate_meanstd(self.LS_means_std)),
+                  " LS_means_std failed quality control, \
+                  please ensure input dataset has the correct format for LS_means_std: %s" % LS_means_std_valid_col_order)
 
-        # check that db is a string
-        check(isinstance(self.db,str),"type(db) = %s must be a string " % type(self.db))
+        if self.db is not None:
+            # check that db is a string
+            check(isinstance(self.db,str),"type(db) = %s must be a string " % type(self.db))
 
         # check that iteration is an integer
         check(isinstance(self.iteration, int),
@@ -462,9 +463,10 @@ class learn_model_class:
         check(isinstance(self.verbose, bool),
               'type(verbose) = %s; must be of type bool ' % type(self.verbose))
 
-        # check that tm is an integer
-        check(isinstance(self.tm, int),
-              'type(tm) = %s; must be of type int ' % type(self.tm))
+        if self.tm is not None:
+            # check that tm is an integer
+            check(isinstance(self.tm, int),
+                  'type(tm) = %s; must be of type int ' % type(self.tm))
 
 
 
