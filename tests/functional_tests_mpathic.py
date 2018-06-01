@@ -1,6 +1,7 @@
 from __future__ import print_function   # so that print behaves like python 3.x not a special lambda statement
 import mpathic as mpa
 import numpy as np
+from mpathic import shutthefuckup
 
 global_success_counter = 0
 global_fail_counter = 0
@@ -107,6 +108,94 @@ def test_parameter_values(func,
 
         # Test function
         test_for_mistake(func=func, should_fail=False, **kwargs)
+
+def test_mpathic_io():
+
+    ###########################
+    ## io.load_dataset tests ##
+    ###########################
+
+    # good and bad arguments for load dataset in text form
+    bad_file_arg_load_dataset_text_1 = "../../mpathic/MPAthic_tests/input/dataset_bad_badseqs.txt"
+    bad_file_arg_load_dataset_text_2 = "../../mpathic/MPAthic_tests/input/dataset_bad_badcounts.txt"
+    bad_file_arg_load_dataset_text_3 = "../../mpathic/MPAthic_tests/input/dataset_bad_badseqtype.txt"
+    bad_file_arg_load_dataset_text_4 = "../../mpathic/MPAthic_tests/input/dataset_bad_floatcounts.txt"
+    bad_file_arg_load_dataset_text_5 = "../../mpathic/MPAthic_tests/input/dataset_bad_wrongcolname.txt"
+
+    good_file_arg_load_dataset_text_1 = "../../mpathic/MPAthic_tests/input/dataset_crp.txt"
+    good_file_arg_load_dataset_text_2 = "../../mpathic/MPAthic_tests/input/dataset_good_noctcol.txt"
+    good_file_arg_load_dataset_text_3 = "../../mpathic/MPAthic_tests/input/dataset_good_nonconsecutivebins.txt"
+    good_file_arg_load_dataset_text_4 = "../../mpathic/MPAthic_tests/input/dataset_good_pro.txt"
+    good_file_arg_load_dataset_text_5 = "../../mpathic/MPAthic_tests/input/dataset_good_rna.txt"
+    good_file_arg_load_dataset_text_6 = "../../mpathic/MPAthic_tests/input/dataset_good.txt"
+    good_file_arg_load_dataset_text_7 = "../../mpathic/MPAthic_tests/input/dataset_pro.txt"
+    good_file_arg_load_dataset_text_8 = "../../mpathic/MPAthic_tests/input/dataset.txt"
+
+    # test parameter file args for load_dataset for file_type = text
+    test_parameter_values \
+            (
+            func=mpa.io.load_dataset, var_name='file_arg',
+            fail_list=[
+                bad_file_arg_load_dataset_text_1,
+                bad_file_arg_load_dataset_text_2,
+                bad_file_arg_load_dataset_text_3,
+                bad_file_arg_load_dataset_text_4,
+                bad_file_arg_load_dataset_text_5],
+            success_list=[
+                good_file_arg_load_dataset_text_1,
+                good_file_arg_load_dataset_text_2,
+                good_file_arg_load_dataset_text_3,
+                good_file_arg_load_dataset_text_4,
+                good_file_arg_load_dataset_text_5,
+                good_file_arg_load_dataset_text_6,
+                good_file_arg_load_dataset_text_7,
+                good_file_arg_load_dataset_text_8]
+        )
+
+    bad_file_arg_load_dataset_fasta_1 = "../../mpathic/MPAthic_tests/input/genome_ecoli_100lines_bad_char.fa"
+    good_file_arg_load_dataset_fasta_1 = "../../mpathic/MPAthic_tests/input/genome_ecoli_100lines.fa"
+    good_file_arg_load_dataset_fasta_2 = "../../mpathic/MPAthic_tests/input/bin_hbsites.fa"
+
+    # test parameter file args for load_dataset for file_type = fasta, seq_type = 'dna'
+    test_parameter_values(func=mpa.io.load_dataset, var_name='file_arg',
+                          fail_list=[bad_file_arg_load_dataset_fasta_1],
+                          success_list=[good_file_arg_load_dataset_fasta_1, good_file_arg_load_dataset_fasta_2],
+                          file_type='fasta', seq_type='dna')
+
+    # test parameter file args for load_dataset for file_type = fastq, seq_type = 'dna'
+
+    bad_file_arg_load_dataset_fastq_2 = "../../mpathic/MPAthic_tests/input/seq_bad_hasNs.fastq"
+    good_file_arg_load_dataset_fastq_1 = "../../mpathic/MPAthic_tests/input/seq_good.fastq"
+
+    # this file causes trouble: succeeds but should fail?
+    bad_file_arg_load_dataset_fastq_1 = "../../mpathic/MPAthic_tests/input/seq_bad_actuallyfasta.fastq"
+
+    # test parameter file args for load_dataset for file_type = fasta, seq_type = 'dna'
+    test_parameter_values(func=mpa.io.load_dataset, var_name='file_arg',
+                          fail_list=[bad_file_arg_load_dataset_fastq_2],
+                          success_list=[good_file_arg_load_dataset_fastq_1],
+                          file_type='fastq', seq_type='dna')
+
+    ###############################
+    ## io.load_dataset tests end ##
+    ###############################
+
+    #########################
+    ## io.load_model tests ##
+    #########################
+
+    bad_file_arg_load_model_1 = "../../mpathic/MPAthic_tests/input/model_bad_mat_badcol.txt"
+    bad_file_arg_load_model_2 = "../../mpathic/MPAthic_tests/input/model_bad_mat_floatpos.txt"
+    good_file_arg_load_model_1 = "../../mpathic/data/sortseq/full-0/crp_model.txt"
+
+    # test file_arg for io.load_model
+    test_parameter_values(func=mpa.io.load_model, var_name='file_arg',
+                          fail_list=[bad_file_arg_load_model_1, bad_file_arg_load_model_2],
+                          success_list=[good_file_arg_load_model_1])
+
+    #############################
+    ## io.load_model tests end ##
+    #############################
 
 
 # functional tests for simulate library
@@ -270,98 +359,22 @@ def test_profile_info():
     test_parameter_values(func=mpa.profile_info_class, var_name='end', fail_list=[0.1, 'x', 1.2],
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
+# functional tests for learn model
+def test_learn_model():
 
+    learn_model_good_df = mpa.io.load_dataset("../../mpathic/data/sortseq/full-0/data.txt")
+    small_dataset = mpa.io.load_dataset("../../mpathic/data/sortseq/full-0/data_small.txt")
 
+    test_parameter_values(func=mpa.learn_model_class, var_name='df', fail_list=[None, 2.4],
+                          success_list=[learn_model_good_df, small_dataset], lm='ER')
 
+    # the following is problematic: for lm = 'PR', the convex_optimization algorithm experies overflows (line 574)
+    # for lm = 'LS', the are some convergence warnings.
+    # for lm = 'IM', the test passes but takes ~ 2 hours to complete
+    test_parameter_values(func=mpa.learn_model_class, var_name='lm', fail_list=[None, 2.4,'x'],
+                          success_list=['ER','LS','PR', 'IM'],df=small_dataset)
 
-def test_mpathic_io():
-
-    ###########################
-    ## io.load_dataset tests ##
-    ###########################
-
-    # good and bad arguments for load dataset in text form
-    bad_file_arg_load_dataset_text_1 = "../../mpathic/MPAthic_tests/input/dataset_bad_badseqs.txt"
-    bad_file_arg_load_dataset_text_2 = "../../mpathic/MPAthic_tests/input/dataset_bad_badcounts.txt"
-    bad_file_arg_load_dataset_text_3 = "../../mpathic/MPAthic_tests/input/dataset_bad_badseqtype.txt"
-    bad_file_arg_load_dataset_text_4 = "../../mpathic/MPAthic_tests/input/dataset_bad_floatcounts.txt"
-    bad_file_arg_load_dataset_text_5 = "../../mpathic/MPAthic_tests/input/dataset_bad_wrongcolname.txt"
-
-
-    good_file_arg_load_dataset_text_1 =  "../../mpathic/MPAthic_tests/input/dataset_crp.txt"
-    good_file_arg_load_dataset_text_2 = "../../mpathic/MPAthic_tests/input/dataset_good_noctcol.txt"
-    good_file_arg_load_dataset_text_3 = "../../mpathic/MPAthic_tests/input/dataset_good_nonconsecutivebins.txt"
-    good_file_arg_load_dataset_text_4 = "../../mpathic/MPAthic_tests/input/dataset_good_pro.txt"
-    good_file_arg_load_dataset_text_5 = "../../mpathic/MPAthic_tests/input/dataset_good_rna.txt"
-    good_file_arg_load_dataset_text_6 = "../../mpathic/MPAthic_tests/input/dataset_good.txt"
-    good_file_arg_load_dataset_text_7 = "../../mpathic/MPAthic_tests/input/dataset_pro.txt"
-    good_file_arg_load_dataset_text_8 = "../../mpathic/MPAthic_tests/input/dataset.txt"
-
-    # test parameter file args for load_dataset for file_type = text
-    test_parameter_values\
-    (
-        func=mpa.io.load_dataset, var_name='file_arg',
-        fail_list=[
-            bad_file_arg_load_dataset_text_1,
-            bad_file_arg_load_dataset_text_2,
-            bad_file_arg_load_dataset_text_3,
-            bad_file_arg_load_dataset_text_4,
-            bad_file_arg_load_dataset_text_5],
-        success_list=[
-            good_file_arg_load_dataset_text_1,
-            good_file_arg_load_dataset_text_2,
-            good_file_arg_load_dataset_text_3,
-            good_file_arg_load_dataset_text_4,
-            good_file_arg_load_dataset_text_5,
-            good_file_arg_load_dataset_text_6,
-            good_file_arg_load_dataset_text_7,
-            good_file_arg_load_dataset_text_8]
-    )
-
-    bad_file_arg_load_dataset_fasta_1 = "../../mpathic/MPAthic_tests/input/genome_ecoli_100lines_bad_char.fa"
-    good_file_arg_load_dataset_fasta_1 = "../../mpathic/MPAthic_tests/input/genome_ecoli_100lines.fa"
-    good_file_arg_load_dataset_fasta_2 = "../../mpathic/MPAthic_tests/input/bin_hbsites.fa"
-
-    # test parameter file args for load_dataset for file_type = fasta, seq_type = 'dna'
-    test_parameter_values(func=mpa.io.load_dataset, var_name='file_arg', fail_list=[bad_file_arg_load_dataset_fasta_1],
-                          success_list=[good_file_arg_load_dataset_fasta_1, good_file_arg_load_dataset_fasta_2],
-                          file_type='fasta', seq_type='dna')
-
-    # test parameter file args for load_dataset for file_type = fastq, seq_type = 'dna'
-
-    bad_file_arg_load_dataset_fastq_2 = "../../mpathic/MPAthic_tests/input/seq_bad_hasNs.fastq"
-    good_file_arg_load_dataset_fastq_1 = "../../mpathic/MPAthic_tests/input/seq_good.fastq"
-
-    # this file causes trouble: succeeds but should fail?
-    bad_file_arg_load_dataset_fastq_1 = "../../mpathic/MPAthic_tests/input/seq_bad_actuallyfasta.fastq"
-
-    # test parameter file args for load_dataset for file_type = fasta, seq_type = 'dna'
-    test_parameter_values(func=mpa.io.load_dataset, var_name='file_arg',
-                          fail_list=[bad_file_arg_load_dataset_fastq_2],
-                          success_list=[good_file_arg_load_dataset_fastq_1],
-                          file_type='fastq', seq_type='dna')
-
-    ###############################
-    ## io.load_dataset tests end ##
-    ###############################
-
-    #########################
-    ## io.load_model tests ##
-    #########################
-
-    bad_file_arg_load_model_1 = "../../mpathic/MPAthic_tests/input/model_bad_mat_badcol.txt"
-    bad_file_arg_load_model_2 = "../../mpathic/MPAthic_tests/input/model_bad_mat_floatpos.txt"
-    good_file_arg_load_model_1 = "../../mpathic/data/sortseq/full-0/crp_model.txt"
-
-
-    # test file_arg for io.load_model
-    test_parameter_values(func=mpa.io.load_model, var_name='file_arg',
-                          fail_list=[bad_file_arg_load_model_1, bad_file_arg_load_model_2],
-                          success_list=[good_file_arg_load_model_1])
-
-    #############################
-    ## io.load_model tests end ##
-    #############################
+    # test modeltype
 
 
 # temporary method used only for debugging. Will be deleted in production.
@@ -369,9 +382,10 @@ def run_single_test():
     pass
 
 #run_single_test()
-test_simulate_library()
 test_mpathic_io()
+test_simulate_library()
 test_simulate_sort()
 test_profile_freq()
 test_profile_mut()
 test_profile_info()
+test_learn_model()

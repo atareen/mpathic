@@ -132,7 +132,7 @@ class learn_model_class:
     @handle_errors
     def __init__(self,
                  df,
-                 lm='IM',
+                 lm='ER',
                  modeltype='MAT',
                  LS_means_std = None,
                  db=None,
@@ -288,14 +288,14 @@ class learn_model_class:
                 elif modeltype == 'NBR':
                     emat_0 = utils.RandEmat(len(df[seq_col_name][0]) - 1, len(seq_dict))
             elif initialize == 'LS':
+
                 emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
-                emat_0_df = self.__init__(df.copy(), lm='LS', modeltype=modeltype, alpha=alpha, start=0, end=None,
-                                          verbose=verbose)
+                emat_0_df = learn_model_class(df.copy(), lm='LS', modeltype=modeltype, alpha=alpha, start=0, end=None,verbose=verbose).output_df
                 emat_0 = np.transpose(np.array(emat_0_df[emat_cols]))
                 # pymc doesn't take sparse mat
             elif initialize == 'PR':
                 emat_cols = ['val_' + inv_dict[i] for i in range(len(seq_dict))]
-                emat_0_df = self.__init__(df.copy(), lm='PR', modeltype=modeltype, start=0, end=None)
+                emat_0_df = learn_model_class(df.copy(), lm='PR', modeltype=modeltype, start=0, end=None).output_df
                 emat_0 = np.transpose(np.array(emat_0_df[emat_cols]))
             emat = self.MaximizeMI_memsaver(seq_mat, df.copy(), emat_0, wtrow, db=db, iteration=iteration,
                                             burnin=burnin, thin=thin, runnum=runnum, verbose=verbose)
@@ -573,9 +573,9 @@ class learn_model_class:
             w = np.add(gm, y * tm_matrix)
             term2 = np.array(N0) * np.array(np.exp(w))
             term1 = np.multiply(np.array(Nsm), np.array(w))
-            print(alpha / 2 * np.sum(cvxopt.mul(x, x)))
+            #print(alpha / 2 * np.sum(cvxopt.mul(x, x)))
             f = cvxopt.matrix(-np.sum(term1 - term2) + alpha / 2 * np.sum(cvxopt.mul(x, x)))
-            print(f)
+            #print(f)
             Df = np.zeros((1, c + bins))
 
             Nm = np.sum(Nsm, axis=0)
@@ -587,7 +587,7 @@ class learn_model_class:
             Df[0, :c] = Df_theta
 
             Df[0, c:] = Df_gm
-            print(Df[0, 90:94])
+            #print(Df[0, 90:94])
             Df = Df - np.transpose(alpha * x)
             Df_cvx = cvxopt.matrix(-Df)
             if z is None: return f, Df_cvx
