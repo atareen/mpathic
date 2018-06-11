@@ -1,12 +1,10 @@
-.. _profile_freqs:
-
 ==========================================
-``profile_freqs``
+``ProfileFreqs``
 ==========================================
 
 **Overview**
 
-``profile_freqs`` is a program within the mpathic package which calculates the
+``ProfileFreqs`` is a program within the mpathic package which calculates the
 fractional occurrence of each base or amino acid at each position.
 
 

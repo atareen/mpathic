@@ -1,12 +1,10 @@
-.. _profile_info:
-
 ==========================================
-``profile_info``
+``ProfileInfo``
 ==========================================
 
 **Overview**
 
-``profile_info`` is a program within the mpathic package which calculates
+``ProfileInfo`` is a program within the mpathic package which calculates
 the mutual information between base identity at a given position and expression
 for each position in the given data set.
 

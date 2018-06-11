@@ -1,14 +1,12 @@
-.. _learn_model:
-
 ==========================================
-``learn_model``
+``LearnModel``
 ==========================================
 
 .. contents::
 
 Overview
 -------------
-``learn_model`` is a program within the mpathic package which generates
+``LearnModel`` is a program within the mpathic package which generates
 linear energy matrix models for sections of a sorted library.
 
 

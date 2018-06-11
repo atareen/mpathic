@@ -1,14 +1,12 @@
-.. _evaluate_model:
-
 ==========================================
-``evaluate_model``
+``EvaluateModel``
 ==========================================
 
 .. contents::
 
 Overview
 -------------
-``evaluate_model`` can be used to predict the activity of arbitrary sequences.
+``EvaluateModel`` can be used to predict the activity of arbitrary sequences.
 
 Usage
 ---------------------
