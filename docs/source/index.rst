@@ -63,22 +63,22 @@ Run MPAthic Classes
 ~~~~~~~~~~~~~~~~~~~
 **Sort-Seq Simulations**::
 
-   mpa.simulate_library(wtseq="TAATGTGAGTTAGCTCACTCAT")
-   mpa.simulate_sort(df=dataset_df,mp=model_df)
+   mpa.SimulateLibrary(wtseq="TAATGTGAGTTAGCTCACTCAT")
+   mpa.SimulateSort(df=dataset_df,mp=model_df)
 
 **Profiles**::
 
-   mpa.profile_info(dataset_df = dataset_df)
-   mpa.profile_mut(dataset_df = dataset_df)
-   mpa.profile_freq(dataset_df = dataset_df)
+   mpa.ProfileInfo(dataset_df = dataset_df)
+   mpa.ProfileMut(dataset_df = dataset_df)
+   mpa.ProfileFreq(dataset_df = dataset_df)
 
 
 **Models**::
 
-   mpa.learn_model(df=dataset_df)
-   mpa.evaluate_model(dataset_df = dataset_df, model_df = model_df)
-   mpa.scan_model(model_df = model_df, contigs_list = contigs_list)
-   mpa.predictiveinfo(data_df = dataset_df, model_df = model_df,start=52)
+   mpa.LearnModel(df=dataset_df)
+   mpa.EvaluateModel(dataset_df = dataset_df, model_df = model_df)
+   mpa.ScanModel(model_df = model_df, contigs_list = contigs_list)
+   mpa.PredictiveInfo(data_df = dataset_df, model_df = model_df,start=52)
 
 MPAthic Class Details
 ---------------------
