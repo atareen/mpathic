@@ -1,7 +1,5 @@
-.. _simulate_library:
-
 ==========================================
-``simulate_library``
+``SimulateLibrary``
 ==========================================
 
 Overview
