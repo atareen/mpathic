@@ -1,14 +1,12 @@
-.. _simulate_sort:
-
 ==========================================
-``simulate_sort``
+``SimulateSort``
 ==========================================
 
 .. contents::
 
 Overview
 -------------
-``simulate_sort`` is a program within the mpathic package which simulates
+``SimulateSort`` is a program within the mpathic package which simulates
 performing a Sort Seq experiment.
 
 
