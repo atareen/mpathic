@@ -12,7 +12,7 @@ Usage
 -----
 
     >>> import mpathic
-    >>> mpathic.simulate_library_class(wtseq="TAATGTGAGTTAGCTCACTCAT")
+    >>> mpathic.SimulateLibrary(wtseq="TAATGTGAGTTAGCTCACTCAT")
 
 
 **Example Output Table**::

@@ -7,7 +7,8 @@ fast = Extension("fast",["fast.c"])
 #import fast as fast
 
 import qc as qc
-from profile_mut import main as profile_mut
+#from profile_mut import main as profile_mut
+from profile_mut import ProfileMut
 from simulate_library import SimulateLibrary
 import numpy as np
 from scipy.sparse import csr, csr_matrix, lil_matrix
@@ -61,7 +62,8 @@ def dataset2mutarray(dataset_df, modeltype, chunksize=1000, rowsforwtcalc=100):
     # Compute the wt sequence
     rowsforwtcalc = min(rowsforwtcalc,dataset_df.shape[0])
     dataset_head_df = dataset_df.head(rowsforwtcalc)
-    mut_df = profile_mut(dataset_head_df)
+    #mut_df = profile_mut(dataset_head_df)
+    mut_df = ProfileMut(dataset_df=dataset_head_df).mut_df
     wtseq = ''.join(list(mut_df[wtcol]))
     print(wtseq)
     wtrow = seqs2array([wtseq], seq_type=seqtype).ravel().astype(bool)
