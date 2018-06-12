@@ -45,6 +45,6 @@ The output table will contain all the original columns, along with the sorted co
 Class Details
 -------------
 
-.. autoclass:: simulate_sort_class.simulate_sort_class
+.. autoclass:: simulate_sort.SimulateSort
     :members:
 
