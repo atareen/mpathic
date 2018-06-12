@@ -40,8 +40,8 @@ The code for MPAthic is open source and available on
 Quick Start
 -----------
 
-The following snippets show how to use MPAthic from within python. For detailed descriptions of classes, see
-`MPAthic Class Details`_
+The following snippets show how to use MPAthic from within python. 
+
 
 Import MPAthic
 ~~~~~~~~~~~~~~
