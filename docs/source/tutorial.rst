@@ -2,7 +2,7 @@
 Tutorial
 ==========================================
 
-We being by importing the MPAthic package::
+We begin by importing the MPAthic package::
 
     import mpathic as mpa
 
