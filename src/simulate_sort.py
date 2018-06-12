@@ -11,7 +11,7 @@ import Models as Models
 import utils as utils
 import io_local as io
 import qc as qc
-import evaluate_model_old as evaluate_model
+#import evaluate_model_old as evaluate_model
 from evaluate_model import EvaluateModel
 from mpathic import SortSeqError
 from utils import check, handle_errors, ControlledError
@@ -102,7 +102,8 @@ class SimulateSort:
         for chunk in df:
 
             chunk.reset_index(inplace=True, drop=True)
-            chunk = evaluate_model.main(chunk, mp, left=start, right=None)
+            #chunk = evaluate_model.main(chunk, mp, left=start, right=None)
+            chunk = EvaluateModel(chunk, mp, left=start, right=None).out_df
     
             # Apply noise to our calculated energies
             noisyexp, listnoisyexp = NoiseModelSort.genlist(chunk)
