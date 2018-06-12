@@ -8,7 +8,7 @@ fast = Extension("fast",["fast.c"])
 
 import qc as qc
 from profile_mut import main as profile_mut
-from simulate_library import main as simulate_library
+from simulate_library import SimulateLibrary
 import numpy as np
 from scipy.sparse import csr, csr_matrix, lil_matrix
 #from . import SortSeqError
