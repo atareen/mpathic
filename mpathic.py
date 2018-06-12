@@ -76,7 +76,7 @@ print(" about to import from init, cwd: ",os.getcwd())
 
 '''
 # simulate sort: 
-from mpathic.src.simulate_sort_class import simulate_sort_class
+from mpathic.src.simulate_library import SimulateLibrary
 
 from mpathic.src import profile_mut_class
 from mpathic.src import profile_freq_class
