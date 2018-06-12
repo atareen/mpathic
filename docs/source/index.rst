@@ -93,6 +93,7 @@ MPAthic Class Details
    profile_mutrate
    profile_info
    learn_model
+   evaluate_model
 
 
 
