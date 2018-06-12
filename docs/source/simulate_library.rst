@@ -18,8 +18,8 @@ Usage
 **Example Output Table**::
 
     ct            seq
-    100           ACAGGGTTAC
-    50            ACGGGGTTAC
+    1002          TAATGTGAGTTAGCTCACTCAT
+    50            TAATGTGAGTTAGATCACTCAT
     ...
 
 
