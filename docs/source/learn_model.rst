@@ -16,7 +16,7 @@ linear energy matrix models for sections of a sorted library.
     >>> loader = mpathic.io
     >>> filename = "./mpathic/data/sortseq/full-0/data.txt"
     >>> df = loader.load_dataset(filename)
-    >>> LearnModel(df=df,verbose=True,lm='ER')
+    >>> mpathic.LearnModel(df=df,verbose=True,lm='ER')
 
 
 Example Input and Output
