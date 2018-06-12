@@ -68,6 +68,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-Code for this and other examples can be found on the :doc:`dataset` page.
-The :doc:`learn_model` page details the mpathic API.
