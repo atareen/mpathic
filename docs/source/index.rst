@@ -94,6 +94,7 @@ MPAthic Class Details
    profile_info
    learn_model
    evaluate_model
+   scan_model
 
 
 
