@@ -89,6 +89,7 @@ MPAthic Class Details
 
    simulate_library
    simulate_sort
+   profile_freq
 
 
 
