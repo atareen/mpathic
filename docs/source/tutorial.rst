@@ -2,45 +2,46 @@
 Tutorial
 ==========================================
 
+We being by importing the MPAthic package::
 
-Datasets
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-::
+    import mpathic as mpa
 
-   dataset_df = mpa.io.load_dataset('sort_seq_data.txt')
-   model_df = mpa.io.load_model('crp_model.txt')
-   contigs_list = mpa.io.load_contigs_from_fasta('genome_ecoli.fa', model_df)
+We can use the :doc:`simulate_library` class to create a library of random mutants from an initial wildtype sequence and mutation rate::
 
-The datasets used in mpathic are pandas dataframes, comprising of columns of counts and sequence values. An example
-of a valid dataset looks like
+    sim_library = mpa.SimulateLibrary(wtseq="TAATGTGAGTTAGCTCACTCAT", mutrate=0.24)
+    sim_library.output_df.head()
 
+The `output_df` attribute of the ``sim_library`` class looks like the dataframe below
 
-+------------------+------------------+---------------------------------+
-|      ct          |      ct_1        | seq                             |
-+==================+==================+=================================+
-|      30          |      24          | AGWEMAKTSSGQRYFLNHIDQTTTW       |
-+------------------+------------------+---------------------------------+
-|      28          |      20          | AGWEMAKTSSGQRYFLNHIDRTTTW       |
-+------------------+------------------+---------------------------------+
-|      26          |      11          | AGWEMAKTRSGQRYFLNHIDQTTTW       |
-+------------------+------------------+---------------------------------+
++------------------+------------------------------+
+|      ct          | seq                          |
++==================+==============================+
+|      21          | TAATGTGAGTTAGCTCACTCAT       |
++------------------+------------------------------+
+|      7           | TAATGTGAGTTAGCTAACTCAT       |
++------------------+------------------------------+
+|      6           | TAATGTGAGTTAGCTCACTCAA       |
++------------------+------------------------------+
 
 ⋮
 
-+------------------+------------------+---------------------------------+
-|      2           |      1           | YVWEMAKTSSGQRYFLNHIDQTTTW       |
-+------------------+------------------+---------------------------------+
-
-**Specifications**::
-
-    0. The dataframe must have at least one row.
-    1. A 'tag' column is mandatory and must occur first. Values must be valid DNA sequences, all the same length.
-    2. A single 'seq', 'seq_rna', or 'seq_pro' column is mandatory and must come second. Values must be valid DNA,
-    RNA, or protein strings, all of the same length.
++------------------+------------------------------+
+|      1           | TAATGTGTGTTCGCTCATCCAT       |
++------------------+------------------------------+
 
 
-Run MPAthic Classes
-~~~~~~~~~~~~~~~~~~~
+In general, MPAthic datasets are pandas dataframes, comprising of columns of counts and sequence values. To simulate
+a Sort-Seq (pdf reference here) experiment, we use the :doc:`simulate_sort` class. This class requires a dataset input
+and a model dataframe input. We first import these inputs using ``io`` module provided with the MPAthic package::
+
+    # Load dataset and model dataframes
+    dataset_df = mpa.io.load_dataset('sort_seq_data.txt')
+    model_df = mpa.io.load_model('crp_model.txt')
+
+    # Simulate a Sort-Seq experiment
+    mpa.SimulateSort(df=dataset_df,mp=model_df)
+
+
 **Sort-Seq Simulations**::
 
    mpa.SimulateLibrary(wtseq="TAATGTGAGTTAGCTCACTCAT")
