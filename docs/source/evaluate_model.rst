@@ -47,6 +47,6 @@ Example Output Table::
 Class Details
 -------------
 
-.. autoclass:: evaluate_model_class.evaluate_model_class
+.. autoclass:: evaluate_model.EvaluateModel
     :members:
 

@@ -89,11 +89,6 @@ MPAthic Class Details
 
    simulate_library
    simulate_sort
-   profile
-   learn_model
-   scan_model
-   evaluate_model
-   dataset
 
 
 
