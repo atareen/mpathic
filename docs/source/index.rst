@@ -91,6 +91,7 @@ MPAthic Class Details
    simulate_sort
    profile_freq
    profile_mutrate
+   profile_info
 
 
 
