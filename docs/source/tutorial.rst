@@ -76,8 +76,8 @@ The head of the output dataframe looks like
    mpa.ScanModel(model_df = model_df, contigs_list = contigs_list)
    mpa.PredictiveInfo(data_df = dataset_df, model_df = model_df,start=52)
 
-References
-----------
+**References**
+
 
 .. [#Kinney2010] Kinney JB, Anand Murugan, Curtis G. Callan Jr., and Edward C. Cox (2010) `Using deep sequencing to characterize the biophysical mechanism of a transcriptional regulatory sequence. <http://www.pnas.org/content/107/20/9158>`_ PNAS May 18, 2010. 107 (20) 9158-9163;
    :download:`PDF <Kinney2010.pdf>`.
