@@ -40,9 +40,27 @@ and a model dataframe input. We first import these inputs using ``io`` module pr
     dataset_df = mpa.io.load_dataset('sort_seq_data.txt')
     model_df = mpa.io.load_model('crp_model.txt')
 
+Next, we call the ``SimulateSort`` class as follows::
+
     # Simulate a Sort-Seq experiment
     sim_sort = mpa.SimulateSort(df=dataset_df,mp=model_df)
     sim_sort.output_df.head()
+
+The head of the output dataframe looks like
+
++----+------+------+------+------+------+------------------------+------+------+------+
+| ct | ct_0 | ct_1 | ct_2 | ct_3 | ct_4 | seq                    | ct_1 | ct_2 | ct_3 |
++====+======+======+======+======+======+========================+======+======+======+
+| 4  | 0    | 0    | 1    | 0    | 0    | AAAAAAGGTGAGTTAGCTAACT | 1    | 0    | 0    |
++----+------+------+------+------+------+------------------------+------+------+------+
+| 3  | 0    | 0    | 0    | 0    | 1    | AAAAAATATAAGTTAGCTCGCT | 0    | 1    | 0    |
++----+------+------+------+------+------+------------------------+------+------+------+
+| 4  | 0    | 0    | 0    | 1    | 0    | AAAAAATATGATTTAGCTGACT | 0    | 1    | 0    |
++----+------+------+------+------+------+------------------------+------+------+------+
+| 3  | 0    | 0    | 0    | 0    | 1    | AAAAAATGTCAGTTAGCTCACT | 0    | 0    | 1    |
++----+------+------+------+------+------+------------------------+------+------+------+
+| 4  | 0    | 0    | 1    | 0    | 0    | AAAAAATGTGAATTATCGCACT | 0    | 1    | 0    |
++----+------+------+------+------+------+------------------------+------+------+------+
 
 **Profiles**::
 
