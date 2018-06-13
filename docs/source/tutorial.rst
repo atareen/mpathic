@@ -134,12 +134,31 @@ computed from full datasets, and can be accomplished using the :doc:`profile_inf
 
 Quantitative Modeling
 ~~~~~~~~~~~~~~~~~~~~~~
-::
 
-   mpa.LearnModel(df=dataset_df)
+The :doc:`learn_model` class can be used to fit quantitative models to data::
+
+   learned_model = mpa.LearnModel(df=dataset_df)
+   learned_model.output_df.head()
+
+The purpose of having a quantitative model is to be able to predict the activity
+of arbitrary sequences. This basic operation is accomplished using the :doc:`evaluate_model` class::
+
    mpa.EvaluateModel(dataset_df = dataset_df, model_df = model_df)
-   mpa.ScanModel(model_df = model_df, contigs_list = contigs_list)
-   mpa.PredictiveInfo(data_df = dataset_df, model_df = model_df,start=52)
+
+Often, it is useful to scan a model over all sequences embedded within larger contigs. To
+do this, MPAthic provides the class :doc:`scan_model`, which is called as follows::
+
+    # get contigs, provided with mpathic
+    fastafile = "./mpathic/examples/genome_ecoli_1000lines.fa"
+    contig = mpa.io.load_contigs_from_fasta(fastafile, model_df)
+
+    scanned_model = mpa.ScanModel(model_df = model_df, contigs_list = contigs_list)
+    scanned_model.sitelist_df.head()
+
+A good way to assess the quality of a model is to compute its predictive information on a massively
+parallel data set. This can be done using the `predictive_info` (need to write this) class::
+
+   predictive_info = mpa.PredictiveInfo(data_df = dataset_df, model_df = model_df,start=52)
 
 **References**
 
