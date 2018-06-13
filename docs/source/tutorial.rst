@@ -2,7 +2,7 @@
 Tutorial
 ==========================================
 
-We begin by importing the MPAthic package::
+Import the MPAthic package as follows::
 
     import mpathic as mpa
 
@@ -90,14 +90,47 @@ The mutation rate at each position within the sequences looks like
 +-----+----+----------+
 
 
-Information::
+To view the frequency of occurrence for every base at each position, use the :doc:`profile_freq` class::
 
-   mpa.ProfileInfo(dataset_df = dataset_df)
+   profile_freq = mpa.ProfileFreq(dataset_df = dataset_df)
+   profile_freq.freq_df.head()
 
-Frequency::
++-----+----------+----------+----------+----------+
+| pos | freq_A   | freq_C   | freq_G   | freq_T   |
++=====+==========+==========+==========+==========+
+| 0   | 1        | 0        | 0        | 0        |
++-----+----------+----------+----------+----------+
+| 1   | 1        | 0        | 0        | 0        |
++-----+----------+----------+----------+----------+
+| 2   | 0.66129  | 0.33871  | 0        | 0        |
++-----+----------+----------+----------+----------+
+| 3   | 0.043988 | 0.042522 | 0.041056 | 0.872434 |
++-----+----------+----------+----------+----------+
+| 4   | 0.917889 | 0.019062 | 0.02566  | 0.03739  |
++-----+----------+----------+----------+----------+
 
-   mpa.ProfileFreq(dataset_df = dataset_df)
+Information proles (also called "information footprints") provide a particularly useful way to identify
+functional positions within a sequence. These proles list, for each position in a sequence, the mutual
+information between the character at that position and the bin in which a sequence is found. Unlike mutation
+and frequency profiles, which require sequence counts for a single bin only, information profiles are
+computed from full datasets, and can be accomplished using the :doc:`profile_info` class as follows::
 
+   profile_info = mpa.ProfileInfo(dataset_df = dataset_df)
+   profile_info.info_df.head()
+
++-----+----------+
+| pos | info     |
++=====+==========+
+| 0   | 0.000077 |
++-----+----------+
+| 1   | 0.000077 |
++-----+----------+
+| 2   | 0.008357 |
++-----+----------+
+| 3   | 0.008743 |
++-----+----------+
+| 4   | 0.013745 |
++-----+----------+
 
 Quantitative Modeling
 ~~~~~~~~~~~~~~~~~~~~~~
