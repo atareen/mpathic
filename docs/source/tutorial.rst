@@ -6,9 +6,11 @@ We begin by importing the MPAthic package::
 
     import mpathic as mpa
 
-**Simulations**
+Simulating Data
+~~~~~~~~~~~~~~~
 
-We can use the :doc:`simulate_library` class to create a library of random mutants from an initial wildtype sequence and mutation rate::
+We begin by simulating a library of variant CRP binding sites. We can use the :doc:`simulate_library` class to
+create a library of random mutants from an initial wildtype sequence and mutation rate::
 
     sim_library = mpa.SimulateLibrary(wtseq="TAATGTGAGTTAGCTCACTCAT", mutrate=0.24)
     sim_library.output_df.head()
@@ -62,14 +64,44 @@ The head of the output dataframe looks like
 | 4  | 0    | 0    | 1    | 0    | 0    | AAAAAATGTGAATTATCGCACT | 0    | 1    | 0    |
 +----+------+------+------+------+------+------------------------+------+------+------+
 
-**Profiles**::
+Computing Profiles
+~~~~~~~~~~~~~~~~~~
+
+It is often useful to compute the mutation rate within a set of sequences, e.g., in order to validate the
+composition of a library. This can be accomplished using the :doc:`profile_mutrate` class as follows::
+
+   profile_mut = mpa.ProfileMut(dataset_df = dataset_df)
+   profile_mut.mut_df.head()
+
+The mutation rate at each position within the sequences looks like
+
++-----+----+----------+
+| pos | wt | mut      |
++=====+====+==========+
+| 0   | A  | 0        |
++-----+----+----------+
+| 1   | A  | 0        |
++-----+----+----------+
+| 2   | A  | 0.33871  |
++-----+----+----------+
+| 3   | T  | 0.127566 |
++-----+----+----------+
+| 4   | A  | 0.082111 |
++-----+----+----------+
+
+
+Information::
 
    mpa.ProfileInfo(dataset_df = dataset_df)
-   mpa.ProfileMut(dataset_df = dataset_df)
+
+Frequency::
+
    mpa.ProfileFreq(dataset_df = dataset_df)
 
 
-**Models**::
+Quantitative Modeling
+~~~~~~~~~~~~~~~~~~~~~~
+::
 
    mpa.LearnModel(df=dataset_df)
    mpa.EvaluateModel(dataset_df = dataset_df, model_df = model_df)
