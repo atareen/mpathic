@@ -14,7 +14,7 @@ MPAthic
 
     <h1><font color="red">Under Active Development</font></h1>
 
-MPAthic is a python API and it fits quantitative models to data.
+MPAthic [#MPAthic2016]_ is a python API and it fits quantitative models to data.
 Most MPAthic classes take in one or more tabular text files as input and return a tabular text file as output.
 All input and output files are designed to be human readable. The first line of each tabular text file contains
 headers describing the contents of each column. All input files are required to have the proper set of
@@ -73,6 +73,11 @@ Other links:
 - `Simons Center for Quantitative Biology <https://www.cshl.edu/research/quantitative-biology/>`_
 - `Cold Spring Harbor Laboratory <https://www.cshl.edu/>`_
 
+References
+----------
+
+.. [#MPAthic2016] William T. Ireland and Justin B. Kinney (2016) `MPAthic: quantitative modeling of sequence-function relationships for massively parallel assays <https://www.biorxiv.org/content/early/2016/06/20/054676>`_
+   :download:`PDF <MPAthic2016.pdf>`.
 
 Indices and tables
 ------------------
