@@ -157,7 +157,22 @@ The :doc:`learn_model` class can be used to fit quantitative models to data::
 The purpose of having a quantitative model is to be able to predict the activity
 of arbitrary sequences. This basic operation is accomplished using the :doc:`evaluate_model` class::
 
-   mpa.EvaluateModel(dataset_df = dataset_df, model_df = model_df)
+   eval_model = mpa.EvaluateModel(dataset_df = dataset_df, model_df = model_df)
+   eval_model.out_df.head()
+
++----+------+------+------+------+------+------------------------+-----------+
+| ct | ct_0 | ct_1 | ct_2 | ct_3 | ct_4 | seq                    | val       |
++====+======+======+======+======+======+========================+===========+
+| 1  | 0    | 0    | 1    | 0    | 0    | AAAGGTGAGTTAGCTAACTCAT | 0.348108  |
++----+------+------+------+------+------+------------------------+-----------+
+| 1  | 0    | 0    | 0    | 0    | 1    | AAATATAAGTTAGCTCGCTCAT | -0.248134 |
++----+------+------+------+------+------+------------------------+-----------+
+| 1  | 0    | 0    | 0    | 1    | 0    | AAATATGATTTAGCTGACTCAT | 0.009507  |
++----+------+------+------+------+------+------------------------+-----------+
+| 1  | 0    | 0    | 0    | 0    | 1    | AAATGTCAGTTAGCTCACTCAT | 0.238852  |
++----+------+------+------+------+------+------------------------+-----------+
+| 1  | 0    | 0    | 1    | 0    | 0    | AAATGTGAATTATCGCACTCAT | -0.112121 |
++----+------+------+------+------+------+------------------------+-----------+
 
 Often, it is useful to scan a model over all sequences embedded within larger contigs. To
 do this, MPAthic provides the class :doc:`scan_model`, which is called as follows::
@@ -168,6 +183,20 @@ do this, MPAthic provides the class :doc:`scan_model`, which is called as follow
 
     scanned_model = mpa.ScanModel(model_df = model_df, contigs_list = contigs_list)
     scanned_model.sitelist_df.head()
+
++---+----------+------------------------+-------+-------+-----+-----------+
+|   | val      | seq                    | left  | right | ori | contig    |
++===+==========+========================+=======+=======+=====+===========+
+| 0 | 2.040628 | GGTCGTTTGCCTGCGCCGTGCA | 11710 | 11731 | +   | MG1655.fa |
++---+----------+------------------------+-------+-------+-----+-----------+
+| 1 | 2.00608  | GGAAGTCGCCGCCCGCACCGCT | 74727 | 74748 | -   | MG1655.fa |
++---+----------+------------------------+-------+-------+-----+-----------+
+| 2 | 1.996992 | TGGGTGTGGCGCGTGACCTGTT | 45329 | 45350 | +   | MG1655.fa |
++---+----------+------------------------+-------+-------+-----+-----------+
+| 3 | 1.920821 | GGTATGTGTCGCCAGCCAGGCA | 38203 | 38224 | +   | MG1655.fa |
++---+----------+------------------------+-------+-------+-----+-----------+
+| 4 | 1.879852 | GGTGATTTTGGCGTGGTGGCGT | 73077 | 73098 | -   | MG1655.fa |
++---+----------+------------------------+-------+-------+-----+-----------+
 
 A good way to assess the quality of a model is to compute its predictive information on a massively
 parallel data set. This can be done using the `predictive_info` (need to write this) class::
