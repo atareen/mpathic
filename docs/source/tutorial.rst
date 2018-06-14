@@ -140,6 +140,20 @@ The :doc:`learn_model` class can be used to fit quantitative models to data::
    learned_model = mpa.LearnModel(df=dataset_df)
    learned_model.output_df.head()
 
++-----+-----------+-----------+----------+----------+
+| pos | val_A     | val_C     | val_G    | val_T    |
++=====+===========+===========+==========+==========+
+| 0   | -0.201587 | 0.067196  | 0.067196 | 0.067196 |
++-----+-----------+-----------+----------+----------+
+| 1   | -0.201587 | 0.067196  | 0.067196 | 0.067196 |
++-----+-----------+-----------+----------+----------+
+| 2   | -0.10637  | -0.167351 | 0.13686  | 0.13686  |
++-----+-----------+-----------+----------+----------+
+| 3   | -0.287282 | 0.041222  | -0.2039  | 0.44996  |
++-----+-----------+-----------+----------+----------+
+| 4   | -0.056109 | -0.871858 | 0.344537 | 0.583429 |
++-----+-----------+-----------+----------+----------+
+
 The purpose of having a quantitative model is to be able to predict the activity
 of arbitrary sequences. This basic operation is accomplished using the :doc:`evaluate_model` class::
 
