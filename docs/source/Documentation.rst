@@ -12,4 +12,8 @@ Documentation
     learn_model
     evaluate_model
     scan_model
-    dataset
+
+mpa.demo()
+----------
+
+.. autofunction:: mpathic.demo
