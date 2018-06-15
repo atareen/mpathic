@@ -55,6 +55,7 @@ Resources
    :maxdepth: 2
 
    tutorial
+   examples
    Documentation
 
 
