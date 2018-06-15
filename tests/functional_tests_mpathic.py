@@ -202,31 +202,31 @@ def test_mpathic_io():
 def test_simulate_library():
 
     # test default parameters
-    test_parameter_values(func=mpa.simulate_library_class)
+    test_parameter_values(func=mpa.SimulateLibrary)
 
     # test wtseq
-    test_parameter_values(func=mpa.simulate_library_class, var_name='wtseq', fail_list=[3, 1.0,"XxX",False,""],
+    test_parameter_values(func=mpa.SimulateLibrary, var_name='wtseq', fail_list=[3, 1.0, "XxX", False, ""],
                           success_list=["ATTCCGAGTA", "ATGTGTAGTCGTAG"])
     # test mutation rate
-    test_parameter_values(func=mpa.simulate_library_class,var_name='mutrate',fail_list=[1.1,2,-1,0],success_list=[0.5,0.1])
+    test_parameter_values(func=mpa.SimulateLibrary, var_name='mutrate', fail_list=[1.1, 2, -1, 0], success_list=[0.5, 0.1])
 
     # test numseq
-    test_parameter_values(func=mpa.simulate_library_class,var_name='numseq',fail_list=['x',-1,0,0.5],success_list=[1,2,3,100])
+    test_parameter_values(func=mpa.SimulateLibrary, var_name='numseq', fail_list=['x', -1, 0, 0.5], success_list=[1, 2, 3, 100])
 
     # test dicttype
     #test_parameter_values(func=mpa.simulate_library_class(wtseq=wtseq_dna),var_name='dicttype',fail_list=['x',1,True],success_list=['dna','rna','protein'])
-    test_parameter_values(func=mpa.simulate_library_class, var_name='dicttype',
+    test_parameter_values(func=mpa.SimulateLibrary, var_name='dicttype',
                           fail_list=['x', 1, True], success_list=['dna','rna','protein'])
 
     # Note *** Need valid example of probarr to test ***
     # test probarr
-    test_parameter_values(func=mpa.simulate_library_class,var_name='probarr',fail_list=[1,1.0,"x",[1,2,3]],success_list=[None])
+    test_parameter_values(func=mpa.SimulateLibrary, var_name='probarr', fail_list=[1, 1.0, "x", [1, 2, 3]], success_list=[None])
 
     # tags
-    test_parameter_values(func=mpa.simulate_library_class,var_name='tags',fail_list=[None,-1,3.9],success_list=[True,False])
+    test_parameter_values(func=mpa.SimulateLibrary, var_name='tags', fail_list=[None, -1, 3.9], success_list=[True, False])
 
     # tag_length
-    test_parameter_values(func=mpa.simulate_library_class, var_name='tag_length', fail_list=[None, -1, 3.9],
+    test_parameter_values(func=mpa.SimulateLibrary, var_name='tag_length', fail_list=[None, -1, 3.9],
                           success_list=[3, 200])
 
 # functional tests for simulate sort
@@ -243,7 +243,7 @@ def test_simulate_sort():
     dataset_good_df_4 = mpa.io.load_dataset("../../mpathic/data/sortseq/full-wt/data.txt")
 
     # test input df
-    test_parameter_values(mpa.simulate_sort_class, var_name='df',
+    test_parameter_values(mpa.SimulateSort, var_name='df',
                           fail_list=
                           [
                               0,
@@ -260,16 +260,16 @@ def test_simulate_sort():
 
     # test model dataframe
     ss_rnap_model = mpa.io.load_model('../../mpathic/data/sortseq/rnap-wt/rnap_model.txt')
-    test_parameter_values(func=mpa.simulate_sort_class, var_name='mp', fail_list=[None, 'x'],
+    test_parameter_values(func=mpa.SimulateSort, var_name='mp', fail_list=[None, 'x'],
                           success_list=[ss_rnap_model, model_good_df], df=dataset_good_df_1)
 
     # test noise type
-    test_parameter_values(func=mpa.simulate_sort_class, var_name='noisetype', fail_list=[1, 2.1, 'x','LogNormal'],
+    test_parameter_values(func=mpa.SimulateSort, var_name='noisetype', fail_list=[1, 2.1, 'x', 'LogNormal'],
                           success_list=['Normal', 'None'], df=dataset_good_df_1,
                           mp=model_good_df)
 
     # test nbins
-    test_parameter_values(func=mpa.simulate_sort_class, var_name='nbins', fail_list=['x', -1, 1.3, 1],
+    test_parameter_values(func=mpa.SimulateSort, var_name='nbins', fail_list=['x', -1, 1.3, 1],
                           success_list=[2, 3, 10], df=dataset_good_df_1,
                           mp=model_good_df)
 
@@ -286,19 +286,19 @@ def test_profile_freq():
     good_df_1 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_crp.txt")
     good_df_2 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_good_pro.txt")
 
-    test_parameter_values(func=mpa.profile_freq_class, var_name='dataset_df', fail_list=[3, 'x', None, bad_df_1],
+    test_parameter_values(func=mpa.ProfileFreq, var_name='dataset_df', fail_list=[3, 'x', None, bad_df_1],
                           success_list=[good_df_1, good_df_2])
 
     # bin tests
-    test_parameter_values(func=mpa.profile_freq_class, var_name='bin', fail_list=[-1, 'x', 1.2],
-                          success_list=[2, 3],dataset_df=good_df_1)
+    test_parameter_values(func=mpa.ProfileFreq, var_name='bin', fail_list=[-1, 'x', 1.2],
+                          success_list=[2, 3], dataset_df=good_df_1)
 
     # start tests
-    test_parameter_values(func=mpa.profile_freq_class, var_name='start', fail_list=[0.1, 'x', 1.2, None],
+    test_parameter_values(func=mpa.ProfileFreq, var_name='start', fail_list=[0.1, 'x', 1.2, None],
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
     # end tests
-    test_parameter_values(func=mpa.profile_freq_class, var_name='end', fail_list=[0.1, 'x', 1.2],
+    test_parameter_values(func=mpa.ProfileFreq, var_name='end', fail_list=[0.1, 'x', 1.2],
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
 
@@ -309,23 +309,23 @@ def test_profile_mut():
     good_df_1 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_crp.txt")
     good_df_2 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_good_pro.txt")
 
-    test_parameter_values(func=mpa.profile_mut_class, var_name='dataset_df', fail_list=[3, 'x', None, bad_df_1],
+    test_parameter_values(func=mpa.ProfileMut, var_name='dataset_df', fail_list=[3, 'x', None, bad_df_1],
                           success_list=[good_df_1, good_df_2])
 
     # bin tests
-    test_parameter_values(func=mpa.profile_mut_class, var_name='bin', fail_list=[-1, 'x', 1.2],
-                          success_list=[2, 3],dataset_df=good_df_1)
+    test_parameter_values(func=mpa.ProfileMut, var_name='bin', fail_list=[-1, 'x', 1.2],
+                          success_list=[2, 3], dataset_df=good_df_1)
 
     # start tests
-    test_parameter_values(func=mpa.profile_mut_class, var_name='start', fail_list=[0.1, 'x', 1.2, None],
+    test_parameter_values(func=mpa.ProfileMut, var_name='start', fail_list=[0.1, 'x', 1.2, None],
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
     # end tests
-    test_parameter_values(func=mpa.profile_mut_class, var_name='end', fail_list=[0.1, 'x', 1.2],
+    test_parameter_values(func=mpa.ProfileMut, var_name='end', fail_list=[0.1, 'x', 1.2],
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
     # err tests
-    test_parameter_values(func=mpa.profile_mut_class, var_name='err', fail_list=[0.1, 'x', 1, 'True',None],
+    test_parameter_values(func=mpa.ProfileMut, var_name='err', fail_list=[0.1, 'x', 1, 'True', None],
                           success_list=[True, False], dataset_df=good_df_1)
 
 
@@ -336,27 +336,27 @@ def test_profile_info():
     good_df_1 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_crp.txt")
     good_df_2 = mpa.io.load_dataset("../../mpathic/MPAthic_tests/input/dataset_good_pro.txt")
 
-    test_parameter_values(func=mpa.profile_info_class, var_name='dataset_df', fail_list=[3, 'x', None, bad_df_1],
+    test_parameter_values(func=mpa.ProfileInfo, var_name='dataset_df', fail_list=[3, 'x', None, bad_df_1],
                           success_list=[good_df_1, good_df_2])
     
     # err tests
-    test_parameter_values(func=mpa.profile_info_class, var_name='err', fail_list=[0.1, 'x', 1, 'True', None],
+    test_parameter_values(func=mpa.ProfileInfo, var_name='err', fail_list=[0.1, 'x', 1, 'True', None],
                           success_list=[True, False], dataset_df=good_df_1)
 
     # method tests
-    test_parameter_values(func=mpa.profile_info_class, var_name='method', fail_list=[0.1, 'x', 1, 'True', None],
+    test_parameter_values(func=mpa.ProfileInfo, var_name='method', fail_list=[0.1, 'x', 1, 'True', None],
                           success_list=['naive','tpm','nsb'], dataset_df=good_df_1)
 
     # pseudocount tests
-    test_parameter_values(func=mpa.profile_info_class, var_name='pseudocount', fail_list=['x', 1, 'True', None,-1.4],
+    test_parameter_values(func=mpa.ProfileInfo, var_name='pseudocount', fail_list=['x', 1, 'True', None, -1.4],
                           success_list=[0.1,1.5,9.3], dataset_df=good_df_1)
 
     # start tests
-    test_parameter_values(func=mpa.profile_info_class, var_name='start', fail_list=[0.1, 'x', 1.2, None],
+    test_parameter_values(func=mpa.ProfileInfo, var_name='start', fail_list=[0.1, 'x', 1.2, None],
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
     # end tests
-    test_parameter_values(func=mpa.profile_info_class, var_name='end', fail_list=[0.1, 'x', 1.2],
+    test_parameter_values(func=mpa.ProfileInfo, var_name='end', fail_list=[0.1, 'x', 1.2],
                           success_list=[2, 3, 4, 10], dataset_df=good_df_1)
 
 # functional tests for learn model
@@ -365,14 +365,14 @@ def test_learn_model():
     learn_model_good_df = mpa.io.load_dataset("../../mpathic/data/sortseq/full-0/data.txt")
     small_dataset = mpa.io.load_dataset("../../mpathic/data/sortseq/full-0/data_small.txt")
 
-    test_parameter_values(func=mpa.learn_model_class, var_name='df', fail_list=[None, 2.4],
+    test_parameter_values(func=mpa.LearnModel, var_name='df', fail_list=[None, 2.4],
                           success_list=[learn_model_good_df, small_dataset], lm='ER')
 
     # the following is problematic: for lm = 'PR', the convex_optimization algorithm experies overflows (line 574)
     # for lm = 'LS', the are some convergence warnings.
     # for lm = 'IM', the test passes but takes ~ 2 hours to complete
-    test_parameter_values(func=mpa.learn_model_class, var_name='lm', fail_list=[None, 2.4,'x'],
-                          success_list=['ER','LS','PR', 'IM'],df=small_dataset)
+    test_parameter_values(func=mpa.LearnModel, var_name='lm', fail_list=[None, 2.4, 'x'],
+                          success_list=['ER','LS','PR', 'IM'], df=small_dataset)
 
     # test modeltype
 
