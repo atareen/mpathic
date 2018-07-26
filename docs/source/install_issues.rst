@@ -15,7 +15,7 @@ look for existing fortran compilers on the users machine. If none are present, t
 
 Fix
 ~~~
-We recommend installing `GCC <https://gcc.gnu.org/install/>`_, as this satisfy both Non-Python MPAthic
+We recommend installing `GCC <https://gcc.gnu.org/install/>`_, as this satisfies both Non-Python MPAthic
 dependencies (i.e. Cython and pymc). In addition to official instructions, GCC can be obtained easily on
 macOS via `homebrew <https://brew.sh/>`_::
 
