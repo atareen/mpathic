@@ -21,6 +21,19 @@ macOS via `homebrew <https://brew.sh/>`_::
 
     brew install gcc
 
+2. Updating gcc
+~~~~~~~~~~~~~~~
+
+Updates to gcc does not seem to update the paths required by pymc. An example is shown below
+where the user initially installed gcc 4 but then updated to version 5:
+
+.. image:: _static/install_issues_gcc_version.png
+
+Fix
+~~~
+
+Re-installing the version of gcc required by pymc (hence, mpathic) fixes. In the case above, gcc version
+4 was re-installed.
 
 Cython
 ------
