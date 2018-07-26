@@ -34,7 +34,7 @@ manager (version 9.0.0 or higher). At the command line::
     pip install mpathic
 
 The code for MPAthic is open source and available on
-`GitHub <https://github.com/atareen/mpathic>`_.
+`GitHub <https://github.com/jbkinney/mpathic>`_.
 
 
 Quick Start
