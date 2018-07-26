@@ -1,9 +1,9 @@
-#!/usr/bin/env python
-
-'''A script which accepts an model of binding energy and a wild type sequence.
-    The script scans the model across the sequence, and generates an energy
-    prediction for each starting position. It then sorts by best binding and
-    displays all posibilities.'''
+"""
+The ScanModel class accepts an model of binding energy and a wild type sequence.
+The class scans the model across the sequence, and generates an energy
+prediction for each starting position. It then sorts by best binding and
+displays all possibilities
+"""
 from __future__ import division
 # Our standard Modules
 import argparse
@@ -25,28 +25,26 @@ import pdb
 from mpathic import SortSeqError
 
 class ScanModel:
-	
-	"""
-
-    Parameters
-    ----------
-
-    model_df: (pandas dataframe)
-        The dataframe containing a model of the binding energy and a wild type sequence
-
-    contig_list: (list)
-        list containing contigs. Can be loaded from fasta file via
-        mpathic.io.load_contigs
-
-    numsites: (int)
-        Number of sites
-
-    verbose: (bool)
-        A value of True will force the 'flush' the buffer and everything will
-        be written to screen.
 
     """
-	
+
+        Parameters
+        ----------
+
+        model_df: (pandas dataframe)
+            The dataframe containing a model of the binding energy and a wild type sequence.
+
+        contig_list: (list)
+            list containing contigs. Can be loaded from fasta file via
+            mpathic.io.load_contigs
+        numsites: (int)
+            Number of sites
+        verbose: (bool)
+            A value of True will force the 'flush' the buffer and everything will
+            be written to screen.
+
+    """
+
     def __init__(self, model_df, contig_list, numsites=10, verbose=False):
 
         self.sitelist_df = None
