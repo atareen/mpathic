@@ -25,7 +25,28 @@ import pdb
 from mpathic import SortSeqError
 
 class ScanModel:
+	
+	"""
 
+    Parameters
+    ----------
+
+    model_df: (pandas dataframe)
+        The dataframe containing a model of the binding energy and a wild type sequence
+
+    contig_list: (list)
+        list containing contigs. Can be loaded from fasta file via
+        mpathic.io.load_contigs
+
+    numsites: (int)
+        Number of sites
+
+    verbose: (bool)
+        A value of True will force the 'flush' the buffer and everything will
+        be written to screen.
+
+    """
+	
     def __init__(self, model_df, contig_list, numsites=10, verbose=False):
 
         self.sitelist_df = None
