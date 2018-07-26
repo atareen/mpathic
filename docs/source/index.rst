@@ -27,14 +27,28 @@ input and output is written to the standard output.
 Installation
 ------------
 
-MPAthic can be installed from
+Prerequisites
+~~~~~~~~~~~~~
+
+MPAthic uses some Non-python resources and has the following prerequisites for installation:
+
+* `gcc <https://gcc.gnu.org/>`_
+* `Cython <http://cython.org/>`_
+* `numpy <http://www.numpy.org/>`_
+
+With the prerequisites installed, MPAthic can be installed from
 `PyPI <https://pypi.python.org/pypi/mpathic>`_ using the pip package
 manager (version 9.0.0 or higher). At the command line::
 
     pip install mpathic
 
 The code for MPAthic is open source and available on
-`GitHub <https://github.com/jbkinney/mpathic>`_.
+`GitHub <https://github.com/atareen/mpathic>`_.
+
+
+Some commonly encountered installation issues can be found here: :ref:`reference_label_install_issues`
+
+
 
 
 Quick Start
@@ -79,6 +93,17 @@ References
 
 .. [#MPAthic2016] William T. Ireland and Justin B. Kinney (2016) `MPAthic: quantitative modeling of sequence-function relationships for massively parallel assays <https://www.biorxiv.org/content/early/2016/06/20/054676>`_
    :download:`PDF <MPAthic2016.pdf>`.
+
+
+.. _reference_label_install_issues:
+
+Common Installation Issues
+--------------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   install_issues
 
 Indices and tables
 ------------------
