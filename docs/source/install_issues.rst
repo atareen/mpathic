@@ -8,7 +8,12 @@ Fortran Compiler
 1. Missing Fortran compiler
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`pymc <https://docs.pymc.io/>`_ requires a fortran compiler in order to work. During installation, MPAthic will
+`pymc <https://docs.pymc.io/>`_ requires a fortran compiler in order to work. Please ensure pymc can be imported.
+::
+
+      >>> import pymc
+
+During installation, MPAthic will
 look for existing fortran compilers on the user's machine. If none are present, the following error will be thrown:
 
 .. image:: _static/install_issues_1.png
@@ -37,6 +42,12 @@ Re-installing the version of gcc required by pymc (hence, mpathic) fixes this is
 
 Cython
 ------
+
+Ensure the correct version of `Cython <http://cython.org/>`_ is installed.
+::
+
+      $ pip freeze | grep 'Cython'
+      $ Cython==0.28.1
 
 1. Existing Cython versions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

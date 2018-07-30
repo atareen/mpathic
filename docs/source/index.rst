@@ -32,39 +32,36 @@ Prerequisites
 
 MPAthic uses some Non-python resources and has the following prerequisites for installation:
 
-* `gcc <https://gcc.gnu.org/>`_
-   From with in terminal, run the command gcc.
+* `GCC <https://gcc.gnu.org/>`_
+   GCC, which contains both C compilers and Fortran compilers, is required to run MPAthic. From with in terminal, run the command gcc.
    ::
 
       $ gcc
       $ clang: error: no input files
 
-* `Cython <http://cython.org/>`_
-   Ensure the correct version of Cython is installed.
+   Check that gfortran was installed with gcc.
    ::
 
-      $ pip freeze | grep 'Cython'
-      $ Cython==0.28.1
+      $ gfortran
+      $ gfortran: fatal error: no input files ...
 
-* `pymc <https://docs.pymc.io/>`_
-   Ensure pymc can be imported.
+* `NUMPY <http://www.numpy.org/>`_
+   numpy is required to be installed before mpathic can be installed.
    ::
 
-      >>> import pymc
+      pip install numpy
 
-* `numpy <http://www.numpy.org/>`_
 
-With the prerequisites installed, MPAthic can be installed from
-`PyPI <https://pypi.python.org/pypi/mpathic>`_ using the pip package
-manager (version 9.0.0 or higher). At the command line::
+Install MPAthic
+~~~~~~~~~~~~~~~
+
+With the prerequisites installed, MPAthic can be installed using the pip (version 9.0.0 or higher) from
+`PyPI <https://pypi.python.org/pypi/mpathic>`_. At the command line::
 
     pip install mpathic
 
 The code for MPAthic is open source and available on
-`GitHub <https://github.com/atareen/mpathic>`_.
-
-
-Some commonly encountered installation issues can be found here: :ref:`reference_label_install_issues`
+`GitHub <https://github.com/jbkinney/mpathic>`_. Some commonly encountered installation issues can be found here: :ref:`reference_label_install_issues`
 
 
 
