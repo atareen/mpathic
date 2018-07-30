@@ -9,7 +9,7 @@ Fortran Compiler
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `pymc <https://docs.pymc.io/>`_ requires a fortran compiler in order to work. During installation, MPAthic will
-look for existing fortran compilers on the users machine. If none are present, the following error will be thrown:
+look for existing fortran compilers on the user's machine. If none are present, the following error will be thrown:
 
 .. image:: _static/install_issues_1.png
 
@@ -32,7 +32,7 @@ where the user initially installed gcc 4 but then updated to version 5:
 Fix
 ~~~
 
-Re-installing the version of gcc required by pymc (hence, mpathic) fixes. In the case above, gcc version
+Re-installing the version of gcc required by pymc (hence, mpathic) fixes this issue. In the case above, gcc version
 4 was re-installed.
 
 Cython
@@ -57,3 +57,16 @@ Run the anaconda command::
 Or pip install directly::
 
     pip install Cython==0.28.1
+
+Permissions
+-----------
+
+The user might not have access to install to the global site-packages directory.
+
+.. image:: _static/install_issues_permission.png
+
+Fix
+~~~
+::
+
+    pip install mpathic --user

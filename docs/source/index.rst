@@ -33,7 +33,25 @@ Prerequisites
 MPAthic uses some Non-python resources and has the following prerequisites for installation:
 
 * `gcc <https://gcc.gnu.org/>`_
+   From with in terminal, run the command gcc.
+   ::
+
+      $ gcc
+      $ clang: error: no input files
+
 * `Cython <http://cython.org/>`_
+   Ensure the correct version of Cython is installed.
+   ::
+
+      $ pip freeze | grep 'Cython'
+      $ Cython==0.28.1
+
+* `pymc <https://docs.pymc.io/>`_
+   Ensure pymc can be imported.
+   ::
+
+      >>> import pymc
+
 * `numpy <http://www.numpy.org/>`_
 
 With the prerequisites installed, MPAthic can be installed from
