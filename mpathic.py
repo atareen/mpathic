@@ -75,7 +75,7 @@ print(" about to import from init, cwd: ",os.getcwd())
 #from checkouts.latest.src.simulate_library_class import simulate_library_class
 
 from utils import check
-from mpathic.src import simulate_sort
+from mpathic.checkouts.latest.src import simulate_sort
 
 # demo functions
 def demo(example='simulation'):
