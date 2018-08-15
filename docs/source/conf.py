@@ -107,7 +107,8 @@ autodoc_mock_imports = ['cStringIO',
                         'Bio',
                         'qc',
                         'pymc',
-                        'fast'
+                        'fast',
+                        'Bio.Alphabet'
                         ]
 
 '''
