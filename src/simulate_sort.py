@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-'''Simulate cell sorting based on expression'''
 from __future__ import division
 import argparse
 import numpy as np
@@ -19,6 +16,8 @@ from utils import check, handle_errors, ControlledError
 class SimulateSort:
 
     """
+    
+    Simulate cell sorting based on expression.
 
     Parameters
     ----------
