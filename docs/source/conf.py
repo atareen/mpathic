@@ -41,7 +41,7 @@ import mpathic
 print("dir of mpathic is ...")
 print(dir(mpathic))
 print("list all files in cwd: ",os.getcwd())
-print(os.listdir())
+print(os.listdir(os.getcwd()))
 
 
 '''
