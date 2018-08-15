@@ -11,10 +11,10 @@ import utils as utils
 import scipy as sp
 import pandas as pd
 import pdb
-#import qc as qc
-from mpathic.src import qc
-#import io_local as io
-from mpathic.src import io_local as io
+import qc as qc
+#from mpathic.src import qc
+import io_local as io
+#from mpathic.src import io_local as io
 
 #import fast
 from mpathic.src import fast
@@ -27,8 +27,8 @@ import time
 #from src.__init__ import SortSeqError
 #from __init__ import SortSeqError
 from mpathic import SortSeqError
-#import numerics as numerics
-from mpathic.src import numerics
+import numerics as numerics
+#from mpathic.src import numerics
 
 
 class ExpModel:
