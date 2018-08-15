@@ -6,8 +6,8 @@ from __future__ import division
 import importlib
 import sys
 import numpy as np
-#import utils as utils
-from mpathic.src import utils
+import utils as utils
+#from mpathic.src import utils
 import scipy as sp
 import pandas as pd
 import pdb
