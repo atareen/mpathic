@@ -6,7 +6,7 @@ Documentation
 
     simulate_library
     simulate_sort
-    profile_freqs
+    profile_freq
     profile_mutrate
     profile_info
     learn_model
