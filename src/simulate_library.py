@@ -27,7 +27,7 @@ class SimulateLibrary:
             dicttype = 'DNA', 'A', 'C', 'G','U' for  dicttype = 'RNA'
 
     mutrate : (float)
-        mutation rate
+        mutation rate.
 
     numseq : (int)
         number of sequences. Must be a positive integer.
