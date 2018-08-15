@@ -40,8 +40,8 @@ print("trying to import mpathic in conf.py")
 import mpathic
 print("dir of mpathic is ...")
 print(dir(mpathic))
-print("list all files in /home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/ ")
-print(os.listdir('/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/'))
+print("list all files in /home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/src ")
+print(os.listdir('/home/docs/checkouts/readthedocs.org/user_builds/mpathic/checkouts/latest/src'))
 
 
 '''
