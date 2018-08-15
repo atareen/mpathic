@@ -75,9 +75,6 @@ print(" about to import from init, cwd: ",os.getcwd())
 #from checkouts.latest.src.simulate_library_class import simulate_library_class
 
 from utils import check
-from simulate_sort import SimulateSort
-
-print("DING DING DING")
 
 # demo functions
 def demo(example='simulation'):
