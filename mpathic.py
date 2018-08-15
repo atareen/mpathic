@@ -74,7 +74,8 @@ print(" about to import from init, cwd: ",os.getcwd())
 #from mpathic.src.simulate_library_class import simulate_library_class
 #from checkouts.latest.src.simulate_library_class import simulate_library_class
 
-from utils import check
+#from utils import check
+from mpathic.src.utils import check
 
 # demo functions
 def demo(example='simulation'):
