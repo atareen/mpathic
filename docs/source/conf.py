@@ -38,7 +38,8 @@ sys.path.insert(10,'/home/docs/checkouts/readthedocs.org/user_builds/')
 
 print("trying to import mpathic in conf.py")
 import mpathic
-#print(dir(mpathic))
+print("dir of mpathic is ...")
+print(dir(mpathic))
 
 
 '''
