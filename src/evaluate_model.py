@@ -1,12 +1,21 @@
 '''A script which adds a predicted energy column to an input table. This is
     generated based on a energy model the user provides.'''
 from __future__ import division
+'''
 from mpathic.src import Models
 from mpathic.src import utils
 from mpathic.src.utils import ControlledError, handle_errors, check
 from mpathic.src import qc
 from mpathic.src import io_local as io
 from mpathic.src import fast
+'''
+import Models as Models
+import utils as utils
+from utils import ControlledError, handle_errors, check
+import qc as qc
+import io_local as io
+import fast
+
 import pandas as pd
 
 class EvaluateModel:
