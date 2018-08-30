@@ -6,16 +6,17 @@ import numpy as np
 # This module will allow us to easily tally the letter counts at a particular position
 
 #import utils as utils
-from mpathic.src import utils
+import utils as utils
 #import EstimateMutualInfoforMImax as EstimateMutualInfoforMImax
-from mpathic.src import EstimateMutualInfoforMImax
+#from mpathic.src import EstimateMutualInfoforMImax
+import EstimateMutualInfoforMImax
 #import qc as qc
-from mpathic.src import qc
+import qc as qc
 #import numerics as numerics
-from mpathic.src import numerics
-from mpathic import SortSeqError
+import numerics
+import SortSeqError
 #import io_local as io
-from mpathic.src import io_local as io
+import io_local as io
 import matplotlib.pyplot as plt
 
 class PredictiveInfo:
