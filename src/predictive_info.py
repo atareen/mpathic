@@ -17,7 +17,7 @@ import numerics
 from mpathic import SortSeqError
 import pandas as pd
 import io_local as io
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 class PredictiveInfo:
 
@@ -115,12 +115,12 @@ class PredictiveInfo:
         # we must divide by the total number of counts in each bin for the MI calculator
         # temp_sorted[col_headers] = temp_sorted[col_headers].div(temp_sorted['ct'],axis=0)
         if return_freg:
-            fig, ax = plt.subplots()
+            #fig, ax = plt.subplots()
             MI, freg = EstimateMutualInfoforMImax.alt4(temp_sorted, coarse_graining_level=coarse_graining_level,
                                                        return_freg=return_freg)
-            plt.imshow(freg, interpolation='nearest', aspect='auto')
+            #plt.imshow(freg, interpolation='nearest', aspect='auto')
 
-            plt.savefig(return_freg)
+            #plt.savefig(return_freg)
         else:
             MI = EstimateMutualInfoforMImax.alt4(temp_sorted, coarse_graining_level=coarse_graining_level,
                                                  return_freg=return_freg)
