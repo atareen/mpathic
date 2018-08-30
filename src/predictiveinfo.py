@@ -1,6 +1,8 @@
 """A script which returns the mutual information between the predictions of a
     model and a test data set."""
 
+print('IN PREDICTIVE INFO 1')
+
 import numpy as np
 # Our miscellaneous functions
 # This module will allow us to easily tally the letter counts at a particular position
@@ -9,6 +11,7 @@ import numpy as np
 import utils as utils
 #import EstimateMutualInfoforMImax as EstimateMutualInfoforMImax
 #from mpathic.src import EstimateMutualInfoforMImax
+print('IN PREDICTIVE INFO 2')
 import EstimateMutualInfoforMImax
 #import qc as qc
 import qc as qc
@@ -18,6 +21,7 @@ import SortSeqError
 #import io_local as io
 import io_local as io
 import matplotlib.pyplot as plt
+print('IN PREDICTIVE INFO 3')
 
 class PredictiveInfo:
 
