@@ -13,7 +13,8 @@ import qc as qc
 from utils import check,ControlledError,handle_errors
 #import numerics as numerics
 import numerics
-import SortSeqError
+#import SortSeqError
+from mpathic import SortSeqError
 import pandas as pd
 import io_local as io
 import matplotlib.pyplot as plt
