@@ -108,7 +108,8 @@ autodoc_mock_imports = ['cStringIO',
                         'qc',
                         'pymc',
                         'fast',
-                        'Models'
+                        'Models',
+                        'EstimateMutualInfoforMImax',
                         ]
 
 '''
