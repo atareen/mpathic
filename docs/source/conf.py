@@ -110,6 +110,7 @@ autodoc_mock_imports = ['cStringIO',
                         'fast',
                         'Models',
                         'EstimateMutualInfoforMImax',
+                        'matplotlib.pyplot',
                         ]
 
 '''
