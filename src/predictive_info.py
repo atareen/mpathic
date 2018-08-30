@@ -43,7 +43,7 @@ class PredictiveInfo:
             end position of the sequence.
 
         err: (bool)
-            boolean variable which indiciates the inclusion of
+            boolean variable which indiciates the inclusion of \n
             error in the mutual information estimate if true
 
         coarse_graining_level: (int)
