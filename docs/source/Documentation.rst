@@ -12,6 +12,7 @@ Documentation
     learn_model
     evaluate_model
     scan_model
+    predictive_info
 
 mpa.demo()
 ----------
