@@ -12,9 +12,7 @@ MPAthic
 Quantitative Modeling of Sequence-function Relationships for Massively Parallel Assays
 --------------------------------------------------------------------------------------
 
-*Written by William Ireland\*, Ammar Tareen\*, and Justin B. Kinney.*
-
-(\* equal contribution)
+*Written by Ammar Tareen\*
 
 .. raw:: html
 
