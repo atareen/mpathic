@@ -29,7 +29,9 @@ input and output is written to the standard output.
 
 
 
-.. image:: _static/S2.png
+.. image:: _static/S0.png
+
+.. image:: _static/S1.png
 
 Installation
 ------------
